@@ -14,6 +14,9 @@ import {
   Users,
   QuoteIcon,
   List,
+  Target,
+  Kanban,
+  TrendingUp,
 } from "lucide-react";
 import AdminHeader from "./-components/AdminHeader";
 import { Link } from "@tanstack/react-router";
@@ -38,6 +41,20 @@ const nav_links = [
     children: null,
   },
   {
+    path: "/staff/leads",
+    label: "Leads",
+    icon: <Target size={ICON_SIZE} />,
+    type: "menu",
+    children: null,
+  },
+  {
+    path: "/staff/deals",
+    label: "Deals & Pipeline",
+    icon: <Kanban size={ICON_SIZE} />,
+    type: "menu",
+    children: null,
+  },
+  {
     path: "/staff/users",
     label: "Users",
     icon: <Users size={ICON_SIZE} />,
@@ -57,13 +74,6 @@ const nav_links = [
         type: "menu",
         children: null,
       },
-      // {
-      //   path: "/staff/users/permissions",
-      //   label: "Permissions",
-      //   icon: <Cog size={ICON_SIZE} />,
-      //   type: "menu",
-      //   children: null,
-      // },
     ],
   },
   {
@@ -151,19 +161,19 @@ const nav_links = [
         type: "menu",
         children: null,
       },
-      // {
-      //   path: "/staff/accounts/transactions",
-      //   label: "Transactions",
-      //   icon: <DollarSign size={ICON_SIZE} />,
-      //   type: "menu",
-      //   children: null,
-      // },
     ],
   },
   {
     path: "/staff/orders",
     label: "Orders",
     icon: <List size={ICON_SIZE} />,
+    type: "menu",
+    children: null,
+  },
+  {
+    path: "/staff/reports",
+    label: "Reports",
+    icon: <TrendingUp size={ICON_SIZE} />,
     type: "menu",
     children: null,
   },

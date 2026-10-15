@@ -23,20 +23,18 @@ import { Route as StaffUsersIndexRouteImport } from './routes/staff/users/index'
 import { Route as StaffSupportIndexRouteImport } from './routes/staff/support/index'
 import { Route as StaffSubscriptionIndexRouteImport } from './routes/staff/subscription/index'
 import { Route as StaffSettingsIndexRouteImport } from './routes/staff/settings/index'
+import { Route as StaffReportsIndexRouteImport } from './routes/staff/reports/index'
 import { Route as StaffProductsIndexRouteImport } from './routes/staff/products/index'
 import { Route as StaffOrdersIndexRouteImport } from './routes/staff/orders/index'
+import { Route as StaffLeadsIndexRouteImport } from './routes/staff/leads/index'
+import { Route as StaffDealsIndexRouteImport } from './routes/staff/deals/index'
 import { Route as AuthVerifyIndexRouteImport } from './routes/auth/verify/index'
 import { Route as AuthRegisterIndexRouteImport } from './routes/auth/register/index'
 import { Route as AuthLoginIndexRouteImport } from './routes/auth/login/index'
 import { Route as AuthForgotPasswordIndexRouteImport } from './routes/auth/forgot-password/index'
 import { Route as AuthAdminIndexRouteImport } from './routes/auth/admin/index'
 import { Route as AdminUsersIndexRouteImport } from './routes/admin/users/index'
-import { Route as AdminTenantsIndexRouteImport } from './routes/admin/tenants/index'
-import { Route as AdminSupportIndexRouteImport } from './routes/admin/support/index'
-import { Route as AdminSubscriptionIndexRouteImport } from './routes/admin/subscription/index'
 import { Route as AdminSettingsIndexRouteImport } from './routes/admin/settings/index'
-import { Route as AdminProductsIndexRouteImport } from './routes/admin/products/index'
-import { Route as AdminOrdersIndexRouteImport } from './routes/admin/orders/index'
 import { Route as AdminKnowledgeBaseIndexRouteImport } from './routes/admin/knowledge-base/index'
 import { Route as AuthForgotPasswordNewPasswordRouteImport } from './routes/auth/forgot-password/new-password'
 import { Route as StaffUsersRolesIndexRouteImport } from './routes/staff/users/roles/index'
@@ -59,22 +57,9 @@ import { Route as StaffAccountsInvoicesIndexRouteImport } from './routes/staff/a
 import { Route as AuthRegisterOnBoardingIndexRouteImport } from './routes/auth/register/on-boarding/index'
 import { Route as AdminUsersRolesIndexRouteImport } from './routes/admin/users/roles/index'
 import { Route as AdminUsersAddIndexRouteImport } from './routes/admin/users/add/index'
-import { Route as AdminTenantsIdIndexRouteImport } from './routes/admin/tenants/$id.index'
-import { Route as AdminSupportIdIndexRouteImport } from './routes/admin/support/$id/index'
-import { Route as AdminSubscriptionFeaturesIndexRouteImport } from './routes/admin/subscription/features.index'
 import { Route as AdminSettingsThemeIndexRouteImport } from './routes/admin/settings/theme/index'
 import { Route as AdminSettingsSecurityIndexRouteImport } from './routes/admin/settings/security/index'
 import { Route as AdminSettingsProfileIndexRouteImport } from './routes/admin/settings/profile/index'
-import { Route as AdminProductsServiceIndexRouteImport } from './routes/admin/products/service/index'
-import { Route as AdminProductsCategoriesIndexRouteImport } from './routes/admin/products/categories/index'
-import { Route as AdminProductsAddIndexRouteImport } from './routes/admin/products/add/index'
-import { Route as AdminContactsCustomersIndexRouteImport } from './routes/admin/contacts/customers/index'
-import { Route as AdminContactsCompaniesIndexRouteImport } from './routes/admin/contacts/companies/index'
-import { Route as AdminAccountsTransactionsIndexRouteImport } from './routes/admin/accounts/transactions/index'
-import { Route as AdminAccountsQuotesIndexRouteImport } from './routes/admin/accounts/quotes/index'
-import { Route as AdminAccountsIncomeExpensesIndexRouteImport } from './routes/admin/accounts/income-expenses/index'
-import { Route as AdminAccountsAnalysisIndexRouteImport } from './routes/admin/accounts/analysis/index'
-import { Route as AdminAccountsInvoicesIndexRouteImport } from './routes/admin/accounts/Invoices/index'
 import { Route as StaffUsersDetailsIdIndexRouteImport } from './routes/staff/users/details/$id/index'
 import { Route as StaffProductsServiceAddIndexRouteImport } from './routes/staff/products/service/add/index'
 import { Route as StaffContactsCustomersAddIndexRouteImport } from './routes/staff/contacts/customers/add/index'
@@ -83,14 +68,8 @@ import { Route as StaffAccountsIncomeExpensesCategoriesIndexRouteImport } from '
 import { Route as StaffAccountsInvoicesAddIndexRouteImport } from './routes/staff/accounts/Invoices/add/index'
 import { Route as StaffAccountsInvoicesIdIndexRouteImport } from './routes/staff/accounts/Invoices/$id/index'
 import { Route as AdminUsersDetailsIdIndexRouteImport } from './routes/admin/users/details/$id/index'
-import { Route as AdminProductsServiceAddIndexRouteImport } from './routes/admin/products/service/add/index'
-import { Route as AdminContactsCustomersAddIndexRouteImport } from './routes/admin/contacts/customers/add/index'
-import { Route as AdminContactsCompaniesAddIndexRouteImport } from './routes/admin/contacts/companies/add/index'
-import { Route as AdminAccountsInvoicesAddIndexRouteImport } from './routes/admin/accounts/Invoices/add/index'
-import { Route as AdminAccountsInvoicesIdIndexRouteImport } from './routes/admin/accounts/Invoices/$id/index'
 import { Route as StaffAccountsInvoicesIdEditRouteImport } from './routes/staff/accounts/Invoices/$id/edit'
 import { Route as StaffContactsCompaniesDetailsIdIndexRouteImport } from './routes/staff/contacts/companies/details/$id/index'
-import { Route as AdminContactsCompaniesDetailsIdIndexRouteImport } from './routes/admin/contacts/companies/details/$id/index'
 
 const StaffRouteRoute = StaffRouteRouteImport.update({
   id: '/staff',
@@ -162,6 +141,11 @@ const StaffSettingsIndexRoute = StaffSettingsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => StaffSettingsRouteRoute,
 } as any)
+const StaffReportsIndexRoute = StaffReportsIndexRouteImport.update({
+  id: '/reports/',
+  path: '/reports/',
+  getParentRoute: () => StaffRouteRoute,
+} as any)
 const StaffProductsIndexRoute = StaffProductsIndexRouteImport.update({
   id: '/products/',
   path: '/products/',
@@ -170,6 +154,16 @@ const StaffProductsIndexRoute = StaffProductsIndexRouteImport.update({
 const StaffOrdersIndexRoute = StaffOrdersIndexRouteImport.update({
   id: '/orders/',
   path: '/orders/',
+  getParentRoute: () => StaffRouteRoute,
+} as any)
+const StaffLeadsIndexRoute = StaffLeadsIndexRouteImport.update({
+  id: '/leads/',
+  path: '/leads/',
+  getParentRoute: () => StaffRouteRoute,
+} as any)
+const StaffDealsIndexRoute = StaffDealsIndexRouteImport.update({
+  id: '/deals/',
+  path: '/deals/',
   getParentRoute: () => StaffRouteRoute,
 } as any)
 const AuthVerifyIndexRoute = AuthVerifyIndexRouteImport.update({
@@ -202,35 +196,10 @@ const AdminUsersIndexRoute = AdminUsersIndexRouteImport.update({
   path: '/users/',
   getParentRoute: () => AdminRouteRoute,
 } as any)
-const AdminTenantsIndexRoute = AdminTenantsIndexRouteImport.update({
-  id: '/tenants/',
-  path: '/tenants/',
-  getParentRoute: () => AdminRouteRoute,
-} as any)
-const AdminSupportIndexRoute = AdminSupportIndexRouteImport.update({
-  id: '/support/',
-  path: '/support/',
-  getParentRoute: () => AdminRouteRoute,
-} as any)
-const AdminSubscriptionIndexRoute = AdminSubscriptionIndexRouteImport.update({
-  id: '/subscription/',
-  path: '/subscription/',
-  getParentRoute: () => AdminRouteRoute,
-} as any)
 const AdminSettingsIndexRoute = AdminSettingsIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminSettingsRouteRoute,
-} as any)
-const AdminProductsIndexRoute = AdminProductsIndexRouteImport.update({
-  id: '/products/',
-  path: '/products/',
-  getParentRoute: () => AdminRouteRoute,
-} as any)
-const AdminOrdersIndexRoute = AdminOrdersIndexRouteImport.update({
-  id: '/orders/',
-  path: '/orders/',
-  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminKnowledgeBaseIndexRoute = AdminKnowledgeBaseIndexRouteImport.update({
   id: '/knowledge-base/',
@@ -356,22 +325,6 @@ const AdminUsersAddIndexRoute = AdminUsersAddIndexRouteImport.update({
   path: '/users/add/',
   getParentRoute: () => AdminRouteRoute,
 } as any)
-const AdminTenantsIdIndexRoute = AdminTenantsIdIndexRouteImport.update({
-  id: '/tenants/$id/',
-  path: '/tenants/$id/',
-  getParentRoute: () => AdminRouteRoute,
-} as any)
-const AdminSupportIdIndexRoute = AdminSupportIdIndexRouteImport.update({
-  id: '/support/$id/',
-  path: '/support/$id/',
-  getParentRoute: () => AdminRouteRoute,
-} as any)
-const AdminSubscriptionFeaturesIndexRoute =
-  AdminSubscriptionFeaturesIndexRouteImport.update({
-    id: '/subscription/features/',
-    path: '/subscription/features/',
-    getParentRoute: () => AdminRouteRoute,
-  } as any)
 const AdminSettingsThemeIndexRoute = AdminSettingsThemeIndexRouteImport.update({
   id: '/theme/',
   path: '/theme/',
@@ -388,65 +341,6 @@ const AdminSettingsProfileIndexRoute =
     id: '/profile/',
     path: '/profile/',
     getParentRoute: () => AdminSettingsRouteRoute,
-  } as any)
-const AdminProductsServiceIndexRoute =
-  AdminProductsServiceIndexRouteImport.update({
-    id: '/products/service/',
-    path: '/products/service/',
-    getParentRoute: () => AdminRouteRoute,
-  } as any)
-const AdminProductsCategoriesIndexRoute =
-  AdminProductsCategoriesIndexRouteImport.update({
-    id: '/products/categories/',
-    path: '/products/categories/',
-    getParentRoute: () => AdminRouteRoute,
-  } as any)
-const AdminProductsAddIndexRoute = AdminProductsAddIndexRouteImport.update({
-  id: '/products/add/',
-  path: '/products/add/',
-  getParentRoute: () => AdminRouteRoute,
-} as any)
-const AdminContactsCustomersIndexRoute =
-  AdminContactsCustomersIndexRouteImport.update({
-    id: '/contacts/customers/',
-    path: '/contacts/customers/',
-    getParentRoute: () => AdminRouteRoute,
-  } as any)
-const AdminContactsCompaniesIndexRoute =
-  AdminContactsCompaniesIndexRouteImport.update({
-    id: '/contacts/companies/',
-    path: '/contacts/companies/',
-    getParentRoute: () => AdminRouteRoute,
-  } as any)
-const AdminAccountsTransactionsIndexRoute =
-  AdminAccountsTransactionsIndexRouteImport.update({
-    id: '/accounts/transactions/',
-    path: '/accounts/transactions/',
-    getParentRoute: () => AdminRouteRoute,
-  } as any)
-const AdminAccountsQuotesIndexRoute =
-  AdminAccountsQuotesIndexRouteImport.update({
-    id: '/accounts/quotes/',
-    path: '/accounts/quotes/',
-    getParentRoute: () => AdminRouteRoute,
-  } as any)
-const AdminAccountsIncomeExpensesIndexRoute =
-  AdminAccountsIncomeExpensesIndexRouteImport.update({
-    id: '/accounts/income-expenses/',
-    path: '/accounts/income-expenses/',
-    getParentRoute: () => AdminRouteRoute,
-  } as any)
-const AdminAccountsAnalysisIndexRoute =
-  AdminAccountsAnalysisIndexRouteImport.update({
-    id: '/accounts/analysis/',
-    path: '/accounts/analysis/',
-    getParentRoute: () => AdminRouteRoute,
-  } as any)
-const AdminAccountsInvoicesIndexRoute =
-  AdminAccountsInvoicesIndexRouteImport.update({
-    id: '/accounts/Invoices/',
-    path: '/accounts/Invoices/',
-    getParentRoute: () => AdminRouteRoute,
   } as any)
 const StaffUsersDetailsIdIndexRoute =
   StaffUsersDetailsIdIndexRouteImport.update({
@@ -496,36 +390,6 @@ const AdminUsersDetailsIdIndexRoute =
     path: '/users/details/$id/',
     getParentRoute: () => AdminRouteRoute,
   } as any)
-const AdminProductsServiceAddIndexRoute =
-  AdminProductsServiceAddIndexRouteImport.update({
-    id: '/products/service/add/',
-    path: '/products/service/add/',
-    getParentRoute: () => AdminRouteRoute,
-  } as any)
-const AdminContactsCustomersAddIndexRoute =
-  AdminContactsCustomersAddIndexRouteImport.update({
-    id: '/contacts/customers/add/',
-    path: '/contacts/customers/add/',
-    getParentRoute: () => AdminRouteRoute,
-  } as any)
-const AdminContactsCompaniesAddIndexRoute =
-  AdminContactsCompaniesAddIndexRouteImport.update({
-    id: '/contacts/companies/add/',
-    path: '/contacts/companies/add/',
-    getParentRoute: () => AdminRouteRoute,
-  } as any)
-const AdminAccountsInvoicesAddIndexRoute =
-  AdminAccountsInvoicesAddIndexRouteImport.update({
-    id: '/accounts/Invoices/add/',
-    path: '/accounts/Invoices/add/',
-    getParentRoute: () => AdminRouteRoute,
-  } as any)
-const AdminAccountsInvoicesIdIndexRoute =
-  AdminAccountsInvoicesIdIndexRouteImport.update({
-    id: '/accounts/Invoices/$id/',
-    path: '/accounts/Invoices/$id/',
-    getParentRoute: () => AdminRouteRoute,
-  } as any)
 const StaffAccountsInvoicesIdEditRoute =
   StaffAccountsInvoicesIdEditRouteImport.update({
     id: '/accounts/Invoices/$id/edit',
@@ -537,12 +401,6 @@ const StaffContactsCompaniesDetailsIdIndexRoute =
     id: '/contacts/companies/details/$id/',
     path: '/contacts/companies/details/$id/',
     getParentRoute: () => StaffRouteRoute,
-  } as any)
-const AdminContactsCompaniesDetailsIdIndexRoute =
-  AdminContactsCompaniesDetailsIdIndexRouteImport.update({
-    id: '/contacts/companies/details/$id/',
-    path: '/contacts/companies/details/$id/',
-    getParentRoute: () => AdminRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -558,40 +416,25 @@ export interface FileRoutesByFullPath {
   '/staff/': typeof StaffIndexRoute
   '/auth/forgot-password/new-password': typeof AuthForgotPasswordNewPasswordRoute
   '/admin/knowledge-base': typeof AdminKnowledgeBaseIndexRoute
-  '/admin/orders': typeof AdminOrdersIndexRoute
-  '/admin/products': typeof AdminProductsIndexRoute
   '/admin/settings/': typeof AdminSettingsIndexRoute
-  '/admin/subscription': typeof AdminSubscriptionIndexRoute
-  '/admin/support': typeof AdminSupportIndexRoute
-  '/admin/tenants': typeof AdminTenantsIndexRoute
   '/admin/users': typeof AdminUsersIndexRoute
   '/auth/admin': typeof AuthAdminIndexRoute
   '/auth/forgot-password': typeof AuthForgotPasswordIndexRoute
   '/auth/login': typeof AuthLoginIndexRoute
   '/auth/register/': typeof AuthRegisterIndexRoute
   '/auth/verify/': typeof AuthVerifyIndexRoute
+  '/staff/deals': typeof StaffDealsIndexRoute
+  '/staff/leads': typeof StaffLeadsIndexRoute
   '/staff/orders': typeof StaffOrdersIndexRoute
   '/staff/products': typeof StaffProductsIndexRoute
+  '/staff/reports': typeof StaffReportsIndexRoute
   '/staff/settings/': typeof StaffSettingsIndexRoute
   '/staff/subscription': typeof StaffSubscriptionIndexRoute
   '/staff/support': typeof StaffSupportIndexRoute
   '/staff/users': typeof StaffUsersIndexRoute
-  '/admin/accounts/Invoices': typeof AdminAccountsInvoicesIndexRoute
-  '/admin/accounts/analysis': typeof AdminAccountsAnalysisIndexRoute
-  '/admin/accounts/income-expenses': typeof AdminAccountsIncomeExpensesIndexRoute
-  '/admin/accounts/quotes': typeof AdminAccountsQuotesIndexRoute
-  '/admin/accounts/transactions': typeof AdminAccountsTransactionsIndexRoute
-  '/admin/contacts/companies': typeof AdminContactsCompaniesIndexRoute
-  '/admin/contacts/customers': typeof AdminContactsCustomersIndexRoute
-  '/admin/products/add': typeof AdminProductsAddIndexRoute
-  '/admin/products/categories': typeof AdminProductsCategoriesIndexRoute
-  '/admin/products/service': typeof AdminProductsServiceIndexRoute
   '/admin/settings/profile': typeof AdminSettingsProfileIndexRoute
   '/admin/settings/security': typeof AdminSettingsSecurityIndexRoute
   '/admin/settings/theme': typeof AdminSettingsThemeIndexRoute
-  '/admin/subscription/features': typeof AdminSubscriptionFeaturesIndexRoute
-  '/admin/support/$id': typeof AdminSupportIdIndexRoute
-  '/admin/tenants/$id': typeof AdminTenantsIdIndexRoute
   '/admin/users/add': typeof AdminUsersAddIndexRoute
   '/admin/users/roles': typeof AdminUsersRolesIndexRoute
   '/auth/register/on-boarding': typeof AuthRegisterOnBoardingIndexRoute
@@ -613,11 +456,6 @@ export interface FileRoutesByFullPath {
   '/staff/users/add': typeof StaffUsersAddIndexRoute
   '/staff/users/roles': typeof StaffUsersRolesIndexRoute
   '/staff/accounts/Invoices/$id/edit': typeof StaffAccountsInvoicesIdEditRoute
-  '/admin/accounts/Invoices/$id': typeof AdminAccountsInvoicesIdIndexRoute
-  '/admin/accounts/Invoices/add': typeof AdminAccountsInvoicesAddIndexRoute
-  '/admin/contacts/companies/add': typeof AdminContactsCompaniesAddIndexRoute
-  '/admin/contacts/customers/add': typeof AdminContactsCustomersAddIndexRoute
-  '/admin/products/service/add': typeof AdminProductsServiceAddIndexRoute
   '/admin/users/details/$id': typeof AdminUsersDetailsIdIndexRoute
   '/staff/accounts/Invoices/$id': typeof StaffAccountsInvoicesIdIndexRoute
   '/staff/accounts/Invoices/add': typeof StaffAccountsInvoicesAddIndexRoute
@@ -626,7 +464,6 @@ export interface FileRoutesByFullPath {
   '/staff/contacts/customers/add': typeof StaffContactsCustomersAddIndexRoute
   '/staff/products/service/add': typeof StaffProductsServiceAddIndexRoute
   '/staff/users/details/$id': typeof StaffUsersDetailsIdIndexRoute
-  '/admin/contacts/companies/details/$id': typeof AdminContactsCompaniesDetailsIdIndexRoute
   '/staff/contacts/companies/details/$id': typeof StaffContactsCompaniesDetailsIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -636,40 +473,25 @@ export interface FileRoutesByTo {
   '/staff': typeof StaffIndexRoute
   '/auth/forgot-password/new-password': typeof AuthForgotPasswordNewPasswordRoute
   '/admin/knowledge-base': typeof AdminKnowledgeBaseIndexRoute
-  '/admin/orders': typeof AdminOrdersIndexRoute
-  '/admin/products': typeof AdminProductsIndexRoute
   '/admin/settings': typeof AdminSettingsIndexRoute
-  '/admin/subscription': typeof AdminSubscriptionIndexRoute
-  '/admin/support': typeof AdminSupportIndexRoute
-  '/admin/tenants': typeof AdminTenantsIndexRoute
   '/admin/users': typeof AdminUsersIndexRoute
   '/auth/admin': typeof AuthAdminIndexRoute
   '/auth/forgot-password': typeof AuthForgotPasswordIndexRoute
   '/auth/login': typeof AuthLoginIndexRoute
   '/auth/register': typeof AuthRegisterIndexRoute
   '/auth/verify': typeof AuthVerifyIndexRoute
+  '/staff/deals': typeof StaffDealsIndexRoute
+  '/staff/leads': typeof StaffLeadsIndexRoute
   '/staff/orders': typeof StaffOrdersIndexRoute
   '/staff/products': typeof StaffProductsIndexRoute
+  '/staff/reports': typeof StaffReportsIndexRoute
   '/staff/settings': typeof StaffSettingsIndexRoute
   '/staff/subscription': typeof StaffSubscriptionIndexRoute
   '/staff/support': typeof StaffSupportIndexRoute
   '/staff/users': typeof StaffUsersIndexRoute
-  '/admin/accounts/Invoices': typeof AdminAccountsInvoicesIndexRoute
-  '/admin/accounts/analysis': typeof AdminAccountsAnalysisIndexRoute
-  '/admin/accounts/income-expenses': typeof AdminAccountsIncomeExpensesIndexRoute
-  '/admin/accounts/quotes': typeof AdminAccountsQuotesIndexRoute
-  '/admin/accounts/transactions': typeof AdminAccountsTransactionsIndexRoute
-  '/admin/contacts/companies': typeof AdminContactsCompaniesIndexRoute
-  '/admin/contacts/customers': typeof AdminContactsCustomersIndexRoute
-  '/admin/products/add': typeof AdminProductsAddIndexRoute
-  '/admin/products/categories': typeof AdminProductsCategoriesIndexRoute
-  '/admin/products/service': typeof AdminProductsServiceIndexRoute
   '/admin/settings/profile': typeof AdminSettingsProfileIndexRoute
   '/admin/settings/security': typeof AdminSettingsSecurityIndexRoute
   '/admin/settings/theme': typeof AdminSettingsThemeIndexRoute
-  '/admin/subscription/features': typeof AdminSubscriptionFeaturesIndexRoute
-  '/admin/support/$id': typeof AdminSupportIdIndexRoute
-  '/admin/tenants/$id': typeof AdminTenantsIdIndexRoute
   '/admin/users/add': typeof AdminUsersAddIndexRoute
   '/admin/users/roles': typeof AdminUsersRolesIndexRoute
   '/auth/register/on-boarding': typeof AuthRegisterOnBoardingIndexRoute
@@ -691,11 +513,6 @@ export interface FileRoutesByTo {
   '/staff/users/add': typeof StaffUsersAddIndexRoute
   '/staff/users/roles': typeof StaffUsersRolesIndexRoute
   '/staff/accounts/Invoices/$id/edit': typeof StaffAccountsInvoicesIdEditRoute
-  '/admin/accounts/Invoices/$id': typeof AdminAccountsInvoicesIdIndexRoute
-  '/admin/accounts/Invoices/add': typeof AdminAccountsInvoicesAddIndexRoute
-  '/admin/contacts/companies/add': typeof AdminContactsCompaniesAddIndexRoute
-  '/admin/contacts/customers/add': typeof AdminContactsCustomersAddIndexRoute
-  '/admin/products/service/add': typeof AdminProductsServiceAddIndexRoute
   '/admin/users/details/$id': typeof AdminUsersDetailsIdIndexRoute
   '/staff/accounts/Invoices/$id': typeof StaffAccountsInvoicesIdIndexRoute
   '/staff/accounts/Invoices/add': typeof StaffAccountsInvoicesAddIndexRoute
@@ -704,7 +521,6 @@ export interface FileRoutesByTo {
   '/staff/contacts/customers/add': typeof StaffContactsCustomersAddIndexRoute
   '/staff/products/service/add': typeof StaffProductsServiceAddIndexRoute
   '/staff/users/details/$id': typeof StaffUsersDetailsIdIndexRoute
-  '/admin/contacts/companies/details/$id': typeof AdminContactsCompaniesDetailsIdIndexRoute
   '/staff/contacts/companies/details/$id': typeof StaffContactsCompaniesDetailsIdIndexRoute
 }
 export interface FileRoutesById {
@@ -721,40 +537,25 @@ export interface FileRoutesById {
   '/staff/': typeof StaffIndexRoute
   '/auth/forgot-password/new-password': typeof AuthForgotPasswordNewPasswordRoute
   '/admin/knowledge-base/': typeof AdminKnowledgeBaseIndexRoute
-  '/admin/orders/': typeof AdminOrdersIndexRoute
-  '/admin/products/': typeof AdminProductsIndexRoute
   '/admin/settings/': typeof AdminSettingsIndexRoute
-  '/admin/subscription/': typeof AdminSubscriptionIndexRoute
-  '/admin/support/': typeof AdminSupportIndexRoute
-  '/admin/tenants/': typeof AdminTenantsIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
   '/auth/admin/': typeof AuthAdminIndexRoute
   '/auth/forgot-password/': typeof AuthForgotPasswordIndexRoute
   '/auth/login/': typeof AuthLoginIndexRoute
   '/auth/register/': typeof AuthRegisterIndexRoute
   '/auth/verify/': typeof AuthVerifyIndexRoute
+  '/staff/deals/': typeof StaffDealsIndexRoute
+  '/staff/leads/': typeof StaffLeadsIndexRoute
   '/staff/orders/': typeof StaffOrdersIndexRoute
   '/staff/products/': typeof StaffProductsIndexRoute
+  '/staff/reports/': typeof StaffReportsIndexRoute
   '/staff/settings/': typeof StaffSettingsIndexRoute
   '/staff/subscription/': typeof StaffSubscriptionIndexRoute
   '/staff/support/': typeof StaffSupportIndexRoute
   '/staff/users/': typeof StaffUsersIndexRoute
-  '/admin/accounts/Invoices/': typeof AdminAccountsInvoicesIndexRoute
-  '/admin/accounts/analysis/': typeof AdminAccountsAnalysisIndexRoute
-  '/admin/accounts/income-expenses/': typeof AdminAccountsIncomeExpensesIndexRoute
-  '/admin/accounts/quotes/': typeof AdminAccountsQuotesIndexRoute
-  '/admin/accounts/transactions/': typeof AdminAccountsTransactionsIndexRoute
-  '/admin/contacts/companies/': typeof AdminContactsCompaniesIndexRoute
-  '/admin/contacts/customers/': typeof AdminContactsCustomersIndexRoute
-  '/admin/products/add/': typeof AdminProductsAddIndexRoute
-  '/admin/products/categories/': typeof AdminProductsCategoriesIndexRoute
-  '/admin/products/service/': typeof AdminProductsServiceIndexRoute
   '/admin/settings/profile/': typeof AdminSettingsProfileIndexRoute
   '/admin/settings/security/': typeof AdminSettingsSecurityIndexRoute
   '/admin/settings/theme/': typeof AdminSettingsThemeIndexRoute
-  '/admin/subscription/features/': typeof AdminSubscriptionFeaturesIndexRoute
-  '/admin/support/$id/': typeof AdminSupportIdIndexRoute
-  '/admin/tenants/$id/': typeof AdminTenantsIdIndexRoute
   '/admin/users/add/': typeof AdminUsersAddIndexRoute
   '/admin/users/roles/': typeof AdminUsersRolesIndexRoute
   '/auth/register/on-boarding/': typeof AuthRegisterOnBoardingIndexRoute
@@ -776,11 +577,6 @@ export interface FileRoutesById {
   '/staff/users/add/': typeof StaffUsersAddIndexRoute
   '/staff/users/roles/': typeof StaffUsersRolesIndexRoute
   '/staff/accounts/Invoices/$id/edit': typeof StaffAccountsInvoicesIdEditRoute
-  '/admin/accounts/Invoices/$id/': typeof AdminAccountsInvoicesIdIndexRoute
-  '/admin/accounts/Invoices/add/': typeof AdminAccountsInvoicesAddIndexRoute
-  '/admin/contacts/companies/add/': typeof AdminContactsCompaniesAddIndexRoute
-  '/admin/contacts/customers/add/': typeof AdminContactsCustomersAddIndexRoute
-  '/admin/products/service/add/': typeof AdminProductsServiceAddIndexRoute
   '/admin/users/details/$id/': typeof AdminUsersDetailsIdIndexRoute
   '/staff/accounts/Invoices/$id/': typeof StaffAccountsInvoicesIdIndexRoute
   '/staff/accounts/Invoices/add/': typeof StaffAccountsInvoicesAddIndexRoute
@@ -789,7 +585,6 @@ export interface FileRoutesById {
   '/staff/contacts/customers/add/': typeof StaffContactsCustomersAddIndexRoute
   '/staff/products/service/add/': typeof StaffProductsServiceAddIndexRoute
   '/staff/users/details/$id/': typeof StaffUsersDetailsIdIndexRoute
-  '/admin/contacts/companies/details/$id/': typeof AdminContactsCompaniesDetailsIdIndexRoute
   '/staff/contacts/companies/details/$id/': typeof StaffContactsCompaniesDetailsIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -807,40 +602,25 @@ export interface FileRouteTypes {
     | '/staff/'
     | '/auth/forgot-password/new-password'
     | '/admin/knowledge-base'
-    | '/admin/orders'
-    | '/admin/products'
     | '/admin/settings/'
-    | '/admin/subscription'
-    | '/admin/support'
-    | '/admin/tenants'
     | '/admin/users'
     | '/auth/admin'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register/'
     | '/auth/verify/'
+    | '/staff/deals'
+    | '/staff/leads'
     | '/staff/orders'
     | '/staff/products'
+    | '/staff/reports'
     | '/staff/settings/'
     | '/staff/subscription'
     | '/staff/support'
     | '/staff/users'
-    | '/admin/accounts/Invoices'
-    | '/admin/accounts/analysis'
-    | '/admin/accounts/income-expenses'
-    | '/admin/accounts/quotes'
-    | '/admin/accounts/transactions'
-    | '/admin/contacts/companies'
-    | '/admin/contacts/customers'
-    | '/admin/products/add'
-    | '/admin/products/categories'
-    | '/admin/products/service'
     | '/admin/settings/profile'
     | '/admin/settings/security'
     | '/admin/settings/theme'
-    | '/admin/subscription/features'
-    | '/admin/support/$id'
-    | '/admin/tenants/$id'
     | '/admin/users/add'
     | '/admin/users/roles'
     | '/auth/register/on-boarding'
@@ -862,11 +642,6 @@ export interface FileRouteTypes {
     | '/staff/users/add'
     | '/staff/users/roles'
     | '/staff/accounts/Invoices/$id/edit'
-    | '/admin/accounts/Invoices/$id'
-    | '/admin/accounts/Invoices/add'
-    | '/admin/contacts/companies/add'
-    | '/admin/contacts/customers/add'
-    | '/admin/products/service/add'
     | '/admin/users/details/$id'
     | '/staff/accounts/Invoices/$id'
     | '/staff/accounts/Invoices/add'
@@ -875,7 +650,6 @@ export interface FileRouteTypes {
     | '/staff/contacts/customers/add'
     | '/staff/products/service/add'
     | '/staff/users/details/$id'
-    | '/admin/contacts/companies/details/$id'
     | '/staff/contacts/companies/details/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -885,40 +659,25 @@ export interface FileRouteTypes {
     | '/staff'
     | '/auth/forgot-password/new-password'
     | '/admin/knowledge-base'
-    | '/admin/orders'
-    | '/admin/products'
     | '/admin/settings'
-    | '/admin/subscription'
-    | '/admin/support'
-    | '/admin/tenants'
     | '/admin/users'
     | '/auth/admin'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
     | '/auth/verify'
+    | '/staff/deals'
+    | '/staff/leads'
     | '/staff/orders'
     | '/staff/products'
+    | '/staff/reports'
     | '/staff/settings'
     | '/staff/subscription'
     | '/staff/support'
     | '/staff/users'
-    | '/admin/accounts/Invoices'
-    | '/admin/accounts/analysis'
-    | '/admin/accounts/income-expenses'
-    | '/admin/accounts/quotes'
-    | '/admin/accounts/transactions'
-    | '/admin/contacts/companies'
-    | '/admin/contacts/customers'
-    | '/admin/products/add'
-    | '/admin/products/categories'
-    | '/admin/products/service'
     | '/admin/settings/profile'
     | '/admin/settings/security'
     | '/admin/settings/theme'
-    | '/admin/subscription/features'
-    | '/admin/support/$id'
-    | '/admin/tenants/$id'
     | '/admin/users/add'
     | '/admin/users/roles'
     | '/auth/register/on-boarding'
@@ -940,11 +699,6 @@ export interface FileRouteTypes {
     | '/staff/users/add'
     | '/staff/users/roles'
     | '/staff/accounts/Invoices/$id/edit'
-    | '/admin/accounts/Invoices/$id'
-    | '/admin/accounts/Invoices/add'
-    | '/admin/contacts/companies/add'
-    | '/admin/contacts/customers/add'
-    | '/admin/products/service/add'
     | '/admin/users/details/$id'
     | '/staff/accounts/Invoices/$id'
     | '/staff/accounts/Invoices/add'
@@ -953,7 +707,6 @@ export interface FileRouteTypes {
     | '/staff/contacts/customers/add'
     | '/staff/products/service/add'
     | '/staff/users/details/$id'
-    | '/admin/contacts/companies/details/$id'
     | '/staff/contacts/companies/details/$id'
   id:
     | '__root__'
@@ -969,40 +722,25 @@ export interface FileRouteTypes {
     | '/staff/'
     | '/auth/forgot-password/new-password'
     | '/admin/knowledge-base/'
-    | '/admin/orders/'
-    | '/admin/products/'
     | '/admin/settings/'
-    | '/admin/subscription/'
-    | '/admin/support/'
-    | '/admin/tenants/'
     | '/admin/users/'
     | '/auth/admin/'
     | '/auth/forgot-password/'
     | '/auth/login/'
     | '/auth/register/'
     | '/auth/verify/'
+    | '/staff/deals/'
+    | '/staff/leads/'
     | '/staff/orders/'
     | '/staff/products/'
+    | '/staff/reports/'
     | '/staff/settings/'
     | '/staff/subscription/'
     | '/staff/support/'
     | '/staff/users/'
-    | '/admin/accounts/Invoices/'
-    | '/admin/accounts/analysis/'
-    | '/admin/accounts/income-expenses/'
-    | '/admin/accounts/quotes/'
-    | '/admin/accounts/transactions/'
-    | '/admin/contacts/companies/'
-    | '/admin/contacts/customers/'
-    | '/admin/products/add/'
-    | '/admin/products/categories/'
-    | '/admin/products/service/'
     | '/admin/settings/profile/'
     | '/admin/settings/security/'
     | '/admin/settings/theme/'
-    | '/admin/subscription/features/'
-    | '/admin/support/$id/'
-    | '/admin/tenants/$id/'
     | '/admin/users/add/'
     | '/admin/users/roles/'
     | '/auth/register/on-boarding/'
@@ -1024,11 +762,6 @@ export interface FileRouteTypes {
     | '/staff/users/add/'
     | '/staff/users/roles/'
     | '/staff/accounts/Invoices/$id/edit'
-    | '/admin/accounts/Invoices/$id/'
-    | '/admin/accounts/Invoices/add/'
-    | '/admin/contacts/companies/add/'
-    | '/admin/contacts/customers/add/'
-    | '/admin/products/service/add/'
     | '/admin/users/details/$id/'
     | '/staff/accounts/Invoices/$id/'
     | '/staff/accounts/Invoices/add/'
@@ -1037,7 +770,6 @@ export interface FileRouteTypes {
     | '/staff/contacts/customers/add/'
     | '/staff/products/service/add/'
     | '/staff/users/details/$id/'
-    | '/admin/contacts/companies/details/$id/'
     | '/staff/contacts/companies/details/$id/'
   fileRoutesById: FileRoutesById
 }
@@ -1154,6 +886,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StaffSettingsIndexRouteImport
       parentRoute: typeof StaffSettingsRouteRoute
     }
+    '/staff/reports/': {
+      id: '/staff/reports/'
+      path: '/reports'
+      fullPath: '/staff/reports'
+      preLoaderRoute: typeof StaffReportsIndexRouteImport
+      parentRoute: typeof StaffRouteRoute
+    }
     '/staff/products/': {
       id: '/staff/products/'
       path: '/products'
@@ -1166,6 +905,20 @@ declare module '@tanstack/react-router' {
       path: '/orders'
       fullPath: '/staff/orders'
       preLoaderRoute: typeof StaffOrdersIndexRouteImport
+      parentRoute: typeof StaffRouteRoute
+    }
+    '/staff/leads/': {
+      id: '/staff/leads/'
+      path: '/leads'
+      fullPath: '/staff/leads'
+      preLoaderRoute: typeof StaffLeadsIndexRouteImport
+      parentRoute: typeof StaffRouteRoute
+    }
+    '/staff/deals/': {
+      id: '/staff/deals/'
+      path: '/deals'
+      fullPath: '/staff/deals'
+      preLoaderRoute: typeof StaffDealsIndexRouteImport
       parentRoute: typeof StaffRouteRoute
     }
     '/auth/verify/': {
@@ -1210,47 +963,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminUsersIndexRouteImport
       parentRoute: typeof AdminRouteRoute
     }
-    '/admin/tenants/': {
-      id: '/admin/tenants/'
-      path: '/tenants'
-      fullPath: '/admin/tenants'
-      preLoaderRoute: typeof AdminTenantsIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/support/': {
-      id: '/admin/support/'
-      path: '/support'
-      fullPath: '/admin/support'
-      preLoaderRoute: typeof AdminSupportIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/subscription/': {
-      id: '/admin/subscription/'
-      path: '/subscription'
-      fullPath: '/admin/subscription'
-      preLoaderRoute: typeof AdminSubscriptionIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
     '/admin/settings/': {
       id: '/admin/settings/'
       path: '/'
       fullPath: '/admin/settings/'
       preLoaderRoute: typeof AdminSettingsIndexRouteImport
       parentRoute: typeof AdminSettingsRouteRoute
-    }
-    '/admin/products/': {
-      id: '/admin/products/'
-      path: '/products'
-      fullPath: '/admin/products'
-      preLoaderRoute: typeof AdminProductsIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/orders/': {
-      id: '/admin/orders/'
-      path: '/orders'
-      fullPath: '/admin/orders'
-      preLoaderRoute: typeof AdminOrdersIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
     }
     '/admin/knowledge-base/': {
       id: '/admin/knowledge-base/'
@@ -1406,27 +1124,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminUsersAddIndexRouteImport
       parentRoute: typeof AdminRouteRoute
     }
-    '/admin/tenants/$id/': {
-      id: '/admin/tenants/$id/'
-      path: '/tenants/$id'
-      fullPath: '/admin/tenants/$id'
-      preLoaderRoute: typeof AdminTenantsIdIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/support/$id/': {
-      id: '/admin/support/$id/'
-      path: '/support/$id'
-      fullPath: '/admin/support/$id'
-      preLoaderRoute: typeof AdminSupportIdIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/subscription/features/': {
-      id: '/admin/subscription/features/'
-      path: '/subscription/features'
-      fullPath: '/admin/subscription/features'
-      preLoaderRoute: typeof AdminSubscriptionFeaturesIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
     '/admin/settings/theme/': {
       id: '/admin/settings/theme/'
       path: '/theme'
@@ -1447,76 +1144,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/settings/profile'
       preLoaderRoute: typeof AdminSettingsProfileIndexRouteImport
       parentRoute: typeof AdminSettingsRouteRoute
-    }
-    '/admin/products/service/': {
-      id: '/admin/products/service/'
-      path: '/products/service'
-      fullPath: '/admin/products/service'
-      preLoaderRoute: typeof AdminProductsServiceIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/products/categories/': {
-      id: '/admin/products/categories/'
-      path: '/products/categories'
-      fullPath: '/admin/products/categories'
-      preLoaderRoute: typeof AdminProductsCategoriesIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/products/add/': {
-      id: '/admin/products/add/'
-      path: '/products/add'
-      fullPath: '/admin/products/add'
-      preLoaderRoute: typeof AdminProductsAddIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/contacts/customers/': {
-      id: '/admin/contacts/customers/'
-      path: '/contacts/customers'
-      fullPath: '/admin/contacts/customers'
-      preLoaderRoute: typeof AdminContactsCustomersIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/contacts/companies/': {
-      id: '/admin/contacts/companies/'
-      path: '/contacts/companies'
-      fullPath: '/admin/contacts/companies'
-      preLoaderRoute: typeof AdminContactsCompaniesIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/accounts/transactions/': {
-      id: '/admin/accounts/transactions/'
-      path: '/accounts/transactions'
-      fullPath: '/admin/accounts/transactions'
-      preLoaderRoute: typeof AdminAccountsTransactionsIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/accounts/quotes/': {
-      id: '/admin/accounts/quotes/'
-      path: '/accounts/quotes'
-      fullPath: '/admin/accounts/quotes'
-      preLoaderRoute: typeof AdminAccountsQuotesIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/accounts/income-expenses/': {
-      id: '/admin/accounts/income-expenses/'
-      path: '/accounts/income-expenses'
-      fullPath: '/admin/accounts/income-expenses'
-      preLoaderRoute: typeof AdminAccountsIncomeExpensesIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/accounts/analysis/': {
-      id: '/admin/accounts/analysis/'
-      path: '/accounts/analysis'
-      fullPath: '/admin/accounts/analysis'
-      preLoaderRoute: typeof AdminAccountsAnalysisIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/accounts/Invoices/': {
-      id: '/admin/accounts/Invoices/'
-      path: '/accounts/Invoices'
-      fullPath: '/admin/accounts/Invoices'
-      preLoaderRoute: typeof AdminAccountsInvoicesIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
     }
     '/staff/users/details/$id/': {
       id: '/staff/users/details/$id/'
@@ -1574,41 +1201,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminUsersDetailsIdIndexRouteImport
       parentRoute: typeof AdminRouteRoute
     }
-    '/admin/products/service/add/': {
-      id: '/admin/products/service/add/'
-      path: '/products/service/add'
-      fullPath: '/admin/products/service/add'
-      preLoaderRoute: typeof AdminProductsServiceAddIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/contacts/customers/add/': {
-      id: '/admin/contacts/customers/add/'
-      path: '/contacts/customers/add'
-      fullPath: '/admin/contacts/customers/add'
-      preLoaderRoute: typeof AdminContactsCustomersAddIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/contacts/companies/add/': {
-      id: '/admin/contacts/companies/add/'
-      path: '/contacts/companies/add'
-      fullPath: '/admin/contacts/companies/add'
-      preLoaderRoute: typeof AdminContactsCompaniesAddIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/accounts/Invoices/add/': {
-      id: '/admin/accounts/Invoices/add/'
-      path: '/accounts/Invoices/add'
-      fullPath: '/admin/accounts/Invoices/add'
-      preLoaderRoute: typeof AdminAccountsInvoicesAddIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/accounts/Invoices/$id/': {
-      id: '/admin/accounts/Invoices/$id/'
-      path: '/accounts/Invoices/$id'
-      fullPath: '/admin/accounts/Invoices/$id'
-      preLoaderRoute: typeof AdminAccountsInvoicesIdIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
     '/staff/accounts/Invoices/$id/edit': {
       id: '/staff/accounts/Invoices/$id/edit'
       path: '/accounts/Invoices/$id/edit'
@@ -1622,13 +1214,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/staff/contacts/companies/details/$id'
       preLoaderRoute: typeof StaffContactsCompaniesDetailsIdIndexRouteImport
       parentRoute: typeof StaffRouteRoute
-    }
-    '/admin/contacts/companies/details/$id/': {
-      id: '/admin/contacts/companies/details/$id/'
-      path: '/contacts/companies/details/$id'
-      fullPath: '/admin/contacts/companies/details/$id'
-      preLoaderRoute: typeof AdminContactsCompaniesDetailsIdIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
     }
   }
 }
@@ -1654,69 +1239,20 @@ interface AdminRouteRouteChildren {
   AdminSettingsRouteRoute: typeof AdminSettingsRouteRouteWithChildren
   AdminIndexRoute: typeof AdminIndexRoute
   AdminKnowledgeBaseIndexRoute: typeof AdminKnowledgeBaseIndexRoute
-  AdminOrdersIndexRoute: typeof AdminOrdersIndexRoute
-  AdminProductsIndexRoute: typeof AdminProductsIndexRoute
-  AdminSubscriptionIndexRoute: typeof AdminSubscriptionIndexRoute
-  AdminSupportIndexRoute: typeof AdminSupportIndexRoute
-  AdminTenantsIndexRoute: typeof AdminTenantsIndexRoute
   AdminUsersIndexRoute: typeof AdminUsersIndexRoute
-  AdminAccountsInvoicesIndexRoute: typeof AdminAccountsInvoicesIndexRoute
-  AdminAccountsAnalysisIndexRoute: typeof AdminAccountsAnalysisIndexRoute
-  AdminAccountsIncomeExpensesIndexRoute: typeof AdminAccountsIncomeExpensesIndexRoute
-  AdminAccountsQuotesIndexRoute: typeof AdminAccountsQuotesIndexRoute
-  AdminAccountsTransactionsIndexRoute: typeof AdminAccountsTransactionsIndexRoute
-  AdminContactsCompaniesIndexRoute: typeof AdminContactsCompaniesIndexRoute
-  AdminContactsCustomersIndexRoute: typeof AdminContactsCustomersIndexRoute
-  AdminProductsAddIndexRoute: typeof AdminProductsAddIndexRoute
-  AdminProductsCategoriesIndexRoute: typeof AdminProductsCategoriesIndexRoute
-  AdminProductsServiceIndexRoute: typeof AdminProductsServiceIndexRoute
-  AdminSubscriptionFeaturesIndexRoute: typeof AdminSubscriptionFeaturesIndexRoute
-  AdminSupportIdIndexRoute: typeof AdminSupportIdIndexRoute
-  AdminTenantsIdIndexRoute: typeof AdminTenantsIdIndexRoute
   AdminUsersAddIndexRoute: typeof AdminUsersAddIndexRoute
   AdminUsersRolesIndexRoute: typeof AdminUsersRolesIndexRoute
-  AdminAccountsInvoicesIdIndexRoute: typeof AdminAccountsInvoicesIdIndexRoute
-  AdminAccountsInvoicesAddIndexRoute: typeof AdminAccountsInvoicesAddIndexRoute
-  AdminContactsCompaniesAddIndexRoute: typeof AdminContactsCompaniesAddIndexRoute
-  AdminContactsCustomersAddIndexRoute: typeof AdminContactsCustomersAddIndexRoute
-  AdminProductsServiceAddIndexRoute: typeof AdminProductsServiceAddIndexRoute
   AdminUsersDetailsIdIndexRoute: typeof AdminUsersDetailsIdIndexRoute
-  AdminContactsCompaniesDetailsIdIndexRoute: typeof AdminContactsCompaniesDetailsIdIndexRoute
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminSettingsRouteRoute: AdminSettingsRouteRouteWithChildren,
   AdminIndexRoute: AdminIndexRoute,
   AdminKnowledgeBaseIndexRoute: AdminKnowledgeBaseIndexRoute,
-  AdminOrdersIndexRoute: AdminOrdersIndexRoute,
-  AdminProductsIndexRoute: AdminProductsIndexRoute,
-  AdminSubscriptionIndexRoute: AdminSubscriptionIndexRoute,
-  AdminSupportIndexRoute: AdminSupportIndexRoute,
-  AdminTenantsIndexRoute: AdminTenantsIndexRoute,
   AdminUsersIndexRoute: AdminUsersIndexRoute,
-  AdminAccountsInvoicesIndexRoute: AdminAccountsInvoicesIndexRoute,
-  AdminAccountsAnalysisIndexRoute: AdminAccountsAnalysisIndexRoute,
-  AdminAccountsIncomeExpensesIndexRoute: AdminAccountsIncomeExpensesIndexRoute,
-  AdminAccountsQuotesIndexRoute: AdminAccountsQuotesIndexRoute,
-  AdminAccountsTransactionsIndexRoute: AdminAccountsTransactionsIndexRoute,
-  AdminContactsCompaniesIndexRoute: AdminContactsCompaniesIndexRoute,
-  AdminContactsCustomersIndexRoute: AdminContactsCustomersIndexRoute,
-  AdminProductsAddIndexRoute: AdminProductsAddIndexRoute,
-  AdminProductsCategoriesIndexRoute: AdminProductsCategoriesIndexRoute,
-  AdminProductsServiceIndexRoute: AdminProductsServiceIndexRoute,
-  AdminSubscriptionFeaturesIndexRoute: AdminSubscriptionFeaturesIndexRoute,
-  AdminSupportIdIndexRoute: AdminSupportIdIndexRoute,
-  AdminTenantsIdIndexRoute: AdminTenantsIdIndexRoute,
   AdminUsersAddIndexRoute: AdminUsersAddIndexRoute,
   AdminUsersRolesIndexRoute: AdminUsersRolesIndexRoute,
-  AdminAccountsInvoicesIdIndexRoute: AdminAccountsInvoicesIdIndexRoute,
-  AdminAccountsInvoicesAddIndexRoute: AdminAccountsInvoicesAddIndexRoute,
-  AdminContactsCompaniesAddIndexRoute: AdminContactsCompaniesAddIndexRoute,
-  AdminContactsCustomersAddIndexRoute: AdminContactsCustomersAddIndexRoute,
-  AdminProductsServiceAddIndexRoute: AdminProductsServiceAddIndexRoute,
   AdminUsersDetailsIdIndexRoute: AdminUsersDetailsIdIndexRoute,
-  AdminContactsCompaniesDetailsIdIndexRoute:
-    AdminContactsCompaniesDetailsIdIndexRoute,
 }
 
 const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
@@ -1743,8 +1279,11 @@ const StaffSettingsRouteRouteWithChildren =
 interface StaffRouteRouteChildren {
   StaffSettingsRouteRoute: typeof StaffSettingsRouteRouteWithChildren
   StaffIndexRoute: typeof StaffIndexRoute
+  StaffDealsIndexRoute: typeof StaffDealsIndexRoute
+  StaffLeadsIndexRoute: typeof StaffLeadsIndexRoute
   StaffOrdersIndexRoute: typeof StaffOrdersIndexRoute
   StaffProductsIndexRoute: typeof StaffProductsIndexRoute
+  StaffReportsIndexRoute: typeof StaffReportsIndexRoute
   StaffSubscriptionIndexRoute: typeof StaffSubscriptionIndexRoute
   StaffSupportIndexRoute: typeof StaffSupportIndexRoute
   StaffUsersIndexRoute: typeof StaffUsersIndexRoute
@@ -1776,8 +1315,11 @@ interface StaffRouteRouteChildren {
 const StaffRouteRouteChildren: StaffRouteRouteChildren = {
   StaffSettingsRouteRoute: StaffSettingsRouteRouteWithChildren,
   StaffIndexRoute: StaffIndexRoute,
+  StaffDealsIndexRoute: StaffDealsIndexRoute,
+  StaffLeadsIndexRoute: StaffLeadsIndexRoute,
   StaffOrdersIndexRoute: StaffOrdersIndexRoute,
   StaffProductsIndexRoute: StaffProductsIndexRoute,
+  StaffReportsIndexRoute: StaffReportsIndexRoute,
   StaffSubscriptionIndexRoute: StaffSubscriptionIndexRoute,
   StaffSupportIndexRoute: StaffSupportIndexRoute,
   StaffUsersIndexRoute: StaffUsersIndexRoute,
