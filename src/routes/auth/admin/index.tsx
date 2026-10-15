@@ -2,8 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/auth/admin/")({
   component: RouteComponent,
-  validateSearch: (search: { email?: string }): { email: string } => {
-    return { email: search.email ?? "" };
+  validateSearch: (search: Record<string, unknown>): { email?: string } => {
+    return {
+      email: typeof search.email === "string" ? search.email : undefined,
+    };
   },
 });
 
