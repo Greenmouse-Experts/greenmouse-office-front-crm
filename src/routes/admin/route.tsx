@@ -1,4 +1,10 @@
-import { createFileRoute, Outlet, Link, useLocation, redirect } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Outlet,
+  Link,
+  useLocation,
+  redirect,
+} from "@tanstack/react-router";
 import { House, Settings, Tag, Users, BookOpen } from "lucide-react";
 import AdminHeader from "./-components/AdminHeader";
 import { get_user_value } from "@/store/authStore";
@@ -12,13 +18,49 @@ interface Links {
 }
 const ICON_SIZE = 16;
 const nav_links: Links[] = [
-  { path: "/admin", label: "Overview", icon: <House size={ICON_SIZE} />, type: "menu", children: null },
-  { path: "/admin/users", label: "Administrators", icon: <Users size={ICON_SIZE} />, type: "submenu", children: [
-    { path: "/admin/users", label: "Accounts", icon: <Users size={ICON_SIZE} />, type: "menu", children: null },
-    { path: "/admin/users/roles", label: "Roles", icon: <Tag size={ICON_SIZE} />, type: "menu", children: null },
-  ] },
-  { path: "/admin/knowledge-base", label: "Knowledge base", icon: <BookOpen size={ICON_SIZE} />, type: "menu", children: null },
-  { path: "/admin/settings", label: "Settings", icon: <Settings size={ICON_SIZE} />, type: "menu", children: null },
+  {
+    path: "/admin",
+    label: "Overview",
+    icon: <House size={ICON_SIZE} />,
+    type: "menu",
+    children: null,
+  },
+  {
+    path: "/admin/users",
+    label: "Administrators",
+    icon: <Users size={ICON_SIZE} />,
+    type: "submenu",
+    children: [
+      {
+        path: "/admin/users",
+        label: "Accounts",
+        icon: <Users size={ICON_SIZE} />,
+        type: "menu",
+        children: null,
+      },
+      {
+        path: "/admin/users/roles",
+        label: "Roles",
+        icon: <Tag size={ICON_SIZE} />,
+        type: "menu",
+        children: null,
+      },
+    ],
+  },
+  {
+    path: "/admin/knowledge-base",
+    label: "Knowledge base",
+    icon: <BookOpen size={ICON_SIZE} />,
+    type: "menu",
+    children: null,
+  },
+  {
+    path: "/admin/settings",
+    label: "Settings",
+    icon: <Settings size={ICON_SIZE} />,
+    type: "menu",
+    children: null,
+  },
 ];
 export const Route = createFileRoute("/admin")({
   component: RouteComponent,
@@ -30,10 +72,16 @@ export const Route = createFileRoute("/admin")({
   },
   beforeLoad: ({ location }) => {
     const path = location.pathname.replace(/\/$/, "") || "/";
-    const supported = path === "/admin" || path === "/admin/users" || path === "/admin/users/add" ||
-      path === "/admin/users/roles" || /^\/admin\/users\/details\/[^/]+$/.test(path) ||
-      path === "/admin/knowledge-base" || path === "/admin/settings" ||
-      path === "/admin/settings/profile" || path === "/admin/settings/security";
+    const supported =
+      path === "/admin" ||
+      path === "/admin/users" ||
+      path === "/admin/users/add" ||
+      path === "/admin/users/roles" ||
+      /^\/admin\/users\/details\/[^/]+$/.test(path) ||
+      path === "/admin/knowledge-base" ||
+      path === "/admin/settings" ||
+      path === "/admin/settings/profile" ||
+      path === "/admin/settings/security";
     if (!supported) throw redirect({ to: "/admin" });
   },
   notFoundComponent: () => (

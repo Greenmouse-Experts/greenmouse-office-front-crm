@@ -49,7 +49,7 @@ export default function HomeNav() {
           </div>
           <div className="flex flex-col leading-none">
             <span className="text-xl font-semibold tracking-tight text-primary">
-              <span className="text-base-content">Kinovia</span>
+              <span className="text-base-content">Greenmouse - crm</span>
             </span>
             <span className="text-[10px] font-medium tracking-[0.2em] uppercase opacity-50">
               Business Suite
