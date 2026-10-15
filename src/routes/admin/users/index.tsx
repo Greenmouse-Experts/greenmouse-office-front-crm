@@ -1,12 +1,9 @@
 import { useState, useRef } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import ContainerRow from "@/components/ContainerRow";
 import SimpleContainer from "@/components/SimpleContainer";
-import { useSearch } from "@/stores/data";
 import { PlusCircleIcon, User } from "lucide-react";
 import CustomTable from "@/components/tables/CustomTable";
 import UserSummary from "./-components/UsersSummary";
-import DropDownBtn from "@/components/buttons/DropdownBtn";
 import type { Actions } from "@/components/tables/pop-up";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
 import PageHeader from "@/components/Headers/PageHeader";
@@ -29,14 +26,13 @@ function RouteComponent() {
   const rolesQuery = useRoles();
   const createStaff = useCreateStaff();
   const deleteStaff = useDeleteStaff();
-
-  const props = useSearch();
   const addModalRef = useRef<ModalHandle>(null);
 
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
     email: "",
+    password: "",
     phoneNumber: "",
     roleId: "",
   });
@@ -46,6 +42,7 @@ function RouteComponent() {
       firstName: "",
       lastName: "",
       email: "",
+      password: "",
       phoneNumber: "",
       roleId: "",
     });
@@ -54,8 +51,8 @@ function RouteComponent() {
 
   const handleCreateStaff = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.firstName || !form.lastName || !form.email) {
-      toast.error("Please fill in first name, last name, and email.");
+    if (!form.firstName || !form.lastName || !form.email || !form.password || !form.roleId) {
+      toast.error("First name, last name, email, password, and role are required.");
       return;
     }
 
@@ -64,20 +61,21 @@ function RouteComponent() {
         firstName: form.firstName,
         lastName: form.lastName,
         email: form.email,
+        password: form.password,
         phoneNumber: form.phoneNumber || undefined,
-        roleId: form.roleId || undefined,
+        roleId: form.roleId,
       });
-      toast.success(`Staff member "${form.firstName} ${form.lastName}" added.`);
+      toast.success(`Administrator "${form.firstName} ${form.lastName}" added.`);
       addModalRef.current?.close();
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to add staff member.");
+      toast.error(err.response?.data?.message || "Failed to add administrator.");
     }
   };
 
   const handleDeleteStaff = async (staff: StaffMember) => {
     if (
       !window.confirm(
-        `Are you sure you want to remove staff member "${staff.firstName} ${staff.lastName}"?`,
+        `Delete administrator "${staff.firstName} ${staff.lastName}"?`,
       )
     ) {
       return;
@@ -85,10 +83,10 @@ function RouteComponent() {
 
     try {
       await deleteStaff.mutateAsync(staff.id);
-      toast.success("Staff member removed.");
+      toast.success("Administrator deleted.");
     } catch (err: any) {
       toast.error(
-        err.response?.data?.message || "Failed to delete staff member.",
+        err.response?.data?.message || "Failed to delete administrator.",
       );
     }
   };
@@ -123,7 +121,7 @@ function RouteComponent() {
       label: "Role",
       render: (_value: any, item: StaffMember) => (
         <span className="badge badge-md badge-ghost">
-          {item.role?.name || "Staff"}
+          {item.role?.name || rolesQuery.data?.find((role) => role.id === item.roleId)?.name || "—"}
         </span>
       ),
     },
@@ -134,17 +132,17 @@ function RouteComponent() {
       render: (value: string) => value || "—",
     },
     {
-      key: "status",
+      key: "isActive",
       label: "Status",
-      render: (value: string) => (
+      render: (value: boolean | undefined) => (
         <span
           className={`badge badge-md ${
-            value === "active"
+            value === true
               ? "badge-success text-success-content"
               : "badge-ghost"
           }`}
         >
-          {value || "active"}
+          {value === undefined ? "—" : value ? "Active" : "Inactive"}
         </span>
       ),
     },
@@ -162,9 +160,9 @@ function RouteComponent() {
     },
     {
       key: "delete",
-      label: "Remove Staff",
+      label: "Delete administrator",
       render: () => (
-        <span className="text-error font-medium">Remove Staff</span>
+        <span className="text-error font-medium">Delete administrator</span>
       ),
       action: (item: StaffMember) => {
         handleDeleteStaff(item);
@@ -174,9 +172,9 @@ function RouteComponent() {
 
   return (
     <div className="space-y-4 pb-12">
-      <PageHeader title="Staff Members">
+      <PageHeader title="Administrators">
         <button onClick={handleOpenAdd} className="btn btn-primary btn-sm">
-          <PlusCircleIcon className="size-4" /> Add Staff
+          <PlusCircleIcon className="size-4" /> Add administrator
         </button>
       </PageHeader>
 
@@ -185,40 +183,19 @@ function RouteComponent() {
       <SimpleContainer
         title={
           <>
-            Staff Directory{" "}
+            Administrator accounts{" "}
             {query.data && (
               <span className="opacity-80 text-sm">({query.data.length})</span>
             )}
           </>
         }
       >
-        <ContainerRow showSearch searchProps={props}>
-          <DropDownBtn
-            title="Export"
-            items={[
-              {
-                name: "CSV",
-                action: () => {},
-              },
-            ]}
-          />
-        </ContainerRow>
-
         <PageLoader query={query}>
           {(staffs) => {
-            const filtered = staffs.filter((s) => {
-              if (!props.search) return true;
-              const term = props.search.toLowerCase();
-              return (
-                s.firstName.toLowerCase().includes(term) ||
-                s.lastName.toLowerCase().includes(term) ||
-                s.email.toLowerCase().includes(term)
-              );
-            });
             return (
               <CustomTable
                 ring={false}
-                data={filtered}
+                data={staffs}
                 columns={columns}
                 actions={actions}
               />
@@ -227,8 +204,7 @@ function RouteComponent() {
         </PageLoader>
       </SimpleContainer>
 
-      {/* Add Staff Modal */}
-      <Modal ref={addModalRef} title="Add Staff Member">
+      <Modal ref={addModalRef} title="Add administrator">
         <form onSubmit={handleCreateStaff} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
@@ -272,9 +248,14 @@ function RouteComponent() {
                 required
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
-                placeholder="staff@greenmouse.com"
+                placeholder="admin@greenmouse.com"
                 className="input input-sm input-bordered w-full"
               />
+            </div>
+
+            <div className="sm:col-span-2">
+              <label className="label"><span className="label-text font-semibold">Temporary password *</span></label>
+              <input type="password" required minLength={8} autoComplete="new-password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className="input input-sm input-bordered w-full" />
             </div>
 
             <div className="sm:col-span-2">
@@ -294,14 +275,15 @@ function RouteComponent() {
 
             <div className="sm:col-span-2">
               <label className="label">
-                <span className="label-text font-semibold">Assigned Role</span>
+                <span className="label-text font-semibold">Assigned Role *</span>
               </label>
               <select
                 value={form.roleId}
+                required
                 onChange={(e) => setForm({ ...form, roleId: e.target.value })}
                 className="select select-sm select-bordered w-full"
               >
-                <option value="">-- Select Role --</option>
+                <option value="">Select a role</option>
                 {rolesQuery.data?.map((role) => (
                   <option key={role.id} value={role.id}>
                     {role.name}
@@ -324,7 +306,7 @@ function RouteComponent() {
               disabled={createStaff.isPending}
               className="btn btn-sm btn-primary"
             >
-              {createStaff.isPending ? "Adding..." : "Add Staff"}
+              {createStaff.isPending ? "Adding..." : "Add administrator"}
             </button>
           </div>
         </form>

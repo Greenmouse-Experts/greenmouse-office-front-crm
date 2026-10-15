@@ -462,7 +462,7 @@ export const useAdminPermissions = () => {
   });
 };
 
-// ==================== STAFFS & ROLES HOOKS ====================
+// ==================== ADMIN ACCOUNTS & ROLES HOOKS ====================
 
 export interface StaffMember {
   id: string;
@@ -477,7 +477,7 @@ export interface StaffMember {
     description?: string;
     permissions?: string[];
   };
-  status: "active" | "inactive" | string;
+  isActive?: boolean;
   profilePic?: string;
   createdAt?: string;
 }
@@ -499,9 +499,9 @@ export interface RolePermission {
 
 export const useStaff = (id: string) => {
   return useQuery<StaffMember>({
-    queryKey: ["staff", id],
+    queryKey: ["admin", "accounts", id],
     queryFn: async () => {
-      const { data } = await apiClient.get<any>(`/admins/staff/${id}`);
+      const { data } = await apiClient.get<any>(`/admins/${id}`);
       return data?.data || data;
     },
     enabled: !!id,
@@ -510,23 +510,24 @@ export const useStaff = (id: string) => {
 
 export const useStaffs = () => {
   return useQuery<StaffMember[]>({
-    queryKey: ["staffs"],
+    queryKey: ["admin", "accounts"],
     queryFn: async () => {
-      const { data } = await apiClient.get<any>("/admins/staff");
+      const { data } = await apiClient.get<any>("/admins");
       if (Array.isArray(data)) return data;
       if (Array.isArray(data?.data)) return data.data;
-      if (Array.isArray(data?.staffs)) return data.staffs;
+      if (Array.isArray(data?.admins)) return data.admins;
       return [];
     },
   });
 };
 
 export const useRole = (id: string) => {
-  return useQuery<Role>({
+  return useQuery<Role | undefined>({
     queryKey: ["role", id],
     queryFn: async () => {
-      const { data } = await apiClient.get<any>(`/admins/roles/${id}`);
-      return data?.data || data;
+      const { data } = await apiClient.get<any>("/admins/roles");
+      const roles: Role[] = Array.isArray(data) ? data : data?.data || data?.roles || [];
+      return roles.find((role) => role.id === id);
     },
     enabled: !!id,
   });
@@ -591,17 +592,7 @@ export const useCreateRole = () => {
       permissions: string[];
     }) => {
       const { data } = await apiClient.post<any>("/admins/roles", role);
-      const created = data?.data || data;
-      if (created?.id && role.permissions && role.permissions.length > 0) {
-        try {
-          await apiClient.patch(`/admins/roles/${created.id}/permissions`, {
-            permissions: role.permissions,
-          });
-        } catch {
-          // ignore secondary sync
-        }
-      }
-      return created;
+      return data?.data || data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["roles"] });
@@ -614,29 +605,12 @@ export const useUpdateRole = () => {
   return useMutation({
     mutationFn: async ({
       id,
-      name,
-      description,
       permissions,
     }: {
       id: string;
-      name?: string;
-      description?: string;
-      permissions?: string[];
+      permissions: string[];
     }) => {
-      const { data } = await apiClient.patch<any>(`/admins/roles/${id}`, {
-        ...(name ? { name } : {}),
-        ...(description !== undefined ? { description } : {}),
-        ...(permissions ? { permissions } : {}),
-      });
-      if (permissions) {
-        try {
-          await apiClient.patch(`/admins/roles/${id}/permissions`, {
-            permissions,
-          });
-        } catch {
-          // ignore if already handled
-        }
-      }
+      const { data } = await apiClient.patch<any>(`/admins/roles/${id}/permissions`, { permissions });
       return data?.data || data;
     },
     onSuccess: () => {
@@ -687,17 +661,17 @@ export const useCreateStaff = () => {
   return useMutation({
     mutationFn: async (staff: {
       email: string;
+      password: string;
       firstName: string;
       lastName: string;
       phoneNumber?: string;
-      roleId?: string;
-      profilePic?: string;
+      roleId: string;
     }) => {
-      const { data } = await apiClient.post<any>("/admins/staff", staff);
+      const { data } = await apiClient.post<any>("/admins", staff);
       return data?.data || data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["staffs"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "accounts"] });
     },
   });
 };
@@ -708,12 +682,12 @@ export const useUpdateStaff = () => {
     mutationFn: async ({
       id,
       ...staff
-    }: Partial<StaffMember> & { id: string }) => {
-      const { data } = await apiClient.patch<any>(`/admins/staff/${id}`, staff);
+    }: { id: string; roleId?: string; isActive?: boolean; firstName?: string; lastName?: string; phoneNumber?: string }) => {
+      const { data } = await apiClient.patch<any>(`/admins/${id}`, staff);
       return data?.data || data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["staffs"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "accounts"] });
     },
   });
 };
@@ -722,11 +696,11 @@ export const useDeleteStaff = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { data } = await apiClient.delete(`/admins/staff/${id}`);
+      const { data } = await apiClient.delete(`/admins/${id}`);
       return data?.data || data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["staffs"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "accounts"] });
     },
   });
 };

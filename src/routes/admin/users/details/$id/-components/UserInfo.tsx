@@ -10,7 +10,7 @@ export default function UserInfo({ id }: UserInfoProps) {
 
   const fullName = staff
     ? `${staff.firstName || ""} ${staff.lastName || ""}`.trim() || staff.email
-    : "Staff Member";
+    : "Administrator";
 
   return (
     <div className="flex flex-col sm:flex-row items-center sm:items-start px-8 py-8 bg-base-100 shadow-md rounded-xl gap-8 border border-base-200">
@@ -59,12 +59,12 @@ export default function UserInfo({ id }: UserInfoProps) {
             </span>
             <span
               className={`badge badge-sm font-semibold capitalize ${
-                staff?.status === "active"
+                staff?.isActive === true
                   ? "badge-success text-white"
                   : "badge-ghost"
               }`}
             >
-              {staff?.status || "active"}
+              {staff?.isActive === undefined ? "—" : staff.isActive ? "Active" : "Inactive"}
             </span>
           </div>
           <div className="flex items-center">

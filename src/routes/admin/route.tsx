@@ -1,213 +1,34 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
-import {
-  LayoutDashboard,
-  Settings,
-  Tag,
-  CheckCircle,
-  Users,
-  Building2,
-  Layers,
-  Sparkles,
-  HelpCircle,
-} from "lucide-react";
+import { createFileRoute, Outlet, Link, useLocation, redirect } from "@tanstack/react-router";
+import { House, Settings, Tag, Users, BookOpen } from "lucide-react";
 import AdminHeader from "./-components/AdminHeader";
-import { Link } from "@tanstack/react-router";
-import { useLocation } from "@tanstack/react-router";
+
 interface Links {
   path: string;
   label: string;
   icon: React.ReactNode;
   type: "menu" | "submenu";
-  children: Partial<Links[]> | null;
+  children: Links[] | null;
 }
-[];
 const ICON_SIZE = 16;
-const nav_links = [
-  {
-    path: "/admin",
-    label: "Dashboard",
-    icon: <LayoutDashboard size={ICON_SIZE} />,
-    type: "menu",
-    children: null,
-  },
-  {
-    path: "/admin/tenants",
-    label: "Tenants",
-    icon: <Building2 size={ICON_SIZE} />,
-    type: "menu",
-    children: null,
-  },
-  {
-    path: "/admin/subscription",
-    label: "Subscriptions",
-    icon: <CheckCircle size={ICON_SIZE} />,
-    type: "submenu",
-    children: [
-      {
-        path: "/admin/subscription",
-        label: "Plans",
-        icon: <Layers size={ICON_SIZE} />,
-        type: "menu",
-        children: null,
-      },
-      {
-        path: "/admin/subscription/features",
-        label: "Features",
-        icon: <Sparkles size={ICON_SIZE} />,
-        type: "menu",
-        children: null,
-      },
-    ],
-  },
-  {
-    path: "/admin/users",
-    label: "Users",
-    icon: <Users size={ICON_SIZE} />,
-    type: "submenu",
-    children: [
-      {
-        path: "/admin/users",
-        label: "Staffs",
-        icon: <Users size={ICON_SIZE} />,
-        type: "menu",
-        children: null,
-      },
-      {
-        path: "/admin/users/roles",
-        label: "Roles",
-        icon: <Tag size={ICON_SIZE} />,
-        type: "menu",
-        children: null,
-      },
-      // {
-      //   path: "/admin/users/permissions",
-      //   label: "Permissions",
-      //   icon: <Cog size={ICON_SIZE} />,
-      //   type: "menu",
-      //   children: null,
-      // },
-    ],
-  },
-  // {
-  //   path: "/admin/contacts",
-  //   label: "Contacts",
-  //   icon: <Users size={ICON_SIZE} />,
-  //   type: "submenu",
-  //   children: [
-  //     {
-  //       path: "/admin/contacts/customers",
-  //       label: "Customers",
-  //       icon: <Users size={ICON_SIZE} />,
-  //       type: "menu",
-  //       children: null,
-  //     },
-  //     {
-  //       path: "/admin/contacts/companies",
-  //       label: "Companies",
-  //       icon: <Shirt size={ICON_SIZE} />,
-  //       type: "menu",
-  //       children: null,
-  //     },
-  //   ],
-  // },
-  // {
-  //   path: "/admin/products",
-  //   label: "Products",
-  //   icon: <Package size={ICON_SIZE} />,
-  //   type: "submenu",
-  //   children: [
-  //     {
-  //       path: "/admin/products",
-  //       label: "Products",
-  //       icon: <Package size={ICON_SIZE} />,
-  //       type: "menu",
-  //       children: null,
-  //     },
-  //     {
-  //       path: "/admin/products/service",
-  //       label: "Services",
-  //       icon: <Package size={ICON_SIZE} />,
-  //       type: "menu",
-  //       children: null,
-  //     },
-  //     {
-  //       path: "/admin/products/categories",
-  //       label: "Categories",
-  //       icon: <Tag size={ICON_SIZE} />,
-  //       type: "menu",
-  //       children: null,
-  //     },
-  //   ],
-  // },
-  // {
-  //   path: "/admin/accounts",
-  //   label: "Accounts",
-  //   icon: <CreditCard size={ICON_SIZE} />,
-  //   type: "submenu",
-  //   children: [
-  //     {
-  //       path: "/admin/accounts/income-expenses",
-  //       label: "Income & Expenses",
-  //       icon: <ReceiptText size={ICON_SIZE} />,
-  //       type: "menu",
-  //       children: null,
-  //     },
-  //     {
-  //       path: "/admin/accounts/invoices",
-  //       label: "Invoices",
-  //       icon: <ShoppingCart size={ICON_SIZE} />,
-  //       type: "menu",
-  //       children: null,
-  //     },
-  //     {
-  //       path: "/admin/accounts/quotes",
-  //       label: "Quotes",
-  //       icon: <QuoteIcon size={ICON_SIZE} />,
-  //       type: "menu",
-  //       children: null,
-  //     },
-  //     // {
-  //     //   path: "/admin/accounts/analysis",
-  //     //   label: "Analysis",
-  //     //   icon: <BarChart2 size={ICON_SIZE} />,
-  //     //   type: "menu",
-  //     //   children: null,
-  //     // },
-  //     // {
-  //     //   path: "/admin/accounts/transactions",
-  //     //   label: "Transactions",
-  //     //   icon: <DollarSign size={ICON_SIZE} />,
-  //     //   type: "menu",
-  //     //   children: null,
-  //     // },
-  //   ],
-  // },
-  // {
-  //   path: "/admin/orders",
-  //   label: "Orders",
-  //   icon: <List size={ICON_SIZE} />,
-  //   type: "menu",
-  //   children: null,
-  // },
-
-  {
-    path: "/admin/support",
-    label: "Support",
-    icon: <HelpCircle size={ICON_SIZE} />,
-    type: "menu",
-    children: null,
-  },
-
-  {
-    path: "/admin/settings",
-    label: "Settings",
-    icon: <Settings size={ICON_SIZE} />,
-    type: "menu",
-    children: null,
-  },
-] satisfies Links[];
+const nav_links: Links[] = [
+  { path: "/admin", label: "Overview", icon: <House size={ICON_SIZE} />, type: "menu", children: null },
+  { path: "/admin/users", label: "Administrators", icon: <Users size={ICON_SIZE} />, type: "submenu", children: [
+    { path: "/admin/users", label: "Accounts", icon: <Users size={ICON_SIZE} />, type: "menu", children: null },
+    { path: "/admin/users/roles", label: "Roles", icon: <Tag size={ICON_SIZE} />, type: "menu", children: null },
+  ] },
+  { path: "/admin/knowledge-base", label: "Knowledge base", icon: <BookOpen size={ICON_SIZE} />, type: "menu", children: null },
+  { path: "/admin/settings", label: "Settings", icon: <Settings size={ICON_SIZE} />, type: "menu", children: null },
+];
 export const Route = createFileRoute("/admin")({
   component: RouteComponent,
+  beforeLoad: ({ location }) => {
+    const path = location.pathname.replace(/\/$/, "") || "/";
+    const supported = path === "/admin" || path === "/admin/users" || path === "/admin/users/add" ||
+      path === "/admin/users/roles" || /^\/admin\/users\/details\/[^/]+$/.test(path) ||
+      path === "/admin/knowledge-base" || path === "/admin/settings" ||
+      path === "/admin/settings/profile" || path === "/admin/settings/security";
+    if (!supported) throw redirect({ to: "/admin" });
+  },
   notFoundComponent: () => (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content text-center">
@@ -217,7 +38,7 @@ export const Route = createFileRoute("/admin")({
             Oops! The page you are looking for does not exist.
           </p>
           <Link to="/admin" className="btn btn-primary">
-            Go to Dashboard
+            Go to overview
           </Link>
         </div>
       </div>

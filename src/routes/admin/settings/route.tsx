@@ -13,7 +13,6 @@ interface Links {
 [];
 const links: Links[] = [
   { path: "/admin/settings", name: "Profile" },
-  { path: "/admin/settings/theme", name: "Theme" },
   { path: "/admin/settings/security", name: "Security" },
   // { path: "/admin/settings/notifications", name: "Notifications" },
 ];

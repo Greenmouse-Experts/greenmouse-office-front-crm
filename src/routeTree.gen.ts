@@ -37,6 +37,7 @@ import { Route as AdminSubscriptionIndexRouteImport } from './routes/admin/subsc
 import { Route as AdminSettingsIndexRouteImport } from './routes/admin/settings/index'
 import { Route as AdminProductsIndexRouteImport } from './routes/admin/products/index'
 import { Route as AdminOrdersIndexRouteImport } from './routes/admin/orders/index'
+import { Route as AdminKnowledgeBaseIndexRouteImport } from './routes/admin/knowledge-base/index'
 import { Route as AuthForgotPasswordNewPasswordRouteImport } from './routes/auth/forgot-password/new-password'
 import { Route as StaffUsersRolesIndexRouteImport } from './routes/staff/users/roles/index'
 import { Route as StaffUsersAddIndexRouteImport } from './routes/staff/users/add/index'
@@ -229,6 +230,11 @@ const AdminProductsIndexRoute = AdminProductsIndexRouteImport.update({
 const AdminOrdersIndexRoute = AdminOrdersIndexRouteImport.update({
   id: '/orders/',
   path: '/orders/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminKnowledgeBaseIndexRoute = AdminKnowledgeBaseIndexRouteImport.update({
+  id: '/knowledge-base/',
+  path: '/knowledge-base/',
   getParentRoute: () => AdminRouteRoute,
 } as any)
 const AuthForgotPasswordNewPasswordRoute =
@@ -551,6 +557,7 @@ export interface FileRoutesByFullPath {
   '/home': typeof HomeIndexRoute
   '/staff/': typeof StaffIndexRoute
   '/auth/forgot-password/new-password': typeof AuthForgotPasswordNewPasswordRoute
+  '/admin/knowledge-base': typeof AdminKnowledgeBaseIndexRoute
   '/admin/orders': typeof AdminOrdersIndexRoute
   '/admin/products': typeof AdminProductsIndexRoute
   '/admin/settings/': typeof AdminSettingsIndexRoute
@@ -628,6 +635,7 @@ export interface FileRoutesByTo {
   '/home': typeof HomeIndexRoute
   '/staff': typeof StaffIndexRoute
   '/auth/forgot-password/new-password': typeof AuthForgotPasswordNewPasswordRoute
+  '/admin/knowledge-base': typeof AdminKnowledgeBaseIndexRoute
   '/admin/orders': typeof AdminOrdersIndexRoute
   '/admin/products': typeof AdminProductsIndexRoute
   '/admin/settings': typeof AdminSettingsIndexRoute
@@ -712,6 +720,7 @@ export interface FileRoutesById {
   '/home/': typeof HomeIndexRoute
   '/staff/': typeof StaffIndexRoute
   '/auth/forgot-password/new-password': typeof AuthForgotPasswordNewPasswordRoute
+  '/admin/knowledge-base/': typeof AdminKnowledgeBaseIndexRoute
   '/admin/orders/': typeof AdminOrdersIndexRoute
   '/admin/products/': typeof AdminProductsIndexRoute
   '/admin/settings/': typeof AdminSettingsIndexRoute
@@ -797,6 +806,7 @@ export interface FileRouteTypes {
     | '/home'
     | '/staff/'
     | '/auth/forgot-password/new-password'
+    | '/admin/knowledge-base'
     | '/admin/orders'
     | '/admin/products'
     | '/admin/settings/'
@@ -874,6 +884,7 @@ export interface FileRouteTypes {
     | '/home'
     | '/staff'
     | '/auth/forgot-password/new-password'
+    | '/admin/knowledge-base'
     | '/admin/orders'
     | '/admin/products'
     | '/admin/settings'
@@ -957,6 +968,7 @@ export interface FileRouteTypes {
     | '/home/'
     | '/staff/'
     | '/auth/forgot-password/new-password'
+    | '/admin/knowledge-base/'
     | '/admin/orders/'
     | '/admin/products/'
     | '/admin/settings/'
@@ -1238,6 +1250,13 @@ declare module '@tanstack/react-router' {
       path: '/orders'
       fullPath: '/admin/orders'
       preLoaderRoute: typeof AdminOrdersIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/knowledge-base/': {
+      id: '/admin/knowledge-base/'
+      path: '/knowledge-base'
+      fullPath: '/admin/knowledge-base'
+      preLoaderRoute: typeof AdminKnowledgeBaseIndexRouteImport
       parentRoute: typeof AdminRouteRoute
     }
     '/auth/forgot-password/new-password': {
@@ -1634,6 +1653,7 @@ const AdminSettingsRouteRouteWithChildren =
 interface AdminRouteRouteChildren {
   AdminSettingsRouteRoute: typeof AdminSettingsRouteRouteWithChildren
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminKnowledgeBaseIndexRoute: typeof AdminKnowledgeBaseIndexRoute
   AdminOrdersIndexRoute: typeof AdminOrdersIndexRoute
   AdminProductsIndexRoute: typeof AdminProductsIndexRoute
   AdminSubscriptionIndexRoute: typeof AdminSubscriptionIndexRoute
@@ -1667,6 +1687,7 @@ interface AdminRouteRouteChildren {
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminSettingsRouteRoute: AdminSettingsRouteRouteWithChildren,
   AdminIndexRoute: AdminIndexRoute,
+  AdminKnowledgeBaseIndexRoute: AdminKnowledgeBaseIndexRoute,
   AdminOrdersIndexRoute: AdminOrdersIndexRoute,
   AdminProductsIndexRoute: AdminProductsIndexRoute,
   AdminSubscriptionIndexRoute: AdminSubscriptionIndexRoute,

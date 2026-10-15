@@ -96,11 +96,9 @@ function RouteComponent() {
       if (editingRole) {
         await updateRole.mutateAsync({
           id: editingRole.id,
-          name: roleName,
-          description: roleDescription,
           permissions: selectedPermissions,
         });
-        toast.success(`Role "${roleName}" updated successfully.`);
+        toast.success(`Permissions for "${roleName}" updated.`);
       } else {
         await createRole.mutateAsync({
           name: roleName,
@@ -171,7 +169,7 @@ function RouteComponent() {
   const actions: Actions<Role>[] = [
     {
       key: "edit",
-      label: "Edit Role",
+      label: "Edit permissions",
       action: (item: Role) => {
         handleOpenEdit(item);
       },
@@ -239,7 +237,7 @@ function RouteComponent() {
       <Modal
         ref={roleModalRef}
         title={
-          editingRole ? `Edit Role: ${editingRole.name}` : "Create System Role"
+          editingRole ? `Permissions: ${editingRole.name}` : "Create admin role"
         }
       >
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -250,6 +248,7 @@ function RouteComponent() {
             <input
               type="text"
               required
+              disabled={!!editingRole}
               value={roleName}
               onChange={(e) => setRoleName(e.target.value)}
               placeholder="e.g. Operations Manager, Support Lead"
@@ -262,6 +261,7 @@ function RouteComponent() {
               <span className="label-text font-semibold">Description</span>
             </label>
             <textarea
+              disabled={!!editingRole}
               value={roleDescription}
               onChange={(e) => setRoleDescription(e.target.value)}
               placeholder="Brief description of the role responsibilities"
@@ -341,7 +341,7 @@ function RouteComponent() {
               {createRole.isPending || updateRole.isPending
                 ? "Saving..."
                 : editingRole
-                  ? "Update Role"
+                  ? "Save permissions"
                   : "Create Role"}
             </button>
           </div>
