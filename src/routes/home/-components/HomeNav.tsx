@@ -74,7 +74,7 @@ export default function HomeNav() {
         <div className="hidden md:flex items-center gap-3">
           {user ? (
             <Link
-              to="/tenant"
+              to="/staff"
               className="btn btn-primary btn-sm rounded-lg px-6 font-semibold shadow-md shadow-primary/10 hover:shadow-primary/30 gap-2"
             >
               <LayoutDashboard className="size-4" />
@@ -134,7 +134,7 @@ export default function HomeNav() {
           <div className="grid grid-cols-2 gap-4 mt-6">
             {user ? (
               <Link
-                to="/tenant"
+                to="/staff"
                 className="btn btn-primary font-semibold shadow-lg shadow-primary/20 col-span-2 gap-2"
                 onClick={() => setIsOpen(false)}
               >

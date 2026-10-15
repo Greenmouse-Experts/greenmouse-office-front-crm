@@ -123,12 +123,21 @@ export const useTenantLoginActivity = (params?: {
   return useQuery<LoginActivity[]>({
     queryKey: ["tenant", "login-activity", params],
     queryFn: async () => {
-      const { data } = await apiClient.get<any>("/tenant/login-activity", {
-        params,
-      });
-      if (Array.isArray(data)) return data;
-      if (Array.isArray(data?.data)) return data.data;
-      return [];
+      try {
+        const { data } = await apiClient.get<any>("/company/login-activity", {
+          params,
+        });
+        if (Array.isArray(data)) return data;
+        if (Array.isArray(data?.data)) return data.data;
+        return [];
+      } catch {
+        const { data } = await apiClient.get<any>("/tenant/login-activity", {
+          params,
+        });
+        if (Array.isArray(data)) return data;
+        if (Array.isArray(data?.data)) return data.data;
+        return [];
+      }
     },
   });
 };
@@ -137,10 +146,17 @@ export const useTenantLatestLoginActivity = () => {
   return useQuery<LoginActivity | null>({
     queryKey: ["tenant", "login-activity", "latest"],
     queryFn: async () => {
-      const { data } = await apiClient.get<any>(
-        "/tenant/login-activity/latest",
-      );
-      return data?.data ?? data ?? null;
+      try {
+        const { data } = await apiClient.get<any>(
+          "/company/login-activity/latest"
+        );
+        return data?.data ?? data ?? null;
+      } catch {
+        const { data } = await apiClient.get<any>(
+          "/tenant/login-activity/latest"
+        );
+        return data?.data ?? data ?? null;
+      }
     },
   });
 };

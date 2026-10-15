@@ -12,8 +12,6 @@ function RouteComponent() {
     <div className="pb-12 space-y-6">
       <AdminDashStats />
       <AdminFinanceTrend />
-      {/*<AdminCharts />*/}
-      {/*<AdminMonthly />*/}
       <AdminUserList />
     </div>
   );

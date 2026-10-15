@@ -997,12 +997,20 @@ function unwrapTenantPayload(value: unknown): unknown {
   return payload;
 }
 
-export function tenantRelatedRows(response: unknown): Record<string, unknown>[] {
+export function tenantRelatedRows(
+  response: unknown,
+): Record<string, unknown>[] {
   const payload = unwrapTenantPayload(response);
   const object = asObject(payload);
   const rows = Array.isArray(payload)
     ? payload
-    : [object?.items, object?.history, object?.activity, object?.records, object?.results].find(Array.isArray);
+    : [
+        object?.items,
+        object?.history,
+        object?.activity,
+        object?.records,
+        object?.results,
+      ].find(Array.isArray);
   if (!rows) throw new Error("Tenant activity format is not supported.");
   if (!rows.every(isTenantRecord)) {
     throw new Error("Tenant activity format is not supported.");

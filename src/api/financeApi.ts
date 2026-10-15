@@ -160,6 +160,15 @@ export const useUpdateIncomeStatus = () => {
   });
 };
 
+
+export const exportIncomeToCsv = async (params?: IncomeQueryParams) => {
+  const response = await apiClient.get('/income/export', {
+    params,
+    responseType: 'blob',
+  });
+  return response.data;
+};
+
 // ==================== EXPENSES ====================
 
 export interface ExpenseRecord {
@@ -262,6 +271,37 @@ export const useUpdateExpenseStatus = () => {
   });
 };
 
+
+export const exportExpensesToCsv = async (params?: ExpenseQueryParams) => {
+  const response = await apiClient.get('/expenses/export', {
+    params,
+    responseType: 'blob',
+  });
+  return response.data;
+};
+
+export const useUploadExpenseReceipt = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, file }: { id: string; file: File }) => {
+      const formData = new FormData();
+      formData.append('file', file);
+      const { data } = await apiClient.post<any>(
+        `/expenses/${id}/receipt`,
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }
+      );
+      return data?.data || data;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['expenses'] });
+      queryClient.invalidateQueries({ queryKey: ['expenses', variables.id] });
+    },
+  });
+};
+
 // ==================== INVOICES ====================
 
 export interface InvoiceItem {
@@ -333,6 +373,15 @@ export const useInvoices = (params?: InvoiceQueryParams) => {
       return [];
     },
   });
+};
+
+
+export const exportInvoicesToCsv = async (params?: InvoiceQueryParams) => {
+  const response = await apiClient.get('/invoices/export', {
+    params,
+    responseType: 'blob',
+  });
+  return response.data;
 };
 
 export const useInvoice = (id?: string) => {

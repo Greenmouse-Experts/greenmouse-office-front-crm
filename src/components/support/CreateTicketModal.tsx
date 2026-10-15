@@ -105,7 +105,7 @@ const CreateTicketModal = forwardRef<CreateTicketModalHandle>(
         toast.success("Ticket created.");
         modalRef.current?.close();
         if (created?.id)
-          navigate({ to: "/tenant/support/$id", params: { id: created.id } });
+          navigate({ to: "/staff/support/$id", params: { id: created.id } });
       } catch (error: any) {
         toast.error(
           error?.response?.data?.message ||
@@ -172,7 +172,7 @@ const CreateTicketModal = forwardRef<CreateTicketModalHandle>(
                     ? `No contacts are linked to ${company.name}. A ticket without a contact won't be linked to this company. `
                     : "You can create a ticket without a contact. "}
                   <Link
-                    to="/tenant/contacts/customers/add"
+                    to="/staff/contacts/customers/add"
                     className="link link-primary"
                   >
                     Add a contact

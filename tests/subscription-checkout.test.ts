@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getPaystackAccessCode } from "@/routes/tenant/subscription/-checkout";
+import { getPaystackAccessCode } from "@/routes/staff/subscription/-checkout";
 
 describe("Paystack inline checkout access code", () => {
   it("uses the access code returned by the payment server", () => {

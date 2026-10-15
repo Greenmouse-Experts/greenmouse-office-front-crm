@@ -83,7 +83,11 @@ describe("parseTenantRevenueTrend", () => {
   it("reads parallel month and amount arrays", () => {
     expect(
       parseTenantRevenueTrend({
-        data: { months: ["Jan", "Feb"], invoiced: [20, 30], received: [10, 25] },
+        data: {
+          months: ["Jan", "Feb"],
+          invoiced: [20, 30],
+          received: [10, 25],
+        },
       }).months,
     ).toEqual([
       { month: "Jan", invoiced: 20, received: 10 },
@@ -92,8 +96,8 @@ describe("parseTenantRevenueTrend", () => {
   });
 
   it("rejects unknown data instead of plotting invented zeroes", () => {
-    expect(() => parseTenantRevenueTrend({ data: [{ month: "Jan", value: 20 }] })).toThrow(
-      "Revenue report format is not supported.",
-    );
+    expect(() =>
+      parseTenantRevenueTrend({ data: [{ month: "Jan", value: 20 }] }),
+    ).toThrow("Revenue report format is not supported.");
   });
 });

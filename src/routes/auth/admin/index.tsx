@@ -135,8 +135,8 @@ function RouteComponent() {
             className="btn btn-soft ring btn-block"
             onClick={() => {
               form.setValues({
-                email: "greenmousedev@gmail.com",
-                password: "Password@2022",
+                email: "admin@example.com",
+                password: "ChangeMeImmediately!",
               });
             }}
           >

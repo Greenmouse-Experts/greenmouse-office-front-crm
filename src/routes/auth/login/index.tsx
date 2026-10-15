@@ -33,7 +33,7 @@ function RouteComponent() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: LoginProps) =>
-      axios.post(new_url + "tenant/auth/login", data).then((res) => res.data),
+      axios.post(new_url + "/auth/staff/login", data).then((res) => res.data),
     onSuccess: async (res) => {
       // res is { accessToken, refreshToken, user }
       set_user_value(res);
@@ -54,10 +54,10 @@ function RouteComponent() {
             return;
           }
         }
-        nav({ to: "/tenant" });
+        nav({ to: "/staff" });
       } catch (err) {
         console.error("Failed to fetch profile", err);
-        // nav({ to: "/tenant" });
+        // nav({ to: "/staff" });
       }
     },
     onError: (err: any) => {

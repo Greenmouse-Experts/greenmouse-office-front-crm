@@ -1,4 +1,4 @@
-import type { ModalHandle } from "@/components/modals/DialogModal";
+import type { ModalHandle } from "@/components/DialogModal";
 import { useRef } from "react";
 
 export const useModal = () => {

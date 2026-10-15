@@ -182,4 +182,15 @@ export const test_route = (route: string) =>
     },
   });
 
+
+export const checkHealth = async () => {
+  const { data } = await apiClient.get("/healthcheck");
+  return data;
+};
+
+export const triggerEmailCron = async () => {
+  const { data } = await apiClient.post("/internal/cron/email");
+  return data;
+};
+
 export default apiClient;

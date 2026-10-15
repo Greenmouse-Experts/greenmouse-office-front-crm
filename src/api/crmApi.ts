@@ -2,7 +2,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import apiClient from "./simpleApi";
 
-// ==================== COMPANIES ====================\n
+// ==================== COMPANIES ====================
+
 export interface Company {
   id: string;
   name: string;
@@ -90,11 +91,89 @@ export const useDeleteCompany = () => {
   });
 };
 
-// ==================== CONTACTS / CUSTOMERS ====================\n
+export const exportCompaniesToCsv = async (params?: { search?: string }) => {
+  const response = await apiClient.get("/companies/export", {
+    params,
+    responseType: "blob",
+  });
+  return response.data;
+};
+
+export const useImportCompaniesSync = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (file: File) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      const { data } = await apiClient.post<any>(
+        "/companies/import",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        },
+      );
+      return data?.data || data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["companies"] });
+    },
+  });
+};
+
+export const useImportCompaniesAsync = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (file: File) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      const { data } = await apiClient.post<any>(
+        "/companies/import/async",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        },
+      );
+      return data?.data || data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["import", "jobs"] });
+    },
+  });
+};
+
+// ==================== CONTACTS / CUSTOMERS ====================
+
 export interface ContactNote {
   id?: string;
   content: string;
   createdAt?: string;
+}
+
+export interface ContactInteraction {
+  id: string;
+  contactId: string;
+  type: "call" | "email" | "meeting" | string;
+  notes: string;
+  occurredAt: string;
+  staffId?: string;
+  staff?: any;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RecordInteractionPayload {
+  type: "call" | "email" | "meeting" | string;
+  notes: string;
+  occurredAt?: string;
+}
+
+export interface InteractionQueryParams {
+  page?: number;
+  limit?: number;
+  type?: string;
+  staffId?: string;
+  from?: string;
+  to?: string;
 }
 
 export interface Contact {
@@ -280,7 +359,96 @@ export const useAddContactNote = () => {
   });
 };
 
-// ==================== CATEGORIES ====================\n
+export const useContactInteractions = (
+  contactId?: string,
+  params?: InteractionQueryParams,
+) => {
+  return useQuery<ContactInteraction[]>({
+    queryKey: ["contacts", contactId, "interactions", params],
+    queryFn: async () => {
+      if (!contactId) throw new Error("Contact ID required");
+      const { data } = await apiClient.get<any>(
+        `/contacts/${contactId}/interactions`,
+        { params },
+      );
+      if (Array.isArray(data)) return data;
+      if (Array.isArray(data?.data)) return data.data;
+      if (Array.isArray(data?.interactions)) return data.interactions;
+      return [];
+    },
+    enabled: !!contactId,
+  });
+};
+
+export const useRecordContactInteraction = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      contactId,
+      ...payload
+    }: RecordInteractionPayload & { contactId: string }) => {
+      const { data } = await apiClient.post<any>(
+        `/contacts/${contactId}/interactions`,
+        payload,
+      );
+      return data?.data || data;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["contacts", variables.contactId, "interactions"],
+      });
+    },
+  });
+};
+
+export const exportContactsToCsv = async () => {
+  const response = await apiClient.get("/contacts/export", {
+    responseType: "blob",
+  });
+  return response.data;
+};
+
+export const useImportContactsSync = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (file: File) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      const { data } = await apiClient.post<any>("/contacts/import", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      return data?.data || data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["contacts"] });
+      queryClient.invalidateQueries({ queryKey: ["customers"] });
+    },
+  });
+};
+
+export const useImportContactsAsync = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (file: File) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      const { data } = await apiClient.post<any>(
+        "/contacts/import/async",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        },
+      );
+      return data?.data || data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["import", "jobs"] });
+    },
+  });
+};
+
+// ==================== CATEGORIES ====================
+
 export interface Category {
   id: string;
   name: string;

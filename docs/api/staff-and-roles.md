@@ -4,20 +4,20 @@ Tenant staff invitations, team directory, custom role creation, granular permiss
 
 ## Overview & Quick Reference
 
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | [`/v1/staffs/:id`](#get-a-staff-member-by-id) | Get a staff member by ID |
-| `PATCH` | [`/v1/staffs/:id`](#update-a-staff-member) | Update a staff member |
-| `DELETE` | [`/v1/staffs/:id`](#delete-a-staff-member) | Delete a staff member |
-| `POST` | [`/v1/staffs`](#create-a-new-staff-member) | Create a new staff member |
-| `GET` | [`/v1/staffs`](#get-all-staff-members) | Get all staff members |
-| `GET` | [`/v1/roles/permissions`](#list-assignable-permissions-with-descriptions-use-when-creating-updating-roles) | List assignable permissions with descriptions — use when creating/updating roles |
-| `PATCH` | [`/v1/roles/:id/permissions`](#assign-permissions-to-a-role) | Assign permissions to a role |
-| `GET` | [`/v1/roles/:id`](#get-a-role-by-id) | Get a role by ID |
-| `PATCH` | [`/v1/roles/:id`](#update-role-name-or-description) | Update role name or description |
-| `DELETE` | [`/v1/roles/:id`](#delete-a-role) | Delete a role |
-| `POST` | [`/v1/roles`](#create-a-new-role) | Create a new role |
-| `GET` | [`/v1/roles`](#get-all-roles) | Get all roles |
+| Method   | Endpoint                                                                                                   | Description                                                                      |
+| :------- | :--------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------- |
+| `GET`    | [`/v1/staffs/:id`](#get-a-staff-member-by-id)                                                              | Get a staff member by ID                                                         |
+| `PATCH`  | [`/v1/staffs/:id`](#update-a-staff-member)                                                                 | Update a staff member                                                            |
+| `DELETE` | [`/v1/staffs/:id`](#delete-a-staff-member)                                                                 | Delete a staff member                                                            |
+| `POST`   | [`/v1/staffs`](#create-a-new-staff-member)                                                                 | Create a new staff member                                                        |
+| `GET`    | [`/v1/staffs`](#get-all-staff-members)                                                                     | Get all staff members                                                            |
+| `GET`    | [`/v1/roles/permissions`](#list-assignable-permissions-with-descriptions-use-when-creating-updating-roles) | List assignable permissions with descriptions — use when creating/updating roles |
+| `PATCH`  | [`/v1/roles/:id/permissions`](#assign-permissions-to-a-role)                                               | Assign permissions to a role                                                     |
+| `GET`    | [`/v1/roles/:id`](#get-a-role-by-id)                                                                       | Get a role by ID                                                                 |
+| `PATCH`  | [`/v1/roles/:id`](#update-role-name-or-description)                                                        | Update role name or description                                                  |
+| `DELETE` | [`/v1/roles/:id`](#delete-a-role)                                                                          | Delete a role                                                                    |
+| `POST`   | [`/v1/roles`](#create-a-new-role)                                                                          | Create a new role                                                                |
+| `GET`    | [`/v1/roles`](#get-all-roles)                                                                              | Get all roles                                                                    |
 
 ---
 
@@ -29,9 +29,9 @@ Tenant staff invitations, team directory, custom role creation, granular permiss
 
 **Path Parameters**
 
-| Parameter | Description |
-| :--- | :--- |
-| `id` | Resource identifier |
+| Parameter | Description         |
+| :-------- | :------------------ |
+| `id`      | Resource identifier |
 
 **Responses**
 
@@ -45,9 +45,9 @@ Tenant staff invitations, team directory, custom role creation, granular permiss
 
 **Path Parameters**
 
-| Parameter | Description |
-| :--- | :--- |
-| `id` | Resource identifier |
+| Parameter | Description         |
+| :-------- | :------------------ |
+| `id`      | Resource identifier |
 
 **Request Body** (`application/json`)
 
@@ -75,9 +75,9 @@ Tenant staff invitations, team directory, custom role creation, granular permiss
 
 **Path Parameters**
 
-| Parameter | Description |
-| :--- | :--- |
-| `id` | Resource identifier |
+| Parameter | Description         |
+| :-------- | :------------------ |
+| `id`      | Resource identifier |
 
 **Responses**
 
@@ -134,18 +134,15 @@ Tenant staff invitations, team directory, custom role creation, granular permiss
 
 **Path Parameters**
 
-| Parameter | Description |
-| :--- | :--- |
-| `id` | Resource identifier |
+| Parameter | Description         |
+| :-------- | :------------------ |
+| `id`      | Resource identifier |
 
 **Request Body** (`application/json`)
 
 ```json
 {
-  "permissions": [
-    "customers:read",
-    "orders:read"
-  ]
+  "permissions": ["customers:read", "orders:read"]
 }
 ```
 
@@ -161,9 +158,9 @@ Tenant staff invitations, team directory, custom role creation, granular permiss
 
 **Path Parameters**
 
-| Parameter | Description |
-| :--- | :--- |
-| `id` | Resource identifier |
+| Parameter | Description         |
+| :-------- | :------------------ |
+| `id`      | Resource identifier |
 
 **Responses**
 
@@ -177,9 +174,9 @@ Tenant staff invitations, team directory, custom role creation, granular permiss
 
 **Path Parameters**
 
-| Parameter | Description |
-| :--- | :--- |
-| `id` | Resource identifier |
+| Parameter | Description         |
+| :-------- | :------------------ |
+| `id`      | Resource identifier |
 
 **Request Body** (`application/json`)
 
@@ -187,10 +184,7 @@ Tenant staff invitations, team directory, custom role creation, granular permiss
 {
   "name": "Sales Manager",
   "description": "Manages sales team and customer accounts",
-  "permissions": [
-    "customers:read",
-    "orders:read"
-  ]
+  "permissions": ["customers:read", "orders:read"]
 }
 ```
 
@@ -206,9 +200,9 @@ Tenant staff invitations, team directory, custom role creation, granular permiss
 
 **Path Parameters**
 
-| Parameter | Description |
-| :--- | :--- |
-| `id` | Resource identifier |
+| Parameter | Description         |
+| :-------- | :------------------ |
+| `id`      | Resource identifier |
 
 **Responses**
 
@@ -226,10 +220,7 @@ Tenant staff invitations, team directory, custom role creation, granular permiss
 {
   "name": "Sales Rep",
   "description": "Can manage customers and view orders",
-  "permissions": [
-    "customers:read",
-    "orders:read"
-  ]
+  "permissions": ["customers:read", "orders:read"]
 }
 ```
 
@@ -248,4 +239,3 @@ Tenant staff invitations, team directory, custom role creation, granular permiss
 #### `200 OK`
 
 ---
-

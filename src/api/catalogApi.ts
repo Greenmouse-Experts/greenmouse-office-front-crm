@@ -33,6 +33,24 @@ export interface ProductQueryParams {
   type?: string;
 }
 
+export interface StockMovement {
+  id: string;
+  productId: string;
+  quantityChange: number;
+  quantityBefore: number;
+  quantityAfter: number;
+  type: "manual_adjustment" | "order" | "return" | "import" | string;
+  reason?: string;
+  actorId?: string;
+  actor?: any;
+  createdAt: string;
+}
+
+export interface StockMovementsQueryParams {
+  page?: number;
+  limit?: number;
+}
+
 export const useProducts = (params?: ProductQueryParams) => {
   return useQuery<Product[]>({
     queryKey: ["products", params],
@@ -103,9 +121,34 @@ export const useAdjustStock = () => {
       const { data } = await apiClient.patch(`/products/${id}/stock`, { adjustment });
       return data;
     },
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["products", variables.id] });
+      queryClient.invalidateQueries({
+        queryKey: ["products", variables.id, "stock-movements"],
+      });
     },
+  });
+};
+
+export const useProductStockMovements = (
+  productId?: string,
+  params?: StockMovementsQueryParams
+) => {
+  return useQuery<StockMovement[]>({
+    queryKey: ["products", productId, "stock-movements", params],
+    queryFn: async () => {
+      if (!productId) throw new Error("Product ID required");
+      const { data } = await apiClient.get<any>(
+        `/products/${productId}/stock-movements`,
+        { params }
+      );
+      if (Array.isArray(data)) return data;
+      if (Array.isArray(data?.data)) return data.data;
+      if (Array.isArray(data?.movements)) return data.movements;
+      return [];
+    },
+    enabled: !!productId,
   });
 };
 
@@ -305,3 +348,55 @@ export const useImportProductsAsync = () => {
     },
   });
 };
+
+// ==================== SERVICE IMPORT & EXPORT ====================
+
+export const useExportServices = () => {
+  return useMutation({
+    mutationFn: async (params?: ServiceQueryParams) => {
+      const response = await apiClient.get('/services/export', {
+        params,
+        responseType: 'blob',
+      });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'services_export.csv');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      return true;
+    },
+  });
+};
+
+export const useImportServices = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (formData: FormData) => {
+      const { data } = await apiClient.post('/services/import', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['services'] });
+    },
+  });
+};
+
+export const useImportServicesAsync = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (formData: FormData) => {
+      const { data } = await apiClient.post('/services/import/async', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['services'] });
+    },
+  });
+};
+

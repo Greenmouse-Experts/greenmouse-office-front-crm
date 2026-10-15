@@ -59,7 +59,9 @@ function RouteComponent() {
       <div className="fixed inset-0 opacity-20 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:56px_96px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
       <div className="w-full flex flex-col mx-auto space-y-4 px-4 z-20">
         <div className="mt-12 text-center">
-          <h2 className="text-3xl font-semibold leading-normal">CRMgreenmouse</h2>
+          <h2 className="text-3xl font-semibold leading-normal">
+            CRMgreenmouse
+          </h2>
           <p className="font-semibold text-primary mx-auto w-fit text-sm">
             Business Management Portal
           </p>
@@ -69,7 +71,9 @@ function RouteComponent() {
           className="p-6 space-y-6 py-8 mx-auto bg-base-100/70 backdrop-blur-md rounded-box drop-shadow-xl ring ring-current/10 w-full max-w-md m-2 mb-12"
         >
           <div className="space-y-1">
-            <h2 className="text-2xl font-semibold text-center">Reset Password</h2>
+            <h2 className="text-2xl font-semibold text-center">
+              Reset Password
+            </h2>
             <p className="text-sm text-center fieldset-label">
               Enter the OTP sent to your email and your new password.
             </p>

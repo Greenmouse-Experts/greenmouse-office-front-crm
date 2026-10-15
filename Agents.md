@@ -1,9 +1,11 @@
 # CRMgreenmouse - Agent Instructions
 
 ## Project Overview
+
 CRM SaaS platform (CRMgreenmouse) built with React 19 + Vite. Handles customer management, onboarding, invoicing, and business analytics for tenants.
 
 ## Tech Stack
+
 - **Framework:** React 19 (Vite)
 - **Routing:** TanStack Router (file-based, `src/routes`)
 - **Server State:** TanStack Query (`useQuery`, `useMutation`)
@@ -14,6 +16,7 @@ CRM SaaS platform (CRMgreenmouse) built with React 19 + Vite. Handles customer m
 - **Package Manager:** Bun
 
 ## Project Structure
+
 ```
 src/
   client/          # Axios instance + ApiResponse type (api.ts)
@@ -40,29 +43,34 @@ src/
 ## Key Conventions
 
 ### Routing
+
 - Route files: `src/routes/<path>/index.tsx` or `route.tsx` for layouts
 - Private route components go in `-components/` subdirectory
 - Use `createFileRoute` from `@tanstack/react-router`
 - After login, users are checked via `/tenant/auth/me` and redirected to `/auth/register/on-boarding` if `isOnboarded` is false.
 
 ### API
+
 - Import: `import apiClient from "@/client/api"`
 - Type: `import type { ApiResponse } from "@/client/api"`
 - Backend base URL: `https://crmgrenmouse-backend-api.onrender.com/`
 - Auth tokens stored in Jotai atom as `accessToken` / `refreshToken` (camelCase)
 
 ### Styling
+
 - Primary color: `#007047` (`--color-primary`)
 - DaisyUI component classes (`btn`, `btn-primary`, `input`, `select`, `modal`, etc.)
 - Glassmorphism + modern green aesthetic
 - Rounded cards with `rounded-xl` / `rounded-2xl`
 
 ### TypeScript
+
 - `strict: true` in tsconfig
 - Unused vars: prefix with `_` (e.g. `_item`) or remove entirely
 - Never use `@/api/apiClient` — correct path is `@/client/api`
 
 ### Components
+
 - `PageHeader` — title + description + children slot (right side)
 - `CustomTable` — generic table with `columnType[]` config
 - `SimplePaginator` — page/increment/decrement props
@@ -71,7 +79,9 @@ src/
 - `HomeNav` — sticky nav with logo link to `/`, used in register layout
 
 ## Onboarding Wizard (`/auth/register/on-boarding/`)
+
 9-step wizard stored in `useOnboardingStore` (Zustand + persist):
+
 1. Industry (icon grid, auto-advances on click)
 2. Email
 3. Location (state + city)
@@ -85,6 +95,7 @@ src/
 API: `PATCH /tenant/onboarding/` (save progress), `POST /tenant/onboarding/complete` (final step)
 
 ## Auth
+
 - Registration: `POST /tenant/auth/register`
 - Email Verification: `POST /tenant/auth/verify-email` (OTP)
 - Resend OTP: `POST /tenant/auth/resend-otp`
@@ -97,6 +108,7 @@ API: `PATCH /tenant/onboarding/` (save progress), `POST /tenant/onboarding/compl
 - Session stored via `user_atom` (tokens) and `profile_atom` (user info) in Jotai
 
 ## Commands
+
 ```bash
 bun run dev       # Dev server on port 3000
 bun run build     # Production build

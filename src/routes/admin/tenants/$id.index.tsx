@@ -60,7 +60,9 @@ function RouteComponent() {
         {(tenant) => (
           <>
             <div className="flex flex-wrap gap-2">
-              <span className={`badge badge-sm capitalize ${tenant.status === "active" ? "badge-success" : "badge-error"}`}>
+              <span
+                className={`badge badge-sm capitalize ${tenant.status === "active" ? "badge-success" : "badge-error"}`}
+              >
                 {tenant.status || "Unknown status"}
               </span>
               <span className="badge badge-sm badge-outline capitalize">
@@ -71,7 +73,10 @@ function RouteComponent() {
               </span>
             </div>
 
-            <nav className="overflow-x-auto rounded-xl border border-base-200 bg-base-100 p-1" aria-label="Tenant details">
+            <nav
+              className="overflow-x-auto rounded-xl border border-base-200 bg-base-100 p-1"
+              aria-label="Tenant details"
+            >
               <CustomTabs tabs={tabs} tabProps={tab} />
             </nav>
 

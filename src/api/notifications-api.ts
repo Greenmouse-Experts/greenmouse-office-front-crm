@@ -1,3 +1,4 @@
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import apiClient, { type ApiResponse } from "./simpleApi";
 
 export interface Notification {
@@ -7,12 +8,19 @@ export interface Notification {
   isRead: boolean;
   createdAt: string;
   type?: string;
+  data?: any;
 }
 
-export const getNotifications = async (params: {
+export interface NotificationsQueryParams {
   limit?: number;
   cursor?: string | null;
-}): Promise<
+  page?: number;
+  unreadOnly?: boolean;
+}
+
+export const getNotifications = async (
+  params?: NotificationsQueryParams,
+): Promise<
   ApiResponse<{
     notifications: Notification[];
     hasMore: boolean;
@@ -22,8 +30,10 @@ export const getNotifications = async (params: {
 > => {
   const resp = await apiClient.get("/notifications", {
     params: {
-      limit: params.limit ?? 20,
-      cursor: params.cursor ?? undefined,
+      limit: params?.limit ?? 20,
+      cursor: params?.cursor ?? undefined,
+      page: params?.page ?? undefined,
+      unreadOnly: params?.unreadOnly ?? undefined,
     },
   });
   return resp.data;
@@ -42,4 +52,54 @@ export const getUnreadCount = async (): Promise<
 > => {
   const resp = await apiClient.get("/notifications/unread-count");
   return resp.data;
+};
+
+// ==================== REACT QUERY HOOKS ====================
+
+export const useNotifications = (params?: NotificationsQueryParams) => {
+  return useQuery({
+    queryKey: ["notifications", params],
+    queryFn: async () => {
+      const data = await getNotifications(params);
+      if (Array.isArray(data)) return data;
+      if (Array.isArray((data as any)?.data?.notifications)) {
+        return (data as any).data.notifications as Notification[];
+      }
+      if (Array.isArray((data as any)?.data)) {
+        return (data as any).data as Notification[];
+      }
+      return [];
+    },
+  });
+};
+
+export const useUnreadNotificationCount = () => {
+  return useQuery<number>({
+    queryKey: ["notifications", "unread-count"],
+    queryFn: async () => {
+      const data = await getUnreadCount();
+      return (data as any)?.data?.count ?? (data as any)?.count ?? 0;
+    },
+    refetchInterval: 30000,
+  });
+};
+
+export const useMarkNotificationRead = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: markNotificationRead,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+    },
+  });
+};
+
+export const useMarkAllNotificationsRead = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: markAllNotificationsRead,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+    },
+  });
 };

@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import type { PropsWithChildren } from "react";
 
-const { mutateAsync } = vi.hoisted(() => ({ mutateAsync: vi.fn() }));
+const mutateAsync = vi.fn();
 
 vi.mock("@/api/tenantApi", () => ({
   useTenantSubscriptionVerify: () => ({ mutateAsync }),
@@ -16,7 +16,7 @@ vi.mock("@tanstack/react-router", () => ({
   ),
 }));
 
-import { SubscriptionCallback } from "@/routes/tenant/subscription/callback";
+import { SubscriptionCallback } from "@/routes/staff/subscription/callback";
 
 describe("subscription payment callback", () => {
   beforeEach(() => {
@@ -32,7 +32,7 @@ describe("subscription payment callback", () => {
     window.history.replaceState(
       {},
       "",
-      "/tenant/subscription/callback/?reference=payment-123",
+      "/staff/subscription/callback/?reference=payment-123",
     );
     mutateAsync.mockResolvedValue({ status: "success" });
     sessionStorage.setItem(
@@ -55,7 +55,7 @@ describe("subscription payment callback", () => {
     window.history.replaceState(
       {},
       "",
-      "/tenant/subscription/callback/?trxref=payment-456",
+      "/staff/subscription/callback/?trxref=payment-456",
     );
     mutateAsync
       .mockResolvedValueOnce({ status: "pending" })
@@ -71,7 +71,7 @@ describe("subscription payment callback", () => {
   });
 
   it("does not call verification without a transaction reference", () => {
-    window.history.replaceState({}, "", "/tenant/subscription/callback/");
+    window.history.replaceState({}, "", "/staff/subscription/callback/");
 
     render(<SubscriptionCallback />);
 

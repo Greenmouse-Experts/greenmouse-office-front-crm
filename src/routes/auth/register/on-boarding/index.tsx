@@ -243,10 +243,10 @@ function OnboardingWizard() {
 
   const completeMutation = useMutation({
     mutationFn: () =>
-      apiClient.post("/tenant/onboarding/complete").then((r) => r.data),
+      apiClient.post("/staff/onboarding/complete").then((r) => r.data),
     onSuccess: () => {
       toast.success("Onboarding complete! Welcome aboard.");
-      nav({ to: "/tenant" });
+      nav({ to: "/staff" });
     },
     onError: (err: any) => {
       toast.error(

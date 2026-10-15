@@ -4,23 +4,23 @@ Business owner account registration, email OTP verification, password recovery, 
 
 ## Overview & Quick Reference
 
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `POST` | [`/v1/tenant/auth/register`](#register-a-new-business-account) | Register a new business account |
-| `POST` | [`/v1/tenant/auth/verify-email`](#verify-email-with-otp) | Verify email with OTP |
-| `POST` | [`/v1/tenant/auth/resend-otp`](#resend-email-verification-otp) | Resend email verification OTP |
+| Method  | Endpoint                                                                                       | Description                                                  |
+| :------ | :--------------------------------------------------------------------------------------------- | :----------------------------------------------------------- |
+| `POST`  | [`/v1/tenant/auth/register`](#register-a-new-business-account)                                 | Register a new business account                              |
+| `POST`  | [`/v1/tenant/auth/verify-email`](#verify-email-with-otp)                                       | Verify email with OTP                                        |
+| `POST`  | [`/v1/tenant/auth/resend-otp`](#resend-email-verification-otp)                                 | Resend email verification OTP                                |
 | `PATCH` | [`/v1/tenant/auth/change-email`](#change-email-before-verification-re-sends-otp-to-new-email-) | Change email before verification (re-sends OTP to new email) |
-| `POST` | [`/v1/tenant/auth/login`](#business-owner-login) | Business owner login |
-| `POST` | [`/v1/tenant/auth/refresh`](#refresh-access-token) | Refresh access token |
-| `POST` | [`/v1/tenant/auth/forgot-password`](#request-password-reset-otp) | Request password reset OTP |
-| `POST` | [`/v1/tenant/auth/reset-password`](#reset-password-using-otp) | Reset password using OTP |
-| `POST` | [`/v1/tenant/auth/logout`](#logout-current-tenant) | Logout current tenant |
-| `GET` | [`/v1/tenant/auth/me`](#get-current-tenant-profile) | Get current tenant profile |
-| `GET` | [`/v1/tenant/login-activity/latest`](#get-latest-login-activity) | Get latest login activity |
-| `GET` | [`/v1/tenant/login-activity`](#get-recent-login-activities-paginated-) | Get recent login activities (paginated) |
-| `POST` | [`/v1/tenant/onboarding/complete`](#mark-onboarding-as-complete) | Mark onboarding as complete |
-| `GET` | [`/v1/tenant/onboarding`](#get-current-onboarding-status-and-saved-data) | Get current onboarding status and saved data |
-| `PATCH` | [`/v1/tenant/onboarding`](#save-onboarding-step-data-can-be-called-multiple-times-) | Save onboarding step data (can be called multiple times) |
+| `POST`  | [`/v1/tenant/auth/login`](#business-owner-login)                                               | Business owner login                                         |
+| `POST`  | [`/v1/tenant/auth/refresh`](#refresh-access-token)                                             | Refresh access token                                         |
+| `POST`  | [`/v1/tenant/auth/forgot-password`](#request-password-reset-otp)                               | Request password reset OTP                                   |
+| `POST`  | [`/v1/tenant/auth/reset-password`](#reset-password-using-otp)                                  | Reset password using OTP                                     |
+| `POST`  | [`/v1/tenant/auth/logout`](#logout-current-tenant)                                             | Logout current tenant                                        |
+| `GET`   | [`/v1/tenant/auth/me`](#get-current-tenant-profile)                                            | Get current tenant profile                                   |
+| `GET`   | [`/v1/tenant/login-activity/latest`](#get-latest-login-activity)                               | Get latest login activity                                    |
+| `GET`   | [`/v1/tenant/login-activity`](#get-recent-login-activities-paginated-)                         | Get recent login activities (paginated)                      |
+| `POST`  | [`/v1/tenant/onboarding/complete`](#mark-onboarding-as-complete)                               | Mark onboarding as complete                                  |
+| `GET`   | [`/v1/tenant/onboarding`](#get-current-onboarding-status-and-saved-data)                       | Get current onboarding status and saved data                 |
+| `PATCH` | [`/v1/tenant/onboarding`](#save-onboarding-step-data-can-be-called-multiple-times-)            | Save onboarding step data (can be called multiple times)     |
 
 ---
 
@@ -295,10 +295,10 @@ Business owner account registration, email OTP verification, password recovery, 
 
 **Query Parameters**
 
-| Parameter | Type / Example | Description |
-| :--- | :--- | :--- |
-| `page` | `5705.605456861728` | Filter / pagination param |
-| `limit` | `5705.605456861728` | Filter / pagination param |
+| Parameter | Type / Example      | Description               |
+| :-------- | :------------------ | :------------------------ |
+| `page`    | `5705.605456861728` | Filter / pagination param |
+| `limit`   | `5705.605456861728` | Filter / pagination param |
 
 **Responses**
 
@@ -400,4 +400,3 @@ Business owner account registration, email OTP verification, password recovery, 
 ```
 
 ---
-
