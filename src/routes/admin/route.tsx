@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet, Link, useLocation, redirect } from "@tanstack/react-router";
 import { House, Settings, Tag, Users, BookOpen } from "lucide-react";
 import AdminHeader from "./-components/AdminHeader";
+import { get_user_value } from "@/store/authStore";
 
 interface Links {
   path: string;
@@ -21,6 +22,12 @@ const nav_links: Links[] = [
 ];
 export const Route = createFileRoute("/admin")({
   component: RouteComponent,
+  loader: () => {
+    const user_auth = get_user_value();
+    if (!user_auth?.accessToken) {
+      throw redirect({ to: "/auth/admin", search: { email: "" } });
+    }
+  },
   beforeLoad: ({ location }) => {
     const path = location.pathname.replace(/\/$/, "") || "/";
     const supported = path === "/admin" || path === "/admin/users" || path === "/admin/users/add" ||
