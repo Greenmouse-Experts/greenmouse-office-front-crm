@@ -4,8 +4,12 @@ import { useNavigate } from "@tanstack/react-router";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import SimpleInput from "@/components/inputs/SimpleInput";
-import apiClient, { new_url } from "@/client/api";
-import { set_user_value, set_profile_value } from "@/store/authStore";
+import { new_url } from "@/client/api";
+import {
+  set_user_value,
+  set_profile_value,
+  type AuthUser,
+} from "@/store/authStore";
 import axios from "axios";
 
 export const Route = createFileRoute("/auth/login/")({
@@ -32,33 +36,25 @@ function RouteComponent() {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: LoginProps) =>
-      axios.post(new_url + "/auth/staff/login", data).then((res) => res.data),
-    onSuccess: async (res) => {
-      // res is { accessToken, refreshToken, user }
-      set_user_value(res);
-      toast.success("Login successful");
-
-      try {
-        const profileRes = await apiClient
-          .get("/tenant/auth/me")
-          .then((r) => r.data);
-        const profileData = profileRes.data ?? profileRes;
-
-        if (profileData) {
-          // Store detailed profile in auth store
-          set_profile_value(profileData);
-
-          if (!profileData.isOnboarded) {
-            nav({ to: "/auth/register/on-boarding" });
-            return;
-          }
-        }
-        nav({ to: "/staff" });
-      } catch (err) {
-        console.error("Failed to fetch profile", err);
-        // nav({ to: "/staff" });
+    mutationFn: async (credentials: LoginProps) => {
+      const { data } = await axios.post<AuthUser>(
+        new_url + "auth/owner/login",
+        credentials,
+      );
+      if (!data?.accessToken || !data?.refreshToken || !data?.user) {
+        throw new Error("Login response is missing session details.");
       }
+      return data;
+    },
+    onSuccess: (res) => {
+      set_user_value(res);
+      set_profile_value(res.user);
+      toast.success("Login successful");
+      if (res.user.isOnboarded === false) {
+        nav({ to: "/auth/register/on-boarding" });
+        return;
+      }
+      nav({ to: "/staff" });
     },
     onError: (err: any) => {
       const message =

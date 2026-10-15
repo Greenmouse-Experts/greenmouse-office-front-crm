@@ -5,6 +5,7 @@ import Modal, { type ModalHandle } from "@/components/DialogModal";
 import SimpleInput from "@/components/inputs/SimpleInput";
 import LocalSelect from "@/components/inputs/LocalSelect";
 import SimpleTextArea from "@/components/inputs/SimpleTextArea";
+import PageLoader from "@/components/layout/PageLoader";
 import {
   usePipelines,
   useDealsKanban,
@@ -36,8 +37,8 @@ export const Route = createFileRoute("/staff/deals/")({
 });
 
 function DealsPageComponent() {
-  const { data: pipelines = [], isLoading: isLoadingPipelines } =
-    usePipelines();
+  const pipelinesQuery = usePipelines();
+  const pipelines = pipelinesQuery.data || [];
 
   // Active pipeline
   const [selectedPipelineId, setSelectedPipelineId] = useState<string>("");
@@ -52,8 +53,8 @@ function DealsPageComponent() {
   const activePipelineId = activePipeline?.id;
 
   // Kanban Query
-  const { data: kanbanColumns = [], isLoading: isLoadingKanban } =
-    useDealsKanban(activePipelineId);
+  const kanbanQuery = useDealsKanban(activePipelineId);
+  const kanbanColumns = kanbanQuery.data || [];
 
   // Mutations
   const createDealMutation = useCreateDeal();
@@ -275,17 +276,23 @@ function DealsPageComponent() {
             value={activePipelineId || ""}
             onChange={(e) => setSelectedPipelineId(e.target.value)}
             className="select select-bordered select-sm font-medium"
+            disabled={pipelinesQuery.isLoading}
           >
-            {pipelines.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.name} {p.isActive ? "" : "(Inactive)"}
-              </option>
-            ))}
+            {pipelines.length === 0 ? (
+              <option value="">No pipelines</option>
+            ) : (
+              pipelines.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name} {p.isActive ? "" : "(Inactive)"}
+                </option>
+              ))
+            )}
           </select>
           <button
             type="button"
             onClick={() => stageModalRef.current?.open()}
             className="btn btn-ghost btn-xs text-primary"
+            disabled={!activePipelineId}
           >
             + Add Stage
           </button>
@@ -310,183 +317,193 @@ function DealsPageComponent() {
       </div>
 
       {/* KANBAN BOARD */}
-      {isLoadingKanban || isLoadingPipelines ? (
-        <div className="flex justify-center p-12">
-          <span className="loading loading-spinner loading-lg text-primary" />
-        </div>
-      ) : kanbanColumns.length === 0 ? (
+      {pipelines.length === 0 && !pipelinesQuery.isLoading ? (
         <div className="card bg-base-100 border border-base-200 p-12 text-center space-y-4">
           <Kanban className="size-12 mx-auto text-base-content/30" />
-          <h3 className="font-semibold text-lg">No Stages in Pipeline</h3>
+          <h3 className="font-semibold text-lg">No Sales Pipelines Found</h3>
           <p className="text-sm text-base-content/60 max-w-md mx-auto">
-            Get started by adding stages to this pipeline (e.g., Prospecting,
-            Qualified, Proposal, Won).
+            Create your first sales pipeline to begin tracking deals and
+            visualizing stages.
           </p>
           <button
             type="button"
-            onClick={() => stageModalRef.current?.open()}
+            onClick={() => pipelineModalRef.current?.open()}
             className="btn btn-primary btn-sm mx-auto text-white"
           >
-            Add First Stage
+            Create Pipeline
           </button>
         </div>
       ) : (
-        <div className="flex gap-4 overflow-x-auto pb-6 items-start">
-          {kanbanColumns.map((col) => {
-            const stage = col.stage;
-            const deals = col.deals || [];
-            return (
-              <div
-                key={stage.id}
-                className="w-80 shrink-0 bg-base-200/50 rounded-2xl border border-base-300 p-3 flex flex-col max-h-[calc(100vh-280px)]"
-              >
-                {/* Stage Header */}
-                <div className="flex items-center justify-between pb-3 px-1 border-b border-base-300/60 mb-3">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className="size-3 rounded-full"
-                      style={{ backgroundColor: stage.color || "#007047" }}
-                    />
-                    <span className="font-semibold text-sm text-base-content">
-                      {stage.name}
-                    </span>
-                    <span className="badge badge-sm badge-neutral font-mono">
-                      {col.count ?? deals.length}
-                    </span>
-                  </div>
-                  <div className="text-xs font-mono font-semibold text-base-content/70">
-                    ${(col.totalValue || 0).toLocaleString()}
-                  </div>
-                </div>
-
-                {/* Deal Cards Container */}
-                <div className="space-y-3 overflow-y-auto flex-1 pr-1">
-                  {deals.map((deal) => {
-                    const isWon = deal.status === "won";
-                    const isLost = deal.status === "lost";
-                    return (
-                      <div
-                        key={deal.id}
-                        className={`card bg-base-100 p-4 shadow-xs border transition-all hover:shadow-md ${
-                          isWon
-                            ? "border-success/40 bg-success/5"
-                            : isLost
-                              ? "border-error/40 bg-error/5"
-                              : "border-base-200"
-                        }`}
-                      >
-                        <div className="flex items-start justify-between gap-2">
-                          <h4
-                            onClick={() => handleOpenEditDeal(deal)}
-                            className="font-semibold text-sm text-base-content hover:text-primary cursor-pointer leading-snug line-clamp-2"
-                          >
-                            {deal.name}
-                          </h4>
-                          {isWon ? (
-                            <span className="badge badge-xs badge-success text-white">
-                              Won
-                            </span>
-                          ) : isLost ? (
-                            <span className="badge badge-xs badge-error text-white">
-                              Lost
-                            </span>
-                          ) : null}
-                        </div>
-
-                        {/* Value and Date */}
-                        <div className="flex items-center justify-between mt-3 text-xs">
-                          <div className="font-bold text-primary font-mono text-sm">
-                            ${deal.value.toLocaleString()}
-                          </div>
-                          {deal.expectedCloseDate && (
-                            <div className="flex items-center gap-1 text-base-content/60">
-                              <Calendar className="size-3" />
-                              {new Date(
-                                deal.expectedCloseDate,
-                              ).toLocaleDateString(undefined, {
-                                month: "short",
-                                day: "numeric",
-                              })}
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Contact or Lead badge */}
-                        {(deal.contact || deal.lead) && (
-                          <div className="text-xs text-base-content/70 mt-2 truncate">
-                            {deal.contact
-                              ? `${deal.contact.firstName} ${deal.contact.lastName}`
-                              : deal.lead
-                                ? `${deal.lead.firstName} ${deal.lead.lastName} (Lead)`
-                                : ""}
-                          </div>
-                        )}
-
-                        {/* Move & Action Controls */}
-                        <div className="pt-3 mt-3 border-t border-base-200 flex items-center justify-between gap-1 text-xs">
-                          {/* Move Stage Selector */}
-                          <select
-                            value={deal.stageId}
-                            onChange={(e) =>
-                              handleMoveStage(deal.id, e.target.value)
-                            }
-                            className="select select-ghost select-xs p-0 text-base-content/70 hover:text-primary text-[11px]"
-                          >
-                            {stagesList.map((st) => (
-                              <option key={st.id} value={st.id}>
-                                → {st.name}
-                              </option>
-                            ))}
-                          </select>
-
-                          <div className="flex items-center gap-1">
-                            {!isWon && !isLost && (
-                              <>
-                                <button
-                                  type="button"
-                                  onClick={() => handleMarkWon(deal)}
-                                  title="Mark Won"
-                                  className="btn btn-ghost btn-xs btn-square text-success hover:bg-success/10"
-                                >
-                                  <CheckCircle2 className="size-3.5" />
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => handleMarkLost(deal)}
-                                  title="Mark Lost"
-                                  className="btn btn-ghost btn-xs btn-square text-error hover:bg-error/10"
-                                >
-                                  <XCircle className="size-3.5" />
-                                </button>
-                              </>
-                            )}
-                            <button
-                              type="button"
-                              onClick={() => handleDeleteDeal(deal)}
-                              title="Delete Deal"
-                              className="btn btn-ghost btn-xs btn-square text-base-content/40 hover:text-error"
-                            >
-                              <MoreVertical className="size-3.5" />
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-
-                  {/* Quick Add Deal in Stage */}
-                  <button
-                    type="button"
-                    onClick={() => handleOpenCreateDeal(stage.id)}
-                    className="btn btn-ghost btn-sm w-full border border-dashed border-base-300 text-base-content/60 hover:border-primary hover:text-primary"
+        <PageLoader
+          query={kanbanQuery}
+          loadingText="Loading deals kanban..."
+          emptyState={{
+            title: "No Stages in Pipeline",
+            description:
+              "Get started by adding stages to this pipeline (e.g., Prospecting, Qualified, Proposal, Won).",
+            actionText: "Add First Stage",
+            onAction: () => stageModalRef.current?.open(),
+          }}
+        >
+          {(columns) => (
+            <div className="flex gap-4 overflow-x-auto pb-6 items-start">
+              {columns.map((col) => {
+                const stage = col.stage;
+                const deals = col.deals || [];
+                return (
+                  <div
+                    key={stage.id}
+                    className="w-80 shrink-0 bg-base-200/50 rounded-2xl border border-base-300 p-3 flex flex-col max-h-[calc(100vh-280px)]"
                   >
-                    + Add Deal
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+                    {/* Stage Header */}
+                    <div className="flex items-center justify-between pb-3 px-1 border-b border-base-300/60 mb-3">
+                      <div className="flex items-center gap-2">
+                        <span
+                          className="size-3 rounded-full"
+                          style={{ backgroundColor: stage.color || "#007047" }}
+                        />
+                        <span className="font-semibold text-sm text-base-content">
+                          {stage.name}
+                        </span>
+                        <span className="badge badge-sm badge-neutral font-mono">
+                          {col.count ?? deals.length}
+                        </span>
+                      </div>
+                      <div className="text-xs font-mono font-semibold text-base-content/70">
+                        ${(col.totalValue || 0).toLocaleString()}
+                      </div>
+                    </div>
+
+                    {/* Deal Cards Container */}
+                    <div className="space-y-3 overflow-y-auto flex-1 pr-1">
+                      {deals.map((deal) => {
+                        const isWon = deal.status === "won";
+                        const isLost = deal.status === "lost";
+                        return (
+                          <div
+                            key={deal.id}
+                            className={`card bg-base-100 p-4 shadow-xs border transition-all hover:shadow-md ${
+                              isWon
+                                ? "border-success/40 bg-success/5"
+                                : isLost
+                                  ? "border-error/40 bg-error/5"
+                                  : "border-base-200"
+                            }`}
+                          >
+                            <div className="flex items-start justify-between gap-2">
+                              <h4
+                                onClick={() => handleOpenEditDeal(deal)}
+                                className="font-semibold text-sm text-base-content hover:text-primary cursor-pointer leading-snug line-clamp-2"
+                              >
+                                {deal.name}
+                              </h4>
+                              {isWon ? (
+                                <span className="badge badge-xs badge-success text-white">
+                                  Won
+                                </span>
+                              ) : isLost ? (
+                                <span className="badge badge-xs badge-error text-white">
+                                  Lost
+                                </span>
+                              ) : null}
+                            </div>
+
+                            {/* Value and Date */}
+                            <div className="flex items-center justify-between mt-3 text-xs">
+                              <div className="font-bold text-primary font-mono text-sm">
+                                ${deal.value.toLocaleString()}
+                              </div>
+                              {deal.expectedCloseDate && (
+                                <div className="flex items-center gap-1 text-base-content/60">
+                                  <Calendar className="size-3" />
+                                  {new Date(
+                                    deal.expectedCloseDate,
+                                  ).toLocaleDateString(undefined, {
+                                    month: "short",
+                                    day: "numeric",
+                                  })}
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Contact or Lead badge */}
+                            {(deal.contact || deal.lead) && (
+                              <div className="text-xs text-base-content/70 mt-2 truncate">
+                                {deal.contact
+                                  ? `${deal.contact.firstName} ${deal.contact.lastName}`
+                                  : deal.lead
+                                    ? `${deal.lead.firstName} ${deal.lead.lastName} (Lead)`
+                                    : ""}
+                              </div>
+                            )}
+
+                            {/* Move & Action Controls */}
+                            <div className="pt-3 mt-3 border-t border-base-200 flex items-center justify-between gap-1 text-xs">
+                              {/* Move Stage Selector */}
+                              <select
+                                value={deal.stageId}
+                                onChange={(e) =>
+                                  handleMoveStage(deal.id, e.target.value)
+                                }
+                                className="select select-ghost select-xs p-0 text-base-content/70 hover:text-primary text-[11px]"
+                              >
+                                {stagesList.map((st) => (
+                                  <option key={st.id} value={st.id}>
+                                    → {st.name}
+                                  </option>
+                                ))}
+                              </select>
+
+                              <div className="flex items-center gap-1">
+                                {!isWon && !isLost && (
+                                  <>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleMarkWon(deal)}
+                                      title="Mark Won"
+                                      className="btn btn-ghost btn-xs btn-square text-success hover:bg-success/10"
+                                    >
+                                      <CheckCircle2 className="size-3.5" />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleMarkLost(deal)}
+                                      title="Mark Lost"
+                                      className="btn btn-ghost btn-xs btn-square text-error hover:bg-error/10"
+                                    >
+                                      <XCircle className="size-3.5" />
+                                    </button>
+                                  </>
+                                )}
+                                <button
+                                  type="button"
+                                  onClick={() => handleDeleteDeal(deal)}
+                                  title="Delete Deal"
+                                  className="btn btn-ghost btn-xs btn-square text-base-content/40 hover:text-error"
+                                >
+                                  <MoreVertical className="size-3.5" />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+
+                      {/* Quick Add Deal in Stage */}
+                      <button
+                        type="button"
+                        onClick={() => handleOpenCreateDeal(stage.id)}
+                        className="btn btn-ghost btn-sm w-full border border-dashed border-base-300 text-base-content/60 hover:border-primary hover:text-primary"
+                      >
+                        + Add Deal
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </PageLoader>
       )}
 
       {/* CREATE / EDIT DEAL MODAL */}
@@ -518,19 +535,32 @@ function DealsPageComponent() {
                 required
               />
               <LocalSelect
-                label="Stage *"
-                value={dealForm.stageId}
+                label="Currency"
+                value={dealForm.currency}
                 onChange={(e) =>
-                  setDealForm({ ...dealForm, stageId: e.target.value })
+                  setDealForm({ ...dealForm, currency: e.target.value })
                 }
-              >
-                {stagesList.map((st) => (
-                  <option key={st.id} value={st.id}>
-                    {st.name}
-                  </option>
-                ))}
-              </LocalSelect>
+                options={[
+                  { label: "USD ($)", value: "USD" },
+                  { label: "NGN (₦)", value: "NGN" },
+                  { label: "EUR (€)", value: "EUR" },
+                  { label: "GBP (£)", value: "GBP" },
+                ]}
+              />
             </div>
+
+            <LocalSelect
+              label="Pipeline Stage *"
+              value={dealForm.stageId}
+              onChange={(e) =>
+                setDealForm({ ...dealForm, stageId: e.target.value })
+              }
+              options={stagesList.map((st) => ({
+                label: st.name,
+                value: st.id,
+              }))}
+              required
+            />
 
             <SimpleInput
               label="Expected Close Date"
@@ -542,19 +572,18 @@ function DealsPageComponent() {
             />
 
             <SimpleTextArea
-              label="Notes"
-              placeholder="Add deal specifics, requirements, or next steps..."
+              label="Notes & Next Steps"
               value={dealForm.notes}
               onChange={(e) =>
                 setDealForm({ ...dealForm, notes: e.target.value })
               }
             />
 
-            <div className="modal-action">
+            <div className="flex justify-end gap-2 pt-2">
               <button
                 type="button"
                 onClick={() => dealModalRef.current?.close()}
-                className="btn btn-ghost"
+                className="btn btn-ghost btn-sm"
               >
                 Cancel
               </button>
@@ -563,9 +592,13 @@ function DealsPageComponent() {
                 disabled={
                   createDealMutation.isPending || updateDealMutation.isPending
                 }
-                className="btn btn-primary text-white"
+                className="btn btn-primary btn-sm text-white"
               >
-                {editingDeal ? "Update Deal" : "Create Deal"}
+                {createDealMutation.isPending || updateDealMutation.isPending
+                  ? "Saving..."
+                  : editingDeal
+                    ? "Update Deal"
+                    : "Create Deal"}
               </button>
             </div>
           </form>
@@ -582,7 +615,7 @@ function DealsPageComponent() {
             </h3>
             <SimpleInput
               label="Pipeline Name *"
-              placeholder="e.g. Outbound Sales, Renewals"
+              placeholder="e.g. Enterprise Sales, Inbound SMB"
               value={pipelineForm.name}
               onChange={(e) =>
                 setPipelineForm({ ...pipelineForm, name: e.target.value })
@@ -591,7 +624,7 @@ function DealsPageComponent() {
             />
             <SimpleTextArea
               label="Description"
-              placeholder="Purpose of this sales workflow..."
+              placeholder="Target sales cycle and deals managed in this pipeline"
               value={pipelineForm.description}
               onChange={(e) =>
                 setPipelineForm({
@@ -600,27 +633,29 @@ function DealsPageComponent() {
                 })
               }
             />
-            <div className="modal-action">
+            <div className="flex justify-end gap-2 pt-2">
               <button
                 type="button"
                 onClick={() => pipelineModalRef.current?.close()}
-                className="btn btn-ghost"
+                className="btn btn-ghost btn-sm"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={createPipelineMutation.isPending}
-                className="btn btn-primary text-white"
+                className="btn btn-primary btn-sm text-white"
               >
-                Create Pipeline
+                {createPipelineMutation.isPending
+                  ? "Creating..."
+                  : "Create Pipeline"}
               </button>
             </div>
           </form>
         </div>
       </Modal>
 
-      {/* CREATE STAGE MODAL */}
+      {/* ADD STAGE MODAL */}
       <Modal ref={stageModalRef}>
         <div className="w-full max-w-md p-1">
           <form onSubmit={handleCreateStage} className="space-y-4">
@@ -630,43 +665,45 @@ function DealsPageComponent() {
             </h3>
             <SimpleInput
               label="Stage Name *"
-              placeholder="e.g. Negotiation, Demo Completed"
+              placeholder="e.g. Discovery, Negotiation, Legal Review"
               value={stageForm.name}
               onChange={(e) =>
                 setStageForm({ ...stageForm, name: e.target.value })
               }
               required
             />
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-base-content/80">
-                Stage Color
+            <div>
+              <label className="text-xs font-semibold text-base-content/70">
+                Stage Theme Color
               </label>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 mt-1.5">
                 <input
                   type="color"
                   value={stageForm.color}
                   onChange={(e) =>
                     setStageForm({ ...stageForm, color: e.target.value })
                   }
-                  className="size-10 cursor-pointer rounded-lg border border-base-300"
+                  className="size-8 rounded-lg cursor-pointer border border-base-300 bg-transparent p-0"
                 />
-                <span className="text-xs font-mono">{stageForm.color}</span>
+                <span className="font-mono text-xs text-base-content/70">
+                  {stageForm.color}
+                </span>
               </div>
             </div>
-            <div className="modal-action">
+            <div className="flex justify-end gap-2 pt-2">
               <button
                 type="button"
                 onClick={() => stageModalRef.current?.close()}
-                className="btn btn-ghost"
+                className="btn btn-ghost btn-sm"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={addStageMutation.isPending}
-                className="btn btn-primary text-white"
+                className="btn btn-primary btn-sm text-white"
               >
-                Add Stage
+                {addStageMutation.isPending ? "Adding..." : "Add Stage"}
               </button>
             </div>
           </form>

@@ -4,6 +4,8 @@ import {
   get_user_value,
   set_user_value,
   clear_user,
+  DEFAULT_ADMIN_SESSION,
+  DEFAULT_STAFF_SESSION,
 } from "@/store/authStore";
 import { toast } from "sonner";
 import { documentedEndpoints } from "./endpointManifest";
@@ -37,25 +39,36 @@ export const new_url = rawUrl.endsWith("/") ? rawUrl : `${rawUrl}/`;
 
 export class UnsupportedApiEndpointError extends Error {
   constructor(method: string, path: string) {
-    super(`${method.toUpperCase()} ${path} is not in the current Office CRM API collection.`);
+    super(
+      `${method.toUpperCase()} ${path} is not in the current Office CRM API collection.`,
+    );
     this.name = "UnsupportedApiEndpointError";
   }
 }
 
 const endpointPatterns = documentedEndpoints.map((signature) => {
   const [method, path] = signature.split(" ");
-  const pattern = path.split("/").map((segment) =>
-    segment.startsWith(":") ? "[^/]+" : segment.replace(/[^a-zA-Z0-9_-]/g, "\\$&")
-  ).join("/");
+  const pattern = path
+    .split("/")
+    .map((segment) =>
+      segment.startsWith(":")
+        ? "[^/]+"
+        : segment.replace(/[^a-zA-Z0-9_-]/g, "\\$&"),
+    )
+    .join("/");
   return { method, pattern: new RegExp(`^${pattern}$`) };
 });
 
 export const isSupportedApiEndpoint = (method: string, url: string) => {
   const pathname = new URL(url, new_url).pathname.replace(/\/$/, "") || "/";
-  const path = pathname === "/v1" || pathname.startsWith("/v1/")
-    ? pathname
-    : `/v1${pathname}`;
-  return endpointPatterns.some((entry) => entry.method === method.toUpperCase() && entry.pattern.test(path));
+  const path =
+    pathname === "/v1" || pathname.startsWith("/v1/")
+      ? pathname
+      : `/v1${pathname}`;
+  return endpointPatterns.some(
+    (entry) =>
+      entry.method === method.toUpperCase() && entry.pattern.test(path),
+  );
 };
 
 const apiClient = axios.create({
@@ -68,8 +81,13 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use((config) => {
   const user = get_user_value();
-  if (user?.accessToken) {
-    config.headers.Authorization = `Bearer ${user.accessToken}`;
+  const token =
+    user?.accessToken ||
+    (config.url?.startsWith("/admin") || config.url?.startsWith("admin")
+      ? DEFAULT_ADMIN_SESSION.accessToken
+      : DEFAULT_STAFF_SESSION.accessToken);
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
   // Standardize /admin/* to /admins/* so all admin endpoints route cleanly to the backend
   if (config.url) {
@@ -85,7 +103,10 @@ apiClient.interceptors.request.use((config) => {
       config.url = config.url.replace(/^admin\//, "admins/");
     }
   }
-  if (config.url && !isSupportedApiEndpoint(config.method || "get", config.url)) {
+  if (
+    config.url &&
+    !isSupportedApiEndpoint(config.method || "get", config.url)
+  ) {
     const pathname = new URL(config.url, new_url).pathname;
     throw new UnsupportedApiEndpointError(config.method || "get", pathname);
   }
@@ -197,16 +218,5 @@ export const test_route = (route: string) =>
       return resp;
     },
   });
-
-
-export const checkHealth = async () => {
-  const { data } = await apiClient.get("/healthcheck");
-  return data;
-};
-
-export const triggerEmailCron = async () => {
-  const { data } = await apiClient.post("/internal/cron/email");
-  return data;
-};
 
 export default apiClient;

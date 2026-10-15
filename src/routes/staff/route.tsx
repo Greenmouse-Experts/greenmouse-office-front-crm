@@ -224,9 +224,7 @@ export const Route = createFileRoute("/staff")({
       return redirect({
         to: "/auth/login",
       });
-    console.log(auth?.user.userType);
-
-    if (auth?.user?.userType != "tenant") {
+    if (auth?.user?.userType !== "staff") {
       toast.info("wrong dashboard");
       return redirect({
         to: "/auth/login",

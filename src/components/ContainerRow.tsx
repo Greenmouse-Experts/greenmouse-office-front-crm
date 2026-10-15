@@ -27,22 +27,30 @@ export default function ContainerRow({
     onSearchChange?.(term);
   };
 
+  if (!showSearch && !children) {
+    return null;
+  }
   return (
     <div
-      className={`p-3 sm:px-4 sm:py-3 bg-base-100 border border-base-200 border-b-0 ring ring-current/20 flex flex-col border-l border-r bg  sm:flex-row gap-3 items-center justify-between ${className}`}
+      className={`px-4 py-3 bg-base-100 border-t border-b  fade flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between ${className}`}
     >
       {showSearch && (
-        <SearchBar
-          value={search || ""}
-          onChange={handleSearch}
-          onSubmit={handleSearch}
-          placeholder={searchPlaceholder}
-        />
+        <div className="w-fit  sm:w-72 sm:max-w-xs shrink-0">
+          <SearchBar
+            value={search || ""}
+            onChange={handleSearch}
+            onSubmit={handleSearch}
+            placeholder={searchPlaceholder}
+            className="w-full"
+          />
+        </div>
       )}
 
-      <div className="flex items-center gap-2 w-full sm:w-auto justify-end ml-auto">
-        {children}
-      </div>
+      {children && (
+        <div className="flex items-center gap-2.5 flex-1 sm:w-auto flex-wrap sm:flex-nowrap justify-start sm:justify-end ml-auto  ">
+          {children}
+        </div>
+      )}
     </div>
   );
 }

@@ -61,7 +61,7 @@ export default function TenantMonthly() {
         const hasActivity = incomeMonth > 0 || expenseMonth > 0;
 
         return (
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-6 ">
             <SimpleContainer fade title="Income vs Expense (This Month)">
               <div className="bg-base-100 border border-base-200 rounded-b-box p-6 flex flex-col items-center justify-center min-h-[360px] relative">
                 <div className="absolute top-4 left-4 flex gap-2">
@@ -72,9 +72,8 @@ export default function TenantMonthly() {
                     Expense: ${expenseMonth.toLocaleString()}
                   </span>
                 </div>
-
                 {hasActivity ? (
-                  <div className="w-full h-72">
+                  <div className="w-full h-72  ">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                         <Pie
