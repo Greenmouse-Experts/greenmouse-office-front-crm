@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-const postmanPath = "Greenmouse CRM API.postman_collection.json";
+const postmanPath = "Greenmouse Office CRM.postman_collection.json";
 const col = JSON.parse(fs.readFileSync(postmanPath, "utf8"));
 const v1 = col.item[0];
 
@@ -112,7 +112,7 @@ function formatEndpointMarkdown(item: PostmanItem): string {
   // Responses
   const responses = item.response || [];
   if (responses.length > 0) {
-    md += `**Responses**\n\n`;
+    md += `**Example responses from the collection**\n\n`;
     for (const res of responses) {
       md += `#### \`${res.code} ${res.status || ""}\`\n\n`;
       if (res.body && res.body.trim()) {
@@ -160,36 +160,21 @@ const docsConfig: Record<
       );
     },
   },
-  "tenant.md": {
-    title: "Tenant Authentication, Onboarding & Security API",
-    description:
-      "Business owner account registration, email OTP verification, password recovery, session tokens, multi-step onboarding wizard, and audit login activity.",
-    predicate: (trail) => {
-      const p = trail.join(" > ");
-      return (
-        p.includes("tenant > auth") ||
-        p.includes("tenant > onboarding") ||
-        p.includes("tenant > login-activity")
-      );
-    },
+  "company.md": {
+    title: "Company Login Activity API",
+    description: "Recent and latest login activity for the current company.",
+    predicate: (trail) => trail[1] === "company",
   },
-  "subscriptions.md": {
-    title: "Subscription Plans, Billing & Paystack Integration API",
-    description:
-      "Public plan catalog, tenant subscription tier management (upgrade, downgrade, cancel, payment verification), and automated Paystack webhooks.",
-    predicate: (trail) => {
-      const p = trail.join(" > ");
-      return (
-        trail[1] === "subscriptions" ||
-        p.includes("tenant > subscription") ||
-        trail[1] === "webhook"
-      );
-    },
+  "knowledge-base.md": {
+    title: "Knowledge Base API",
+    description: "Published help articles and categories, feedback, and admin article and category management.",
+    predicate: (trail) => trail[1] === "knowledge-base" ||
+      (trail[1] === "admins" && trail.includes("knowledge-base")),
   },
   "admin.md": {
     title: "Super Admin Platform Management API",
     description:
-      "Super admin initial setup, administrator profile, RBAC permission dictionary, cross-tenant management, tenant status toggle, subscription plan authoring, and platform oversight.",
+      "Super admin setup, admin accounts and roles, profile settings, and permission management.",
     predicate: (trail) => {
       return trail[1] === "admins";
     },
@@ -197,7 +182,7 @@ const docsConfig: Record<
   "staff-and-roles.md": {
     title: "Staff Members & RBAC Roles API",
     description:
-      "Tenant staff invitations, team directory, custom role creation, granular permission assignment, and privilege escalation management.",
+      "Staff directory, staff account management, roles, and permission assignment.",
     predicate: (trail) => {
       return trail[1] === "staffs" || trail[1] === "roles";
     },
@@ -205,7 +190,7 @@ const docsConfig: Record<
   "crm.md": {
     title: "CRM Contacts & Companies API",
     description:
-      "Customer contacts and company accounts directory, interaction notes, streaming CSV export, and bulk synchronous/asynchronous CSV imports.",
+      "Contacts, companies, notes, interactions, CSV export, and CSV imports.",
     predicate: (trail) => {
       return trail[1] === "companies" || trail[1] === "contacts";
     },
@@ -238,6 +223,7 @@ const docsConfig: Record<
       return (
         trail[1] === "income" ||
         trail[1] === "expenses" ||
+        trail[1] === "financial-categories" ||
         trail[1] === "invoices" ||
         trail[1] === "receipts"
       );
@@ -258,7 +244,7 @@ const docsConfig: Record<
     },
   },
   "dashboard.md": {
-    title: "Tenant Dashboard & Real-Time Analytics API",
+    title: "Dashboard & Analytics API",
     description:
       "Key performance indicator metrics, cash balance summaries, monthly income vs. expense cash flows, profit breakdown, and user analytics.",
     predicate: (trail) => {
@@ -266,9 +252,9 @@ const docsConfig: Record<
     },
   },
   "reports.md": {
-    title: "Sales & Pipeline Analytics Reports API",
+    title: "Financial & Sales Reports API",
     description:
-      "Advanced analytics including pipeline funnel progression, win/loss conversion rates, average deal sizing, sales cycle velocity, revenue trends, and stage dwell durations.",
+      "Paid-ledger profit and loss, revenue, expenses, invoices, and pipeline analytics.",
     predicate: (trail) => {
       return trail[1] === "reports";
     },
@@ -284,7 +270,7 @@ const docsConfig: Record<
   "notifications.md": {
     title: "Notifications & Real-Time Alerts API",
     description:
-      "Tenant notification bell alerts, unread counts, mark-read actions, and bulk acknowledgment.",
+      "Company notifications, unread counts, and mark-read actions.",
     predicate: (trail) => {
       return trail[1] === "notifications";
     },
@@ -298,9 +284,9 @@ const docsConfig: Record<
     },
   },
   "import.md": {
-    title: "Bulk Data Import & Streaming Jobs Framework API",
+    title: "Bulk Data Import Jobs API",
     description:
-      "Validation contracts, downloadable CSV templates, background import job management, and Server-Sent Events (SSE) progress streaming.",
+      "Validation contracts, downloadable CSV templates, and background import job status.",
     predicate: (trail) => {
       return trail[1] === "import";
     },
@@ -312,6 +298,11 @@ const docsConfig: Record<
     predicate: (trail) => {
       return trail[1] === "reminders";
     },
+  },
+  "internal.md": {
+    title: "Internal Operations API",
+    description: "Internal email cron trigger. This is an operational endpoint, not a public client workflow.",
+    predicate: (trail) => trail[1] === "internal",
   },
 };
 
@@ -352,7 +343,18 @@ console.log(`Unassigned endpoints: ${unassigned.length}`);
 if (unassigned.length > 0) {
   for (const u of unassigned)
     console.log(` - ${u.item.name} (${u.trail.join(" > ")})`);
+  throw new Error("Every collection endpoint must be assigned to a documentation module.");
 }
+
+const endpointSignatures = [...new Set(allEndpoints.map(({ item }) => {
+  const request = item.request!;
+  const raw = request.url.raw || `/${request.url.path?.join("/") || ""}`;
+  return `${request.method.toUpperCase()} ${raw.replace(/^\{\{baseUrl\}\}/, "").split("?")[0]}`;
+}))].sort();
+const manifest = `// Generated from ${postmanPath} by scripts/update-api-docs.ts.\n` +
+  `// Regenerate with: bun scripts/update-api-docs.ts\n` +
+  `export const documentedEndpoints = ${JSON.stringify(endpointSignatures, null, 2)} as const;\n`;
+fs.writeFileSync(path.resolve("src/api/endpointManifest.ts"), manifest, "utf8");
 
 // Generate each markdown file
 for (const [docFile, list] of Object.entries(docOutputs)) {
@@ -381,13 +383,13 @@ for (const [docFile, list] of Object.entries(docOutputs)) {
     content += formatEndpointMarkdown(ep.item);
   }
 
-  fs.writeFileSync(path.join(docsDir, docFile), content, "utf8");
+  fs.writeFileSync(path.join(docsDir, docFile), `${content.trimEnd()}\n`, "utf8");
   console.log(`Wrote ${docFile} with ${list.length} endpoints.`);
 }
 
 // Generate README.md
-let readme = `# Greenmouse CRM API Documentation (v1)\n\n`;
-readme += `Auto-generated from the Postman API collection for Greenmouse CRM platform backend services.\n\n`;
+let readme = `# Greenmouse Office CRM API Documentation (v1)\n\n`;
+readme += `Generated from [Greenmouse Office CRM.postman_collection.json](../../Greenmouse%20Office%20CRM.postman_collection.json) with \`bun scripts/update-api-docs.ts\`. The collection defines the endpoints, request examples, and illustrative responses below; this is not a live server verification. Set \`baseUrl\` to the API origin when using the collection.\n\n`;
 readme += `## API Documentation Modules\n\n`;
 readme += `| Module | Documentation File | Endpoints Count | Scope & Purpose |\n`;
 readme += `| :--- | :--- | :--- | :--- |\n`;
@@ -417,5 +419,5 @@ for (const [docFile, list] of Object.entries(docOutputs)) {
   }
 }
 
-fs.writeFileSync(path.join(docsDir, "README.md"), readme, "utf8");
+fs.writeFileSync(path.join(docsDir, "README.md"), `${readme.trimEnd()}\n`, "utf8");
 console.log(`Generated docs/api/README.md successfully!`);

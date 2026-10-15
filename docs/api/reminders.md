@@ -17,7 +17,7 @@ User notification settings, dispatch channels (email/push), reminder schedules, 
 
 `GET /v1/reminders/preferences`
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -38,13 +38,12 @@ User notification settings, dispatch channels (email/push), reminder schedules, 
   "leadDaysBefore": 3,
   "sendHour": 8,
   "timezone": "Africa/Lagos",
-  "recipientScope": "tenant_only"
+  "recipientScope": "company_only"
 }
 ```
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
 ---
-

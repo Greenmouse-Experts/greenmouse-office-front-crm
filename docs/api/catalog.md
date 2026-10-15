@@ -12,6 +12,7 @@ Inventory items, physical products, recurring/one-off services, item categories,
 | `POST` | [`/v1/categories`](#create-a-new-category) | Create a new category |
 | `GET` | [`/v1/categories`](#get-all-categories) | Get all categories |
 | `GET` | [`/v1/products/export`](#export-products-to-csv-streamed-download-mirrors-list-filters-) | Export products to CSV (streamed download, mirrors list filters) |
+| `GET` | [`/v1/products/:id/stock-movements`](#list-immutable-stock-movement-history) | List immutable stock movement history |
 | `PATCH` | [`/v1/products/:id/stock`](#adjust-stock-quantity-positive-to-add-negative-to-subtract-) | Adjust stock quantity (positive to add, negative to subtract) |
 | `GET` | [`/v1/products/:id`](#get-a-product-by-id) | Get a product by ID |
 | `PATCH` | [`/v1/products/:id`](#update-a-product) | Update a product |
@@ -44,7 +45,7 @@ Inventory items, physical products, recurring/one-off services, item categories,
 | :--- | :--- |
 | `id` | Resource identifier |
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -69,7 +70,7 @@ Inventory items, physical products, recurring/one-off services, item categories,
 }
 ```
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -85,7 +86,7 @@ Inventory items, physical products, recurring/one-off services, item categories,
 | :--- | :--- |
 | `id` | Resource identifier |
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -104,7 +105,7 @@ Inventory items, physical products, recurring/one-off services, item categories,
 }
 ```
 
-**Responses**
+**Example responses from the collection**
 
 #### `201 Created`
 
@@ -120,7 +121,7 @@ Inventory items, physical products, recurring/one-off services, item categories,
 | :--- | :--- | :--- |
 | `search` | `string` | Search by category name |
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -138,9 +139,71 @@ Inventory items, physical products, recurring/one-off services, item categories,
 | `categoryId` | `string` | Filter / pagination param |
 | `isActive` | `string` | Filter / pagination param |
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
+
+---
+
+### List immutable stock movement history
+
+`GET /v1/products/:id/stock-movements?page=1&limit=20`
+
+Newest first by createdAt, then ID. No edit/delete routes, notifications or order deductions.
+
+**Path Parameters**
+
+| Parameter | Description |
+| :--- | :--- |
+| `id` | Resource identifier |
+
+**Query Parameters**
+
+| Parameter | Type / Example | Description |
+| :--- | :--- | :--- |
+| `page` | `1` | Filter / pagination param |
+| `limit` | `20` | Filter / pagination param |
+
+**Example responses from the collection**
+
+#### `200 OK`
+
+```json
+{
+  "data": [
+    {
+      "id": "d9671bbd-b280-b7ce-c85c-24a9dacd6e2c",
+      "productId": "648374bb-580b-b7d5-051f-3eb7c9a72dce",
+      "companyId": "b634b2a2-a8b2-d462-f8fd-b22b4faa6a92",
+      "change": 6984.519499322181,
+      "previousStock": 8278.563402817956,
+      "newStock": 7148.742599900246,
+      "source": "adjustment",
+      "createdBy": "9f89b231-bdb3-90e0-e76b-c63580a00ae6",
+      "createdAt": "1963-11-01T11:02:30.685Z"
+    },
+    {
+      "id": "68aab960-a7d0-a70c-5583-e663e4eb87b3",
+      "productId": "debf9bd4-2696-8182-260f-1cbdc7fb04ce",
+      "companyId": "2d102f68-b206-fcf6-1592-0cc949f7d4c8",
+      "change": 3695.947010195235,
+      "previousStock": 9097.635313646999,
+      "newStock": 4171.501035530252,
+      "source": "adjustment",
+      "createdBy": "c28c4aac-7231-1497-6e93-50225cc75a18",
+      "createdAt": "2004-03-14T16:13:08.307Z"
+    }
+  ],
+  "total": 1052.1042140364866,
+  "page": 1572.4414051772228,
+  "limit": 6633.0894961339945,
+  "totalPages": 9021.200220593097,
+  "hasNextPage": false,
+  "hasPrevPage": false
+}
+```
+
+#### `404 Not Found`
 
 ---
 
@@ -162,7 +225,7 @@ Inventory items, physical products, recurring/one-off services, item categories,
 }
 ```
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -178,7 +241,7 @@ Inventory items, physical products, recurring/one-off services, item categories,
 | :--- | :--- |
 | `id` | Resource identifier |
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -198,16 +261,28 @@ Inventory items, physical products, recurring/one-off services, item categories,
 
 ```json
 {
-  "name": "Electronic Metal Hat v2",
-  "categoryId": "664f1b2c-9d3e-4a5b-8c7d-8e9f0a1b2c3d",
-  "price": 950,
-  "quantity": 20,
-  "inStock": true,
-  "description": "Updated description"
+  "name": "string",
+  "type": "product",
+  "price": 1380859721.28384,
+  "cost": 490190541.84201443,
+  "currency": "string",
+  "stock": 827606091.2636967,
+  "trackInventory": true,
+  "images": [
+    "string",
+    "string"
+  ],
+  "isActive": true,
+  "supplier": "string",
+  "reorderLevel": 997722671.9661005,
+  "description": "string",
+  "categoryId": "bbc5e479-efbb-cc7f-16ab-0b4f889b9243",
+  "quantity": 1676265287.7709136,
+  "inStock": false
 }
 ```
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -223,9 +298,9 @@ Inventory items, physical products, recurring/one-off services, item categories,
 | :--- | :--- |
 | `id` | Resource identifier |
 
-**Responses**
+**Example responses from the collection**
 
-#### `200 OK`
+#### `409 Conflict`
 
 ---
 
@@ -239,7 +314,7 @@ Inventory items, physical products, recurring/one-off services, item categories,
 | :--- | :--- | :--- |
 | `file` | `file` | Upload payload field |
 
-**Responses**
+**Example responses from the collection**
 
 #### `201 Created`
 
@@ -255,7 +330,7 @@ Inventory items, physical products, recurring/one-off services, item categories,
 | :--- | :--- | :--- |
 | `file` | `file` | Upload payload field |
 
-**Responses**
+**Example responses from the collection**
 
 #### `201 Created`
 
@@ -271,6 +346,9 @@ Inventory items, physical products, recurring/one-off services, item categories,
 {
   "name": "Office Chair",
   "price": 45000,
+  "sku": "CHAIR-01",
+  "reorderLevel": 1862371008.406165,
+  "supplier": "Acme Supplies",
   "description": "Ergonomic office chair with lumbar support",
   "categoryId": "664f1b2c-9d3e-4a5b-8c7d-8e9f0a1b2c3d",
   "type": "product",
@@ -285,15 +363,15 @@ Inventory items, physical products, recurring/one-off services, item categories,
 }
 ```
 
-**Responses**
+**Example responses from the collection**
 
-#### `201 Created`
+#### `409 Conflict`
 
 ---
 
 ### List products (filter by category, type, stock status)
 
-`GET /v1/products?search=string&categoryId=string&isActive=false&type=product`
+`GET /v1/products?search=string&categoryId=string&isActive=false&type=service`
 
 **Query Parameters**
 
@@ -302,9 +380,9 @@ Inventory items, physical products, recurring/one-off services, item categories,
 | `search` | `string` | Filter / pagination param |
 | `categoryId` | `string` | Filter / pagination param |
 | `isActive` | `false` | Filter / pagination param |
-| `type` | `product` | Filter / pagination param |
+| `type` | `service` | Filter / pagination param |
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -322,7 +400,7 @@ Inventory items, physical products, recurring/one-off services, item categories,
 | `categoryId` | `string` | Filter / pagination param |
 | `isActive` | `string` | Filter / pagination param |
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -338,7 +416,7 @@ Inventory items, physical products, recurring/one-off services, item categories,
 | :--- | :--- |
 | `id` | Resource identifier |
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -354,7 +432,7 @@ Inventory items, physical products, recurring/one-off services, item categories,
 | :--- | :--- |
 | `id` | Resource identifier |
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -376,14 +454,14 @@ Inventory items, physical products, recurring/one-off services, item categories,
 {
   "name": "Electronic Wooden Fish Pro",
   "image": "https://res.cloudinary.com/...",
-  "price": 399.99,
+  "price": 39999,
   "categoryId": "664f1b2c-9d3e-4a5b-8c7d-8e9f0a1b2c3d",
   "description": "Updated description",
   "isActive": false
 }
 ```
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -399,7 +477,7 @@ Inventory items, physical products, recurring/one-off services, item categories,
 | :--- | :--- |
 | `id` | Resource identifier |
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -415,7 +493,7 @@ Inventory items, physical products, recurring/one-off services, item categories,
 | :--- | :--- | :--- |
 | `file` | `file` | Upload payload field |
 
-**Responses**
+**Example responses from the collection**
 
 #### `201 Created`
 
@@ -431,7 +509,7 @@ Inventory items, physical products, recurring/one-off services, item categories,
 | :--- | :--- | :--- |
 | `file` | `file` | Upload payload field |
 
-**Responses**
+**Example responses from the collection**
 
 #### `201 Created`
 
@@ -446,7 +524,7 @@ Inventory items, physical products, recurring/one-off services, item categories,
 ```json
 {
   "name": "Electronic Wooden Fish",
-  "price": 324.99,
+  "price": 32499,
   "image": "https://res.cloudinary.com/...",
   "categoryId": "664f1b2c-9d3e-4a5b-8c7d-8e9f0a1b2c3d",
   "description": "Premium wooden fish service with electronic components",
@@ -454,7 +532,7 @@ Inventory items, physical products, recurring/one-off services, item categories,
 }
 ```
 
-**Responses**
+**Example responses from the collection**
 
 #### `201 Created`
 
@@ -472,9 +550,8 @@ Inventory items, physical products, recurring/one-off services, item categories,
 | `categoryId` | `string` | Filter / pagination param |
 | `isActive` | `false` | Filter / pagination param |
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
 ---
-

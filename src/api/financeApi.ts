@@ -780,69 +780,47 @@ export const useTransactions = () => {
   return useQuery<Transaction[]>({
     queryKey: ["transactions"],
     queryFn: async () => {
-      try {
-        const { data } = await apiClient.get<any>("/transactions");
-        const res = Array.isArray(data)
-          ? data
-          : data?.data || data?.transactions;
-        if (Array.isArray(res)) return res;
-        throw new Error("Not an array");
-      } catch (err: any) {
-        // Fallback: If no standalone /transactions endpoint, synthesize from Income & Expenses
-        if (err?.response?.status === 404 || !err?.response) {
-          const [incomeRes, expenseRes] = await Promise.allSettled([
-            apiClient.get<any>("/income"),
-            apiClient.get<any>("/expenses"),
-          ]);
-          if (incomeRes.status === "rejected") {
-            throw incomeRes.reason;
-          }
-          if (expenseRes.status === "rejected") {
-            throw expenseRes.reason;
-          }
-          const list: Transaction[] = [];
-          if (incomeRes.status === "fulfilled") {
-            const incData = Array.isArray(incomeRes.value.data)
-              ? incomeRes.value.data
-              : incomeRes.value.data?.data || [];
-            if (Array.isArray(incData)) {
-              incData.forEach((inc: any) => {
-                list.push({
-                  id: inc.id,
-                  date: inc.date || inc.createdAt || new Date().toISOString(),
-                  type: "Income",
-                  amount: Number(inc.amount),
-                  description: inc.description || `Income from ${inc.source}`,
-                  status: transactionStatus(inc.status),
-                  category: inc.type,
-                });
-              });
-            }
-          }
-          if (expenseRes.status === "fulfilled") {
-            const expData = Array.isArray(expenseRes.value.data)
-              ? expenseRes.value.data
-              : expenseRes.value.data?.data || [];
-            if (Array.isArray(expData)) {
-              expData.forEach((exp: any) => {
-                list.push({
-                  id: exp.id,
-                  date: exp.date || exp.createdAt || new Date().toISOString(),
-                  type: "Expense",
-                  amount: -Math.abs(Number(exp.amount)),
-                  description: exp.description || `Payment to ${exp.paidTo}`,
-                  status: transactionStatus(exp.status),
-                  category: exp.category,
-                });
-              });
-            }
-          }
-          return list.sort(
-            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-          );
-        }
-        throw err;
+      // The collection has no /transactions route; combine the two ledgers.
+      const [incomeRes, expenseRes] = await Promise.all([
+        apiClient.get<any>("/income"),
+        apiClient.get<any>("/expenses"),
+      ]);
+      const income = Array.isArray(incomeRes.data)
+        ? incomeRes.data
+        : incomeRes.data?.data || [];
+      const expenses = Array.isArray(expenseRes.data)
+        ? expenseRes.data
+        : expenseRes.data?.data || [];
+      const list: Transaction[] = [];
+      if (Array.isArray(income)) {
+        income.forEach((inc: any) => {
+          list.push({
+            id: inc.id,
+            date: inc.date || inc.createdAt || new Date().toISOString(),
+            type: "Income",
+            amount: Number(inc.amount),
+            description: inc.description || `Income from ${inc.source}`,
+            status: transactionStatus(inc.status),
+            category: inc.type,
+          });
+        });
       }
+      if (Array.isArray(expenses)) {
+        expenses.forEach((exp: any) => {
+          list.push({
+            id: exp.id,
+            date: exp.date || exp.createdAt || new Date().toISOString(),
+            type: "Expense",
+            amount: -Math.abs(Number(exp.amount)),
+            description: exp.description || `Payment to ${exp.paidTo}`,
+            status: transactionStatus(exp.status),
+            category: exp.category,
+          });
+        });
+      }
+      return list.sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+      );
     },
   });
 };

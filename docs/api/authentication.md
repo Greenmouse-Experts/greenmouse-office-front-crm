@@ -22,7 +22,7 @@ System root greetings, health checks, and platform authentication for Super Admi
 
 `GET /v1/healthcheck`
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -41,7 +41,7 @@ System root greetings, health checks, and platform authentication for Super Admi
 }
 ```
 
-**Responses**
+**Example responses from the collection**
 
 #### `201 Created`
 
@@ -60,7 +60,7 @@ System root greetings, health checks, and platform authentication for Super Admi
 }
 ```
 
-**Responses**
+**Example responses from the collection**
 
 #### `201 Created`
 
@@ -70,7 +70,7 @@ System root greetings, health checks, and platform authentication for Super Admi
 
 `POST /v1/auth/refresh`
 
-**Responses**
+**Example responses from the collection**
 
 #### `201 Created`
 
@@ -80,7 +80,7 @@ System root greetings, health checks, and platform authentication for Super Admi
 
 `POST /v1/auth/logout`
 
-**Responses**
+**Example responses from the collection**
 
 #### `201 Created`
 
@@ -90,7 +90,7 @@ System root greetings, health checks, and platform authentication for Super Admi
 
 `GET /v1/auth/me`
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -100,9 +100,8 @@ System root greetings, health checks, and platform authentication for Super Admi
 
 `GET /v1`
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
 ---
-

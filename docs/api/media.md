@@ -16,9 +16,8 @@ Direct asset uploads to Cloudinary for logos, avatars, PDFs, receipts, and media
 
 `POST /v1/multimedia/upload`
 
-**Responses**
+**Example responses from the collection**
 
 #### `201 Created`
 
 ---
-

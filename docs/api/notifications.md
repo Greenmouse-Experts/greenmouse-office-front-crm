@@ -1,6 +1,6 @@
 # Notifications & Real-Time Alerts API
 
-Tenant notification bell alerts, unread counts, mark-read actions, and bulk acknowledgment.
+Company notifications, unread counts, and mark-read actions.
 
 ## Overview & Quick Reference
 
@@ -9,7 +9,7 @@ Tenant notification bell alerts, unread counts, mark-read actions, and bulk ackn
 | `GET` | [`/v1/notifications/unread-count`](#get-unread-notification-count) | Get unread notification count |
 | `PATCH` | [`/v1/notifications/:id/read`](#mark-a-single-notification-as-read) | Mark a single notification as read |
 | `PATCH` | [`/v1/notifications/read-all`](#mark-all-notifications-as-read) | Mark all notifications as read |
-| `GET` | [`/v1/notifications`](#list-notifications-for-the-current-tenant) | List notifications for the current tenant |
+| `GET` | [`/v1/notifications`](#list-notifications-for-the-current-company) | List notifications for the current company |
 
 ---
 
@@ -19,7 +19,7 @@ Tenant notification bell alerts, unread counts, mark-read actions, and bulk ackn
 
 `GET /v1/notifications/unread-count`
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -35,7 +35,7 @@ Tenant notification bell alerts, unread counts, mark-read actions, and bulk ackn
 | :--- | :--- |
 | `id` | Resource identifier |
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -45,13 +45,13 @@ Tenant notification bell alerts, unread counts, mark-read actions, and bulk ackn
 
 `PATCH /v1/notifications/read-all`
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
 ---
 
-### List notifications for the current tenant
+### List notifications for the current company
 
 `GET /v1/notifications?page=1&limit=20&unreadOnly=false`
 
@@ -63,9 +63,8 @@ Tenant notification bell alerts, unread counts, mark-read actions, and bulk ackn
 | `limit` | `20` | Filter / pagination param |
 | `unreadOnly` | `false` | Filter to unread only |
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
 ---
-

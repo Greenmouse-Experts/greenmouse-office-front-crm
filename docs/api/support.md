@@ -6,6 +6,7 @@ Customer support tickets, agent ticket assignment, priority escalation, lifecycl
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
+| `POST` | [`/v1/tickets/:id/escalate`](#organization-owner-explicitly-shares-a-ticket-with-platform-support) | Organization owner explicitly shares a ticket with platform support |
 | `PATCH` | [`/v1/tickets/:id/status`](#change-ticket-status) | Change ticket status |
 | `PATCH` | [`/v1/tickets/:id/assign`](#assign-ticket-to-a-staff-member) | Assign ticket to a staff member |
 | `POST` | [`/v1/tickets/:id/messages`](#reply-to-a-ticket-thread) | Reply to a ticket thread |
@@ -18,6 +19,30 @@ Customer support tickets, agent ticket assignment, priority escalation, lifecycl
 ---
 
 ## Endpoints
+
+### Organization owner explicitly shares a ticket with platform support
+
+`POST /v1/tickets/:id/escalate`
+
+**Path Parameters**
+
+| Parameter | Description |
+| :--- | :--- |
+| `id` | Resource identifier |
+
+**Request Body** (`application/json`)
+
+```json
+{
+  "reason": "string"
+}
+```
+
+**Example responses from the collection**
+
+#### `201 Created`
+
+---
 
 ### Change ticket status
 
@@ -33,11 +58,11 @@ Customer support tickets, agent ticket assignment, priority escalation, lifecycl
 
 ```json
 {
-  "status": "closed"
+  "status": "in_progress"
 }
 ```
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -61,7 +86,7 @@ Customer support tickets, agent ticket assignment, priority escalation, lifecycl
 }
 ```
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -88,7 +113,7 @@ Customer support tickets, agent ticket assignment, priority escalation, lifecycl
 }
 ```
 
-**Responses**
+**Example responses from the collection**
 
 #### `201 Created`
 
@@ -104,7 +129,7 @@ Customer support tickets, agent ticket assignment, priority escalation, lifecycl
 | :--- | :--- |
 | `id` | Resource identifier |
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -134,7 +159,7 @@ Customer support tickets, agent ticket assignment, priority escalation, lifecycl
 }
 ```
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -150,7 +175,7 @@ Customer support tickets, agent ticket assignment, priority escalation, lifecycl
 | :--- | :--- |
 | `id` | Resource identifier |
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -174,7 +199,7 @@ Customer support tickets, agent ticket assignment, priority escalation, lifecycl
 }
 ```
 
-**Responses**
+**Example responses from the collection**
 
 #### `201 Created`
 
@@ -182,19 +207,18 @@ Customer support tickets, agent ticket assignment, priority escalation, lifecycl
 
 ### List all tickets (filter by status, priority, assigned staff)
 
-`GET /v1/tickets?priority=medium&assignedTo=string&status=closed`
+`GET /v1/tickets?priority=urgent&assignedTo=string&status=waiting`
 
 **Query Parameters**
 
 | Parameter | Type / Example | Description |
 | :--- | :--- | :--- |
-| `priority` | `medium` | Filter / pagination param |
+| `priority` | `urgent` | Filter / pagination param |
 | `assignedTo` | `string` | Filter by staff ID |
-| `status` | `closed` | Filter / pagination param |
+| `status` | `waiting` | Filter / pagination param |
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
 ---
-

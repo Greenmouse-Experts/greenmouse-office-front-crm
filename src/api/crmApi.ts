@@ -1,5 +1,4 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { isAxiosError } from "axios";
 import apiClient from "./simpleApi";
 
 // ==================== COMPANIES ====================
@@ -230,18 +229,11 @@ export const useContacts = (params?: { search?: string; status?: string }) => {
   return useQuery<Contact[]>({
     queryKey: ["contacts", params],
     queryFn: async () => {
-      try {
-        const { data } = await apiClient.get<any>("/contacts", { params });
-        if (Array.isArray(data)) return data;
-        if (Array.isArray(data?.data)) return data.data;
-        if (Array.isArray(data?.contacts)) return data.contacts;
-        return [];
-      } catch {
-        const { data } = await apiClient.get<any>("/customers", { params });
-        if (Array.isArray(data)) return data;
-        if (Array.isArray(data?.data)) return data.data;
-        return [];
-      }
+      const { data } = await apiClient.get<any>("/contacts", { params });
+      if (Array.isArray(data)) return data;
+      if (Array.isArray(data?.data)) return data.data;
+      if (Array.isArray(data?.contacts)) return data.contacts;
+      return [];
     },
   });
 };
@@ -254,13 +246,8 @@ export const useContact = (id?: string) => {
     queryKey: ["contacts", id],
     queryFn: async () => {
       if (!id) throw new Error("Contact ID required");
-      try {
-        const { data } = await apiClient.get<any>(`/contacts/${id}`);
-        return data?.data || data;
-      } catch {
-        const { data } = await apiClient.get<any>(`/customers/${id}`);
-        return data?.data || data;
-      }
+      const { data } = await apiClient.get<any>(`/contacts/${id}`);
+      return data?.data || data;
     },
     enabled: !!id,
   });
@@ -273,16 +260,8 @@ export const useCreateContact = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (contact: CreateContactInput) => {
-      try {
-        const { data } = await apiClient.post<any>("/contacts", contact);
-        return data?.data || data;
-      } catch (error) {
-        if (!isAxiosError(error) || error.response?.status !== 404) {
-          throw error;
-        }
-        const { data } = await apiClient.post<any>("/customers", contact);
-        return data?.data || data;
-      }
+      const { data } = await apiClient.post<any>("/contacts", contact);
+      return data?.data || data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["contacts"] });
@@ -301,16 +280,8 @@ export const useUpdateContact = () => {
       id,
       ...contact
     }: Partial<Contact> & { id: string }) => {
-      try {
-        const { data } = await apiClient.patch<any>(`/contacts/${id}`, contact);
-        return data?.data || data;
-      } catch {
-        const { data } = await apiClient.patch<any>(
-          `/customers/${id}`,
-          contact,
-        );
-        return data?.data || data;
-      }
+      const { data } = await apiClient.patch<any>(`/contacts/${id}`, contact);
+      return data?.data || data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["contacts"] });
@@ -326,13 +297,8 @@ export const useDeleteContact = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      try {
-        const { data } = await apiClient.delete(`/contacts/${id}`);
-        return data?.data || data;
-      } catch {
-        const { data } = await apiClient.delete(`/customers/${id}`);
-        return data?.data || data;
-      }
+      const { data } = await apiClient.delete(`/contacts/${id}`);
+      return data?.data || data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["contacts"] });

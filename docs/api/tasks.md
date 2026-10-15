@@ -29,7 +29,7 @@ Task creation, calendar scheduling, status updates, resource assignment, filteri
 | `from` | `string` | Filter / pagination param |
 | `to` | `string` | Date-only bounds cover the whole UTC day (to=2026-09-30 includes tasks due that day) |
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -53,7 +53,7 @@ Task creation, calendar scheduling, status updates, resource assignment, filteri
 }
 ```
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -69,7 +69,7 @@ Task creation, calendar scheduling, status updates, resource assignment, filteri
 | :--- | :--- |
 | `id` | Resource identifier |
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -91,8 +91,8 @@ Task creation, calendar scheduling, status updates, resource assignment, filteri
 {
   "title": "Call Acme about renewal",
   "description": "Confirm seats and billing contact",
-  "type": "email",
-  "priority": "high",
+  "type": "follow_up",
+  "priority": "medium",
   "dueAt": "2026-09-30T10:00:00.000Z",
   "startAt": "2026-09-30T10:00:00.000Z",
   "endAt": "2026-09-30T10:30:00.000Z",
@@ -102,7 +102,7 @@ Task creation, calendar scheduling, status updates, resource assignment, filteri
 }
 ```
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -118,7 +118,7 @@ Task creation, calendar scheduling, status updates, resource assignment, filteri
 | :--- | :--- |
 | `id` | Resource identifier |
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -146,7 +146,7 @@ Task creation, calendar scheduling, status updates, resource assignment, filteri
 }
 ```
 
-**Responses**
+**Example responses from the collection**
 
 #### `201 Created`
 
@@ -154,16 +154,16 @@ Task creation, calendar scheduling, status updates, resource assignment, filteri
 
 ### List tasks (filter by status, type, dates)
 
-`GET /v1/tasks?search=string&status=completed&type=email&priority=medium&assignedTo=string&relatedType=string&relatedId=string&dueFrom=string&dueTo=string&overdue=false`
+`GET /v1/tasks?search=string&status=in_progress&type=task&priority=urgent&assignedTo=string&relatedType=string&relatedId=string&dueFrom=string&dueTo=string&overdue=false`
 
 **Query Parameters**
 
 | Parameter | Type / Example | Description |
 | :--- | :--- | :--- |
 | `search` | `string` | Filter / pagination param |
-| `status` | `completed` | Filter / pagination param |
-| `type` | `email` | Filter / pagination param |
-| `priority` | `medium` | Filter / pagination param |
+| `status` | `in_progress` | Filter / pagination param |
+| `type` | `task` | Filter / pagination param |
+| `priority` | `urgent` | Filter / pagination param |
 | `assignedTo` | `string` | Filter / pagination param |
 | `relatedType` | `string` | Filter / pagination param |
 | `relatedId` | `string` | Filter / pagination param |
@@ -171,9 +171,8 @@ Task creation, calendar scheduling, status updates, resource assignment, filteri
 | `dueTo` | `string` | Filter / pagination param |
 | `overdue` | `false` | Filter / pagination param |
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
 ---
-

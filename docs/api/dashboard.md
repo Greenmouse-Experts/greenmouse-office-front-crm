@@ -1,16 +1,16 @@
-# Tenant Dashboard & Real-Time Analytics API
+# Dashboard & Analytics API
 
 Key performance indicator metrics, cash balance summaries, monthly income vs. expense cash flows, profit breakdown, and user analytics.
 
 ## Overview & Quick Reference
 
-| Method | Endpoint                                                                                      | Description                                                              |
-| :----- | :-------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------- |
-| `GET`  | [`/v1/dashboard/stats`](#stat-cards-total-staffs-invoices-pending-orders-customers-products)  | Stat cards — total staffs, invoices, pending orders, customers, products |
-| `GET`  | [`/v1/dashboard/income-expense`](#monthly-income-vs-expense-chart-for-a-given-year)           | Monthly income vs expense chart for a given year                         |
-| `GET`  | [`/v1/dashboard/balance`](#balance-summary-total-today-this-month)                            | Balance summary — total, today, this month                               |
-| `GET`  | [`/v1/dashboard/profit`](#monthly-profit-chart-income-expense-for-a-given-year)               | Monthly profit chart (income − expense) for a given year                 |
-| `GET`  | [`/v1/dashboard/user-analytics`](#user-analytics-donut-chart-users-products-expenses-revenue) | User analytics donut chart — users, products, expenses, revenue          |
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | [`/v1/dashboard/stats`](#stat-cards-total-staffs-invoices-pending-orders-customers-products) | Stat cards — total staffs, invoices, pending orders, customers, products |
+| `GET` | [`/v1/dashboard/income-expense`](#monthly-income-vs-expense-chart-for-a-given-year) | Monthly income vs expense chart for a given year |
+| `GET` | [`/v1/dashboard/balance`](#balance-summary-total-today-this-month) | Balance summary — total, today, this month |
+| `GET` | [`/v1/dashboard/profit`](#monthly-profit-chart-income-expense-for-a-given-year) | Monthly profit chart (income − expense) for a given year |
+| `GET` | [`/v1/dashboard/user-analytics`](#user-analytics-donut-chart-users-products-expenses-revenue) | User analytics donut chart — users, products, expenses, revenue |
 
 ---
 
@@ -20,7 +20,7 @@ Key performance indicator metrics, cash balance summaries, monthly income vs. ex
 
 `GET /v1/dashboard/stats`
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -32,11 +32,11 @@ Key performance indicator metrics, cash balance summaries, monthly income vs. ex
 
 **Query Parameters**
 
-| Parameter | Type / Example | Description               |
-| :-------- | :------------- | :------------------------ |
-| `year`    | `2026`         | Filter / pagination param |
+| Parameter | Type / Example | Description |
+| :--- | :--- | :--- |
+| `year` | `2026` | Filter / pagination param |
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -46,7 +46,7 @@ Key performance indicator metrics, cash balance summaries, monthly income vs. ex
 
 `GET /v1/dashboard/balance`
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -58,11 +58,11 @@ Key performance indicator metrics, cash balance summaries, monthly income vs. ex
 
 **Query Parameters**
 
-| Parameter | Type / Example | Description               |
-| :-------- | :------------- | :------------------------ |
-| `year`    | `2026`         | Filter / pagination param |
+| Parameter | Type / Example | Description |
+| :--- | :--- | :--- |
+| `year` | `2026` | Filter / pagination param |
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 
@@ -72,7 +72,7 @@ Key performance indicator metrics, cash balance summaries, monthly income vs. ex
 
 `GET /v1/dashboard/user-analytics`
 
-**Responses**
+**Example responses from the collection**
 
 #### `200 OK`
 

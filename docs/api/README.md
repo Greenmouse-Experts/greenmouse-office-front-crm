@@ -1,32 +1,33 @@
-# Greenmouse CRM API Documentation (v1)
+# Greenmouse Office CRM API Documentation (v1)
 
-Auto-generated from the Postman API collection for Greenmouse CRM platform backend services.
+Generated from [Greenmouse Office CRM.postman_collection.json](../../Greenmouse%20Office%20CRM.postman_collection.json) with `bun scripts/update-api-docs.ts`. The collection defines the endpoints, request examples, and illustrative responses below; this is not a live server verification. Set `baseUrl` to the API origin when using the collection.
 
 ## API Documentation Modules
 
 | Module | Documentation File | Endpoints Count | Scope & Purpose |
 | :--- | :--- | :--- | :--- |
 | **System & Platform Authentication API** | [`authentication.md`](./authentication.md) | 7 | System root greetings, health checks, and platform authentication for Super Admins and Staff members. |
-| **Tenant Authentication, Onboarding & Security API** | [`tenant.md`](./tenant.md) | 15 | Business owner account registration, email OTP verification, password recovery, session tokens, multi-step onboarding wizard, and audit login activity. |
-| **Subscription Plans, Billing & Paystack Integration API** | [`subscriptions.md`](./subscriptions.md) | 10 | Public plan catalog, tenant subscription tier management (upgrade, downgrade, cancel, payment verification), and automated Paystack webhooks. |
-| **Super Admin Platform Management API** | [`admin.md`](./admin.md) | 94 | Super admin initial setup, administrator profile, RBAC permission dictionary, cross-tenant management, tenant status toggle, subscription plan authoring, and platform oversight. |
-| **Staff Members & RBAC Roles API** | [`staff-and-roles.md`](./staff-and-roles.md) | 12 | Tenant staff invitations, team directory, custom role creation, granular permission assignment, and privilege escalation management. |
-| **CRM Contacts & Companies API** | [`crm.md`](./crm.md) | 17 | Customer contacts and company accounts directory, interaction notes, streaming CSV export, and bulk synchronous/asynchronous CSV imports. |
+| **Company Login Activity API** | [`company.md`](./company.md) | 2 | Recent and latest login activity for the current company. |
+| **Knowledge Base API** | [`knowledge-base.md`](./knowledge-base.md) | 15 | Published help articles and categories, feedback, and admin article and category management. |
+| **Super Admin Platform Management API** | [`admin.md`](./admin.md) | 14 | Super admin setup, admin accounts and roles, profile settings, and permission management. |
+| **Staff Members & RBAC Roles API** | [`staff-and-roles.md`](./staff-and-roles.md) | 12 | Staff directory, staff account management, roles, and permission assignment. |
+| **CRM Contacts & Companies API** | [`crm.md`](./crm.md) | 20 | Contacts, companies, notes, interactions, CSV export, and CSV imports. |
 | **Tasks, Follow-ups & Activity Management API** | [`tasks.md`](./tasks.md) | 7 | Task creation, calendar scheduling, status updates, resource assignment, filtering, and activity tracking for CRM workflows. |
-| **Product Catalog, Services & Categories API** | [`catalog.md`](./catalog.md) | 23 | Inventory items, physical products, recurring/one-off services, item categories, stock level adjustments, CSV bulk exports, and streaming async imports. |
-| **Finance, Billing, Income, Expenses, Invoices & Receipts API** | [`finance.md`](./finance.md) | 33 | Revenue tracking, operating expense entries, status updates, invoice and receipt generation, custom HTML/PDF rendering, white-label branding, and payment reconciliation. |
+| **Product Catalog, Services & Categories API** | [`catalog.md`](./catalog.md) | 24 | Inventory items, physical products, recurring/one-off services, item categories, stock level adjustments, CSV bulk exports, and streaming async imports. |
+| **Finance, Billing, Income, Expenses, Invoices & Receipts API** | [`finance.md`](./finance.md) | 38 | Revenue tracking, operating expense entries, status updates, invoice and receipt generation, custom HTML/PDF rendering, white-label branding, and payment reconciliation. |
 | **Sales Pipeline, Leads, Deals, Quotes & Orders API** | [`sales.md`](./sales.md) | 42 | Lead capture and qualification, visual Kanban deal pipelines, stage reordering, quote generation, sales order fulfillment, and status tracking. |
-| **Tenant Dashboard & Real-Time Analytics API** | [`dashboard.md`](./dashboard.md) | 5 | Key performance indicator metrics, cash balance summaries, monthly income vs. expense cash flows, profit breakdown, and user analytics. |
-| **Sales & Pipeline Analytics Reports API** | [`reports.md`](./reports.md) | 6 | Advanced analytics including pipeline funnel progression, win/loss conversion rates, average deal sizing, sales cycle velocity, revenue trends, and stage dwell durations. |
-| **Support Tickets & Helpdesk Threading API** | [`support.md`](./support.md) | 8 | Customer support tickets, agent ticket assignment, priority escalation, lifecycle status updates, and chronological reply threads. |
-| **Notifications & Real-Time Alerts API** | [`notifications.md`](./notifications.md) | 4 | Tenant notification bell alerts, unread counts, mark-read actions, and bulk acknowledgment. |
+| **Dashboard & Analytics API** | [`dashboard.md`](./dashboard.md) | 5 | Key performance indicator metrics, cash balance summaries, monthly income vs. expense cash flows, profit breakdown, and user analytics. |
+| **Financial & Sales Reports API** | [`reports.md`](./reports.md) | 11 | Paid-ledger profit and loss, revenue, expenses, invoices, and pipeline analytics. |
+| **Support Tickets & Helpdesk Threading API** | [`support.md`](./support.md) | 9 | Customer support tickets, agent ticket assignment, priority escalation, lifecycle status updates, and chronological reply threads. |
+| **Notifications & Real-Time Alerts API** | [`notifications.md`](./notifications.md) | 4 | Company notifications, unread counts, and mark-read actions. |
 | **Multimedia & Cloud Storage API** | [`media.md`](./media.md) | 1 | Direct asset uploads to Cloudinary for logos, avatars, PDFs, receipts, and media attachments. |
-| **Bulk Data Import & Streaming Jobs Framework API** | [`import.md`](./import.md) | 5 | Validation contracts, downloadable CSV templates, background import job management, and Server-Sent Events (SSE) progress streaming. |
+| **Bulk Data Import Jobs API** | [`import.md`](./import.md) | 4 | Validation contracts, downloadable CSV templates, and background import job status. |
 | **Reminders & Notification Preferences API** | [`reminders.md`](./reminders.md) | 2 | User notification settings, dispatch channels (email/push), reminder schedules, and preference persistence. |
+| **Internal Operations API** | [`internal.md`](./internal.md) | 1 | Internal email cron trigger. This is an operational endpoint, not a public client workflow. |
 
 ---
 
-## Complete Endpoints Master Index (291 total endpoints)
+## Complete Endpoints Master Index (218 total endpoints)
 
 | Method | Path | Action / Endpoint Name | Module Documentation |
 | :--- | :--- | :--- | :--- |
@@ -37,120 +38,32 @@ Auto-generated from the Postman API collection for Greenmouse CRM platform backe
 | `POST` | `/v1/auth/logout` | Logout current user | [`authentication.md`](./authentication.md#logout-current-user) |
 | `GET` | `/v1/auth/me` | Get current authenticated user | [`authentication.md`](./authentication.md#get-current-authenticated-user) |
 | `GET` | `/v1` | App Controller get Hello | [`authentication.md`](./authentication.md#app-controller-get-hello) |
-| `POST` | `/v1/tenant/auth/register` | Register a new business account | [`tenant.md`](./tenant.md#register-a-new-business-account) |
-| `POST` | `/v1/tenant/auth/verify-email` | Verify email with OTP | [`tenant.md`](./tenant.md#verify-email-with-otp) |
-| `POST` | `/v1/tenant/auth/resend-otp` | Resend email verification OTP | [`tenant.md`](./tenant.md#resend-email-verification-otp) |
-| `PATCH` | `/v1/tenant/auth/change-email` | Change email before verification (re-sends OTP to new email) | [`tenant.md`](./tenant.md#change-email-before-verification-re-sends-otp-to-new-email-) |
-| `POST` | `/v1/tenant/auth/login` | Business owner login | [`tenant.md`](./tenant.md#business-owner-login) |
-| `POST` | `/v1/tenant/auth/refresh` | Refresh access token | [`tenant.md`](./tenant.md#refresh-access-token) |
-| `POST` | `/v1/tenant/auth/forgot-password` | Request password reset OTP | [`tenant.md`](./tenant.md#request-password-reset-otp) |
-| `POST` | `/v1/tenant/auth/reset-password` | Reset password using OTP | [`tenant.md`](./tenant.md#reset-password-using-otp) |
-| `POST` | `/v1/tenant/auth/logout` | Logout current tenant | [`tenant.md`](./tenant.md#logout-current-tenant) |
-| `GET` | `/v1/tenant/auth/me` | Get current tenant profile | [`tenant.md`](./tenant.md#get-current-tenant-profile) |
-| `GET` | `/v1/tenant/login-activity/latest` | Get latest login activity | [`tenant.md`](./tenant.md#get-latest-login-activity) |
-| `GET` | `/v1/tenant/login-activity` | Get recent login activities (paginated) | [`tenant.md`](./tenant.md#get-recent-login-activities-paginated-) |
-| `POST` | `/v1/tenant/onboarding/complete` | Mark onboarding as complete | [`tenant.md`](./tenant.md#mark-onboarding-as-complete) |
-| `GET` | `/v1/tenant/onboarding` | Get current onboarding status and saved data | [`tenant.md`](./tenant.md#get-current-onboarding-status-and-saved-data) |
-| `PATCH` | `/v1/tenant/onboarding` | Save onboarding step data (can be called multiple times) | [`tenant.md`](./tenant.md#save-onboarding-step-data-can-be-called-multiple-times-) |
-| `GET` | `/v1/subscriptions/:id` | Get a single subscription plan by ID (public) | [`subscriptions.md`](./subscriptions.md#get-a-single-subscription-plan-by-id-public-) |
-| `GET` | `/v1/subscriptions` | Browse all active subscription plans (public) | [`subscriptions.md`](./subscriptions.md#browse-all-active-subscription-plans-public-) |
-| `GET` | `/v1/tenant/subscription/current` | Get current subscription details and plan | [`subscriptions.md`](./subscriptions.md#get-current-subscription-details-and-plan) |
-| `GET` | `/v1/tenant/subscription/plans` | Browse available subscription plans | [`subscriptions.md`](./subscriptions.md#browse-available-subscription-plans) |
-| `GET` | `/v1/tenant/subscription/history` | Get subscription change history (paginated) | [`subscriptions.md`](./subscriptions.md#get-subscription-change-history-paginated-) |
-| `POST` | `/v1/tenant/subscription/upgrade` | Initiate a subscription upgrade (creates Paystack payment) | [`subscriptions.md`](./subscriptions.md#initiate-a-subscription-upgrade-creates-paystack-payment-) |
-| `POST` | `/v1/tenant/subscription/downgrade` | Downgrade to a lower-priced plan (takes effect immediately) | [`subscriptions.md`](./subscriptions.md#downgrade-to-a-lower-priced-plan-takes-effect-immediately-) |
-| `POST` | `/v1/tenant/subscription/cancel` | Cancel subscription (data preserved, access ends at period close) | [`subscriptions.md`](./subscriptions.md#cancel-subscription-data-preserved-access-ends-at-period-close-) |
-| `POST` | `/v1/tenant/subscription/verify` | Verify a subscription payment by Paystack reference (fallback if webhook fails) | [`subscriptions.md`](./subscriptions.md#verify-a-subscription-payment-by-paystack-reference-fallback-if-webhook-fails-) |
-| `POST` | `/v1/webhook/paystack` | Paystack webhook endpoint | [`subscriptions.md`](./subscriptions.md#paystack-webhook-endpoint) |
-| `GET` | `/v1/admins/staff/:id` | Get a staff member by ID (cross-tenant) | [`admin.md`](./admin.md#get-a-staff-member-by-id-cross-tenant-) |
-| `GET` | `/v1/admins/staff` | List all staff across all tenants | [`admin.md`](./admin.md#list-all-staff-across-all-tenants) |
-| `PATCH` | `/v1/admins/roles/:id/permissions` | Update permissions on an admin role (super-only) | [`admin.md`](./admin.md#update-permissions-on-an-admin-role-super-only-) |
-| `GET` | `/v1/admins/roles/:id` | Get a role by ID (cross-tenant) | [`admin.md`](./admin.md#get-a-role-by-id-cross-tenant-) |
-| `DELETE` | `/v1/admins/roles/:id` | Delete an admin role (super-only) | [`admin.md`](./admin.md#delete-an-admin-role-super-only-) |
-| `GET` | `/v1/admins/roles` | List all admin roles (super-only) | [`admin.md`](./admin.md#list-all-admin-roles-super-only-) |
-| `POST` | `/v1/admins/roles` | Create a new admin role (super-only) | [`admin.md`](./admin.md#create-a-new-admin-role-super-only-) |
-| `GET` | `/v1/admins/companies/:id` | Get a company by ID (cross-tenant) | [`admin.md`](./admin.md#get-a-company-by-id-cross-tenant-) |
-| `GET` | `/v1/admins/companies` | List all companies across all tenants | [`admin.md`](./admin.md#list-all-companies-across-all-tenants) |
-| `GET` | `/v1/admins/import/jobs/:id` | Get an import job by ID (cross-tenant) | [`admin.md`](./admin.md#get-an-import-job-by-id-cross-tenant-) |
-| `GET` | `/v1/admins/import/jobs` | List import jobs across all tenants | [`admin.md`](./admin.md#list-import-jobs-across-all-tenants) |
-| `GET` | `/v1/admins/subscriptions/features` | List all available subscription features | [`admin.md`](./admin.md#list-all-available-subscription-features) |
-| `GET` | `/v1/admins/subscriptions/:id` | Get a single subscription plan | [`admin.md`](./admin.md#get-a-single-subscription-plan) |
-| `PATCH` | `/v1/admins/subscriptions/:id` | Update a subscription plan | [`admin.md`](./admin.md#update-a-subscription-plan) |
-| `DELETE` | `/v1/admins/subscriptions/:id` | Delete a subscription plan | [`admin.md`](./admin.md#delete-a-subscription-plan) |
-| `POST` | `/v1/admins/subscriptions` | Create a new subscription plan | [`admin.md`](./admin.md#create-a-new-subscription-plan) |
-| `GET` | `/v1/admins/subscriptions` | List all subscription plans (admin view, includes inactive) with pagination | [`admin.md`](./admin.md#list-all-subscription-plans-admin-view-includes-inactive-with-pagination) |
-| `GET` | `/v1/admins/notifications/unread-count` | Get unread notification count for a tenant | [`admin.md`](./admin.md#get-unread-notification-count-for-a-tenant) |
-| `GET` | `/v1/admins/notifications` | List notifications for a tenant (cross-tenant) | [`admin.md`](./admin.md#list-notifications-for-a-tenant-cross-tenant-) |
-| `GET` | `/v1/admins/contacts/:id` | Get a contact by ID (cross-tenant) | [`admin.md`](./admin.md#get-a-contact-by-id-cross-tenant-) |
-| `GET` | `/v1/admins/contacts` | List all contacts across all tenants | [`admin.md`](./admin.md#list-all-contacts-across-all-tenants) |
-| `GET` | `/v1/admins/categories/:id` | Get a category by ID (cross-tenant) | [`admin.md`](./admin.md#get-a-category-by-id-cross-tenant-) |
-| `GET` | `/v1/admins/categories` | List all categories across all tenants | [`admin.md`](./admin.md#list-all-categories-across-all-tenants) |
-| `GET` | `/v1/admins/income/:id` | Get an income record by ID (cross-tenant) | [`admin.md`](./admin.md#get-an-income-record-by-id-cross-tenant-) |
-| `GET` | `/v1/admins/income` | List all income records across all tenants | [`admin.md`](./admin.md#list-all-income-records-across-all-tenants) |
-| `GET` | `/v1/admins/expenses/:id` | Get an expense record by ID (cross-tenant) | [`admin.md`](./admin.md#get-an-expense-record-by-id-cross-tenant-) |
-| `GET` | `/v1/admins/expenses` | List all expense records across all tenants | [`admin.md`](./admin.md#list-all-expense-records-across-all-tenants) |
-| `GET` | `/v1/admins/invoices/stats` | Aggregate invoice stats across all tenants | [`admin.md`](./admin.md#aggregate-invoice-stats-across-all-tenants) |
-| `GET` | `/v1/admins/invoices/branding` | Get invoice branding config (cross-tenant) | [`admin.md`](./admin.md#get-invoice-branding-config-cross-tenant-) |
-| `GET` | `/v1/admins/invoices/:id/html` | Render invoice as HTML (cross-tenant) | [`admin.md`](./admin.md#render-invoice-as-html-cross-tenant-) |
-| `GET` | `/v1/admins/invoices/:id/pdf` | Render invoice as PDF (cross-tenant) | [`admin.md`](./admin.md#render-invoice-as-pdf-cross-tenant-) |
-| `GET` | `/v1/admins/invoices/:id/receipts` | List all receipts for an invoice (cross-tenant) | [`admin.md`](./admin.md#list-all-receipts-for-an-invoice-cross-tenant-) |
-| `GET` | `/v1/admins/invoices/:id/payments` | List payment ledger for an invoice (cross-tenant) | [`admin.md`](./admin.md#list-payment-ledger-for-an-invoice-cross-tenant-) |
-| `GET` | `/v1/admins/invoices/:id` | Get an invoice by ID (cross-tenant) | [`admin.md`](./admin.md#get-an-invoice-by-id-cross-tenant-) |
-| `GET` | `/v1/admins/invoices` | List all invoices across all tenants | [`admin.md`](./admin.md#list-all-invoices-across-all-tenants) |
-| `GET` | `/v1/admins/receipts/:id/html` | Render receipt as HTML (cross-tenant) | [`admin.md`](./admin.md#render-receipt-as-html-cross-tenant-) |
-| `GET` | `/v1/admins/receipts/:id/pdf` | Render receipt as PDF (cross-tenant) | [`admin.md`](./admin.md#render-receipt-as-pdf-cross-tenant-) |
-| `GET` | `/v1/admins/receipts/:id` | Get a receipt by ID (cross-tenant) | [`admin.md`](./admin.md#get-a-receipt-by-id-cross-tenant-) |
-| `GET` | `/v1/admins/orders/stats` | Aggregate order stats across all tenants | [`admin.md`](./admin.md#aggregate-order-stats-across-all-tenants) |
-| `GET` | `/v1/admins/orders/:id` | Get an order by ID (cross-tenant) | [`admin.md`](./admin.md#get-an-order-by-id-cross-tenant-) |
-| `GET` | `/v1/admins/orders` | List all orders across all tenants | [`admin.md`](./admin.md#list-all-orders-across-all-tenants) |
-| `GET` | `/v1/admins/products/:id` | Get a product by ID (cross-tenant) | [`admin.md`](./admin.md#get-a-product-by-id-cross-tenant-) |
-| `GET` | `/v1/admins/products` | List all products across all tenants | [`admin.md`](./admin.md#list-all-products-across-all-tenants) |
-| `GET` | `/v1/admins/services/:id` | Get a service by ID (cross-tenant) | [`admin.md`](./admin.md#get-a-service-by-id-cross-tenant-) |
-| `GET` | `/v1/admins/services` | List all services across all tenants | [`admin.md`](./admin.md#list-all-services-across-all-tenants) |
-| `GET` | `/v1/admins/dashboard/stats` | Dashboard stats for a specific tenant | [`admin.md`](./admin.md#dashboard-stats-for-a-specific-tenant) |
-| `GET` | `/v1/admins/dashboard/income-expense` | Income vs expense chart for a specific tenant | [`admin.md`](./admin.md#income-vs-expense-chart-for-a-specific-tenant) |
-| `GET` | `/v1/admins/dashboard/balance` | Account balance for a specific tenant | [`admin.md`](./admin.md#account-balance-for-a-specific-tenant) |
-| `GET` | `/v1/admins/dashboard/profit` | Profit chart for a specific tenant | [`admin.md`](./admin.md#profit-chart-for-a-specific-tenant) |
-| `GET` | `/v1/admins/dashboard/user-analytics` | User analytics for a specific tenant | [`admin.md`](./admin.md#user-analytics-for-a-specific-tenant) |
-| `GET` | `/v1/admins/pipelines/:id` | Get a pipeline by ID (cross-tenant) | [`admin.md`](./admin.md#get-a-pipeline-by-id-cross-tenant-) |
-| `GET` | `/v1/admins/pipelines` | List all pipelines across all tenants | [`admin.md`](./admin.md#list-all-pipelines-across-all-tenants) |
-| `GET` | `/v1/admins/tenants/stats` | Tenant statistics (total, active, suspended, trial) | [`admin.md`](./admin.md#tenant-statistics-total-active-suspended-trial-) |
-| `GET` | `/v1/admins/tenants/:id/history` | Get tenant subscription change history | [`admin.md`](./admin.md#get-tenant-subscription-change-history) |
-| `GET` | `/v1/admins/tenants/:id/login-activity` | Get tenant login activity | [`admin.md`](./admin.md#get-tenant-login-activity) |
-| `GET` | `/v1/admins/tenants/:id/onboarding` | Get tenant onboarding status | [`admin.md`](./admin.md#get-tenant-onboarding-status) |
-| `GET` | `/v1/admins/tenants/:id/reminders` | Get tenant reminder preferences | [`admin.md`](./admin.md#get-tenant-reminder-preferences) |
-| `PATCH` | `/v1/admins/tenants/:id/status` | Activate or suspend a tenant | [`admin.md`](./admin.md#activate-or-suspend-a-tenant) |
-| `PATCH` | `/v1/admins/tenants/:id/subscription` | Assign or upgrade a tenant subscription plan | [`admin.md`](./admin.md#assign-or-upgrade-a-tenant-subscription-plan) |
-| `POST` | `/v1/admins/tenants/:id/verify-payment` | Verify a subscription payment by Paystack reference for a tenant (fallback if webhook fails) | [`admin.md`](./admin.md#verify-a-subscription-payment-by-paystack-reference-for-a-tenant-fallback-if-webhook-fails-) |
-| `GET` | `/v1/admins/tenants/:id` | Get a single tenant | [`admin.md`](./admin.md#get-a-single-tenant) |
-| `GET` | `/v1/admins/tenants` | List all tenants | [`admin.md`](./admin.md#list-all-tenants) |
-| `GET` | `/v1/admins/overview/revenue-trend` | Monthly contracted MRR movement: added vs lost (cached 10 min; not collected cash) | [`admin.md`](./admin.md#monthly-contracted-mrr-movement-added-vs-lost-cached-10-min-not-collected-cash-) |
-| `GET` | `/v1/admins/overview/plan-distribution` | Tenants per subscription plan (cached 5 min) | [`admin.md`](./admin.md#tenants-per-subscription-plan-cached-5-min-) |
-| `GET` | `/v1/admins/overview/trial-funnel` | Trial started/converted/expired + conversion rate (cached 5 min) | [`admin.md`](./admin.md#trial-started-converted-expired-conversion-rate-cached-5-min-) |
-| `GET` | `/v1/admins/overview/engagement` | Tenant login activity, dormant tenants, onboarding progress (cached 5 min) | [`admin.md`](./admin.md#tenant-login-activity-dormant-tenants-onboarding-progress-cached-5-min-) |
-| `GET` | `/v1/admins/overview` | Platform summary: MRR estimate, tenant counts, trials expiring, churn (cached 5 min) | [`admin.md`](./admin.md#platform-summary-mrr-estimate-tenant-counts-trials-expiring-churn-cached-5-min-) |
-| `GET` | `/v1/admins/tickets/:id` | Get a ticket by ID (cross-tenant) | [`admin.md`](./admin.md#get-a-ticket-by-id-cross-tenant-) |
-| `GET` | `/v1/admins/tickets` | List all tickets across all tenants | [`admin.md`](./admin.md#list-all-tickets-across-all-tenants) |
-| `GET` | `/v1/admins/quotes/stats` | Aggregate quote stats across all tenants | [`admin.md`](./admin.md#aggregate-quote-stats-across-all-tenants) |
-| `GET` | `/v1/admins/quotes/:id` | Get a quote by ID (cross-tenant) | [`admin.md`](./admin.md#get-a-quote-by-id-cross-tenant-) |
-| `GET` | `/v1/admins/quotes` | List all quotes across all tenants | [`admin.md`](./admin.md#list-all-quotes-across-all-tenants) |
-| `GET` | `/v1/admins/leads/:id` | Get a lead by ID (cross-tenant) | [`admin.md`](./admin.md#get-a-lead-by-id-cross-tenant-) |
-| `GET` | `/v1/admins/leads` | List all leads across all tenants | [`admin.md`](./admin.md#list-all-leads-across-all-tenants) |
-| `GET` | `/v1/admins/deals/kanban` | Kanban view for a pipeline (cross-tenant) | [`admin.md`](./admin.md#kanban-view-for-a-pipeline-cross-tenant-) |
-| `GET` | `/v1/admins/deals/:id/stage-history` | Get deal stage history | [`admin.md`](./admin.md#get-deal-stage-history) |
-| `GET` | `/v1/admins/deals/:id` | Get a deal by ID (cross-tenant) | [`admin.md`](./admin.md#get-a-deal-by-id-cross-tenant-) |
-| `GET` | `/v1/admins/deals` | List all deals across all tenants | [`admin.md`](./admin.md#list-all-deals-across-all-tenants) |
-| `GET` | `/v1/admins/reports/pipeline-funnel` | Pipeline funnel report for a specific tenant | [`admin.md`](./admin.md#pipeline-funnel-report-for-a-specific-tenant) |
-| `GET` | `/v1/admins/reports/win-rate` | Win rate report for a specific tenant | [`admin.md`](./admin.md#win-rate-report-for-a-specific-tenant) |
-| `GET` | `/v1/admins/reports/avg-deal` | Average deal value for a specific tenant | [`admin.md`](./admin.md#average-deal-value-for-a-specific-tenant) |
-| `GET` | `/v1/admins/reports/cycle-time` | Average cycle time for a specific tenant | [`admin.md`](./admin.md#average-cycle-time-for-a-specific-tenant) |
-| `GET` | `/v1/admins/reports/revenue-trend` | Revenue trend for a specific tenant | [`admin.md`](./admin.md#revenue-trend-for-a-specific-tenant) |
-| `GET` | `/v1/admins/reports/stage-dwell` | Average time per pipeline stage for a specific tenant | [`admin.md`](./admin.md#average-time-per-pipeline-stage-for-a-specific-tenant) |
+| `GET` | `/v1/company/login-activity/latest` | Get latest login activity | [`company.md`](./company.md#get-latest-login-activity) |
+| `GET` | `/v1/company/login-activity` | Get recent login activities (paginated) | [`company.md`](./company.md#get-recent-login-activities-paginated-) |
+| `PATCH` | `/v1/admins/knowledge-base/categories/:id` | Admin Knowledge Base Controller update Category | [`knowledge-base.md`](./knowledge-base.md#admin-knowledge-base-controller-update-category) |
+| `DELETE` | `/v1/admins/knowledge-base/categories/:id` | Admin Knowledge Base Controller delete Category | [`knowledge-base.md`](./knowledge-base.md#admin-knowledge-base-controller-delete-category) |
+| `GET` | `/v1/admins/knowledge-base/categories` | Admin Knowledge Base Controller categories | [`knowledge-base.md`](./knowledge-base.md#admin-knowledge-base-controller-categories) |
+| `POST` | `/v1/admins/knowledge-base/categories` | Admin Knowledge Base Controller create Category | [`knowledge-base.md`](./knowledge-base.md#admin-knowledge-base-controller-create-category) |
+| `POST` | `/v1/admins/knowledge-base/articles/:id/publish` | Admin Knowledge Base Controller publish | [`knowledge-base.md`](./knowledge-base.md#admin-knowledge-base-controller-publish) |
+| `POST` | `/v1/admins/knowledge-base/articles/:id/archive` | Admin Knowledge Base Controller archive | [`knowledge-base.md`](./knowledge-base.md#admin-knowledge-base-controller-archive) |
+| `GET` | `/v1/admins/knowledge-base/articles/:id` | Admin Knowledge Base Controller article | [`knowledge-base.md`](./knowledge-base.md#admin-knowledge-base-controller-article) |
+| `PATCH` | `/v1/admins/knowledge-base/articles/:id` | Admin Knowledge Base Controller update Article | [`knowledge-base.md`](./knowledge-base.md#admin-knowledge-base-controller-update-article) |
+| `DELETE` | `/v1/admins/knowledge-base/articles/:id` | Admin Knowledge Base Controller delete Article | [`knowledge-base.md`](./knowledge-base.md#admin-knowledge-base-controller-delete-article) |
+| `GET` | `/v1/admins/knowledge-base/articles` | Admin Knowledge Base Controller articles | [`knowledge-base.md`](./knowledge-base.md#admin-knowledge-base-controller-articles) |
+| `POST` | `/v1/admins/knowledge-base/articles` | Admin Knowledge Base Controller create Article | [`knowledge-base.md`](./knowledge-base.md#admin-knowledge-base-controller-create-article) |
+| `GET` | `/v1/knowledge-base/categories` | List published help-center categories | [`knowledge-base.md`](./knowledge-base.md#list-published-help-center-categories) |
+| `GET` | `/v1/knowledge-base/articles/:slug` | Get a published help-center article by slug | [`knowledge-base.md`](./knowledge-base.md#get-a-published-help-center-article-by-slug) |
+| `POST` | `/v1/knowledge-base/articles/:id/feedback` | Mark a published article helpful or not helpful | [`knowledge-base.md`](./knowledge-base.md#mark-a-published-article-helpful-or-not-helpful) |
+| `GET` | `/v1/knowledge-base/articles` | Search and list published help-center articles | [`knowledge-base.md`](./knowledge-base.md#search-and-list-published-help-center-articles) |
 | `POST` | `/v1/admins/setup` | Create the first super admin account (one-time only) | [`admin.md`](./admin.md#create-the-first-super-admin-account-one-time-only-) |
 | `GET` | `/v1/admins/profile` | Get own admin profile | [`admin.md`](./admin.md#get-own-admin-profile) |
 | `PATCH` | `/v1/admins/profile` | Update own admin profile | [`admin.md`](./admin.md#update-own-admin-profile) |
 | `PATCH` | `/v1/admins/change-password` | Change own admin password | [`admin.md`](./admin.md#change-own-admin-password) |
 | `GET` | `/v1/admins/permissions` | List all available admin permissions | [`admin.md`](./admin.md#list-all-available-admin-permissions) |
+| `PATCH` | `/v1/admins/roles/:id/permissions` | Update permissions on an admin role (super-only) | [`admin.md`](./admin.md#update-permissions-on-an-admin-role-super-only-) |
+| `DELETE` | `/v1/admins/roles/:id` | Delete an admin role (super-only) | [`admin.md`](./admin.md#delete-an-admin-role-super-only-) |
+| `GET` | `/v1/admins/roles` | List all admin roles (super-only) | [`admin.md`](./admin.md#list-all-admin-roles-super-only-) |
+| `POST` | `/v1/admins/roles` | Create a new admin role (super-only) | [`admin.md`](./admin.md#create-a-new-admin-role-super-only-) |
 | `GET` | `/v1/admins/:id` | Get admin detail by ID (super-only) | [`admin.md`](./admin.md#get-admin-detail-by-id-super-only-) |
 | `PATCH` | `/v1/admins/:id` | Update admin account — role, status, profile (super-only) | [`admin.md`](./admin.md#update-admin-account-role-status-profile-super-only-) |
 | `DELETE` | `/v1/admins/:id` | Delete an admin account (super-only) | [`admin.md`](./admin.md#delete-an-admin-account-super-only-) |
@@ -178,6 +91,9 @@ Auto-generated from the Postman API collection for Greenmouse CRM platform backe
 | `GET` | `/v1/companies` | Get all companies | [`crm.md`](./crm.md#get-all-companies) |
 | `GET` | `/v1/contacts/export` | Export contacts to CSV (streamed download) | [`crm.md`](./crm.md#export-contacts-to-csv-streamed-download-) |
 | `POST` | `/v1/contacts/:id/notes` | Add a note to a contact | [`crm.md`](./crm.md#add-a-note-to-a-contact) |
+| `GET` | `/v1/contacts/:id/notes` | List append-only contact notes | [`crm.md`](./crm.md#list-append-only-contact-notes) |
+| `POST` | `/v1/contacts/:id/interactions` | Record a contact call, email or meeting | [`crm.md`](./crm.md#record-a-contact-call-email-or-meeting) |
+| `GET` | `/v1/contacts/:id/interactions` | List contact interactions | [`crm.md`](./crm.md#list-contact-interactions) |
 | `GET` | `/v1/contacts/:id` | Get a contact by ID | [`crm.md`](./crm.md#get-a-contact-by-id) |
 | `PATCH` | `/v1/contacts/:id` | Update a contact | [`crm.md`](./crm.md#update-a-contact) |
 | `DELETE` | `/v1/contacts/:id` | Delete a contact | [`crm.md`](./crm.md#delete-a-contact) |
@@ -198,6 +114,7 @@ Auto-generated from the Postman API collection for Greenmouse CRM platform backe
 | `POST` | `/v1/categories` | Create a new category | [`catalog.md`](./catalog.md#create-a-new-category) |
 | `GET` | `/v1/categories` | Get all categories | [`catalog.md`](./catalog.md#get-all-categories) |
 | `GET` | `/v1/products/export` | Export products to CSV (streamed download, mirrors list filters) | [`catalog.md`](./catalog.md#export-products-to-csv-streamed-download-mirrors-list-filters-) |
+| `GET` | `/v1/products/:id/stock-movements` | List immutable stock movement history | [`catalog.md`](./catalog.md#list-immutable-stock-movement-history) |
 | `PATCH` | `/v1/products/:id/stock` | Adjust stock quantity (positive to add, negative to subtract) | [`catalog.md`](./catalog.md#adjust-stock-quantity-positive-to-add-negative-to-subtract-) |
 | `GET` | `/v1/products/:id` | Get a product by ID | [`catalog.md`](./catalog.md#get-a-product-by-id) |
 | `PATCH` | `/v1/products/:id` | Update a product | [`catalog.md`](./catalog.md#update-a-product) |
@@ -215,12 +132,17 @@ Auto-generated from the Postman API collection for Greenmouse CRM platform backe
 | `POST` | `/v1/services/import` | Bulk import services from CSV (sync, ≤2MB / 1000 rows, all-or-nothing) | [`catalog.md`](./catalog.md#bulk-import-services-from-csv-sync-2mb-1000-rows-all-or-nothing-) |
 | `POST` | `/v1/services` | Create a new service | [`catalog.md`](./catalog.md#create-a-new-service) |
 | `GET` | `/v1/services` | Get all services | [`catalog.md`](./catalog.md#get-all-services) |
+| `GET` | `/v1/financial-categories/:id` | Get a company financial category | [`finance.md`](./finance.md#get-a-company-financial-category) |
+| `PATCH` | `/v1/financial-categories/:id` | Rename, archive or reactivate a company financial category (kind is immutable) | [`finance.md`](./finance.md#rename-archive-or-reactivate-a-company-financial-category-kind-is-immutable-) |
+| `POST` | `/v1/financial-categories` | Create a company income or expense category | [`finance.md`](./finance.md#create-a-company-income-or-expense-category) |
+| `GET` | `/v1/financial-categories` | List company financial categories (including archived unless filtered) | [`finance.md`](./finance.md#list-company-financial-categories-including-archived-unless-filtered-) |
 | `PATCH` | `/v1/income/:id/status` | Update income status | [`finance.md`](./finance.md#update-income-status) |
 | `GET` | `/v1/income/:id` | Get an income record by ID | [`finance.md`](./finance.md#get-an-income-record-by-id) |
 | `PATCH` | `/v1/income/:id` | Update an income record | [`finance.md`](./finance.md#update-an-income-record) |
 | `DELETE` | `/v1/income/:id` | Delete an income record | [`finance.md`](./finance.md#delete-an-income-record) |
 | `POST` | `/v1/income` | Create an income record | [`finance.md`](./finance.md#create-an-income-record) |
 | `GET` | `/v1/income` | Get all income records | [`finance.md`](./finance.md#get-all-income-records) |
+| `POST` | `/v1/expenses/:id/receipt` | Upload or replace a single expense receipt | [`finance.md`](./finance.md#upload-or-replace-a-single-expense-receipt) |
 | `PATCH` | `/v1/expenses/:id/status` | Update expense status | [`finance.md`](./finance.md#update-expense-status) |
 | `GET` | `/v1/expenses/:id` | Get an expense record by ID | [`finance.md`](./finance.md#get-an-expense-record-by-id) |
 | `PATCH` | `/v1/expenses/:id` | Update an expense record | [`finance.md`](./finance.md#update-an-expense-record) |
@@ -255,15 +177,6 @@ Auto-generated from the Postman API collection for Greenmouse CRM platform backe
 | `DELETE` | `/v1/orders/:id` | Cancel / delete an order | [`sales.md`](./sales.md#cancel-delete-an-order) |
 | `POST` | `/v1/orders` | Create a new order | [`sales.md`](./sales.md#create-a-new-order) |
 | `GET` | `/v1/orders` | List all orders | [`sales.md`](./sales.md#list-all-orders) |
-| `PATCH` | `/v1/pipelines/:id/stages/:stageId` | Update a pipeline stage | [`sales.md`](./sales.md#update-a-pipeline-stage) |
-| `DELETE` | `/v1/pipelines/:id/stages/:stageId` | Delete a pipeline stage | [`sales.md`](./sales.md#delete-a-pipeline-stage) |
-| `PATCH` | `/v1/pipelines/:id/stages/reorder` | Reorder pipeline stages | [`sales.md`](./sales.md#reorder-pipeline-stages) |
-| `POST` | `/v1/pipelines/:id/stages` | Add a stage to a pipeline | [`sales.md`](./sales.md#add-a-stage-to-a-pipeline) |
-| `GET` | `/v1/pipelines/:id` | Get a pipeline with stages | [`sales.md`](./sales.md#get-a-pipeline-with-stages) |
-| `PATCH` | `/v1/pipelines/:id` | Update a pipeline | [`sales.md`](./sales.md#update-a-pipeline) |
-| `DELETE` | `/v1/pipelines/:id` | Delete a pipeline | [`sales.md`](./sales.md#delete-a-pipeline) |
-| `POST` | `/v1/pipelines` | Create a new pipeline | [`sales.md`](./sales.md#create-a-new-pipeline) |
-| `GET` | `/v1/pipelines` | List all pipelines | [`sales.md`](./sales.md#list-all-pipelines) |
 | `GET` | `/v1/quotes/stats` | Get quote statistics by status | [`sales.md`](./sales.md#get-quote-statistics-by-status) |
 | `PATCH` | `/v1/quotes/:id/status` | Update quote status | [`sales.md`](./sales.md#update-quote-status) |
 | `POST` | `/v1/quotes/:id/convert` | Convert a quote to an invoice or an order | [`sales.md`](./sales.md#convert-a-quote-to-an-invoice-or-an-order) |
@@ -281,6 +194,15 @@ Auto-generated from the Postman API collection for Greenmouse CRM platform backe
 | `POST` | `/v1/leads/import` | Bulk import leads from CSV (sync, ≤2MB / 1000 rows, all-or-nothing) | [`sales.md`](./sales.md#bulk-import-leads-from-csv-sync-2mb-1000-rows-all-or-nothing-) |
 | `POST` | `/v1/leads` | Create a new lead | [`sales.md`](./sales.md#create-a-new-lead) |
 | `GET` | `/v1/leads` | List all leads | [`sales.md`](./sales.md#list-all-leads) |
+| `PATCH` | `/v1/pipelines/:id/stages/:stageId` | Update a pipeline stage | [`sales.md`](./sales.md#update-a-pipeline-stage) |
+| `DELETE` | `/v1/pipelines/:id/stages/:stageId` | Delete a pipeline stage | [`sales.md`](./sales.md#delete-a-pipeline-stage) |
+| `PATCH` | `/v1/pipelines/:id/stages/reorder` | Reorder pipeline stages | [`sales.md`](./sales.md#reorder-pipeline-stages) |
+| `POST` | `/v1/pipelines/:id/stages` | Add a stage to a pipeline | [`sales.md`](./sales.md#add-a-stage-to-a-pipeline) |
+| `GET` | `/v1/pipelines/:id` | Get a pipeline with stages | [`sales.md`](./sales.md#get-a-pipeline-with-stages) |
+| `PATCH` | `/v1/pipelines/:id` | Update a pipeline | [`sales.md`](./sales.md#update-a-pipeline) |
+| `DELETE` | `/v1/pipelines/:id` | Delete a pipeline | [`sales.md`](./sales.md#delete-a-pipeline) |
+| `POST` | `/v1/pipelines` | Create a new pipeline | [`sales.md`](./sales.md#create-a-new-pipeline) |
+| `GET` | `/v1/pipelines` | List all pipelines | [`sales.md`](./sales.md#list-all-pipelines) |
 | `GET` | `/v1/deals/kanban/list` | Get kanban view for a pipeline | [`sales.md`](./sales.md#get-kanban-view-for-a-pipeline) |
 | `PATCH` | `/v1/deals/:id/stage` | Move deal to a different stage (kanban drag-drop) | [`sales.md`](./sales.md#move-deal-to-a-different-stage-kanban-drag-drop-) |
 | `POST` | `/v1/deals/:id/mark-won` | Mark deal as won | [`sales.md`](./sales.md#mark-deal-as-won) |
@@ -295,12 +217,18 @@ Auto-generated from the Postman API collection for Greenmouse CRM platform backe
 | `GET` | `/v1/dashboard/balance` | Balance summary — total, today, this month | [`dashboard.md`](./dashboard.md#balance-summary-total-today-this-month) |
 | `GET` | `/v1/dashboard/profit` | Monthly profit chart (income − expense) for a given year | [`dashboard.md`](./dashboard.md#monthly-profit-chart-income-expense-for-a-given-year) |
 | `GET` | `/v1/dashboard/user-analytics` | User analytics donut chart — users, products, expenses, revenue | [`dashboard.md`](./dashboard.md#user-analytics-donut-chart-users-products-expenses-revenue) |
+| `GET` | `/v1/reports/profit-loss` | Detailed Paid-ledger profit and loss | [`reports.md`](./reports.md#detailed-paid-ledger-profit-and-loss) |
+| `GET` | `/v1/reports/revenue` | Paid income-ledger revenue by month/category | [`reports.md`](./reports.md#paid-income-ledger-revenue-by-month-category) |
+| `GET` | `/v1/reports/expenses` | Paid expense-ledger report by business date and category | [`reports.md`](./reports.md#paid-expense-ledger-report-by-business-date-and-category) |
+| `GET` | `/v1/reports/invoice-revenue` | Currency-filtered invoice revenue and remaining balances | [`reports.md`](./reports.md#currency-filtered-invoice-revenue-and-remaining-balances) |
+| `GET` | `/v1/reports/outstanding-invoices` | Paginated current outstanding invoice balances | [`reports.md`](./reports.md#paginated-current-outstanding-invoice-balances) |
 | `GET` | `/v1/reports/pipeline-funnel` | Deals funnel by stage with counts and values | [`reports.md`](./reports.md#deals-funnel-by-stage-with-counts-and-values) |
 | `GET` | `/v1/reports/win-rate` | Win/loss counts, win rate and monthly trend | [`reports.md`](./reports.md#win-loss-counts-win-rate-and-monthly-trend) |
 | `GET` | `/v1/reports/avg-deal` | Average won-deal value with monthly series | [`reports.md`](./reports.md#average-won-deal-value-with-monthly-series) |
 | `GET` | `/v1/reports/cycle-time` | Average days to close won deals with monthly series | [`reports.md`](./reports.md#average-days-to-close-won-deals-with-monthly-series) |
 | `GET` | `/v1/reports/revenue-trend` | Monthly invoiced vs received with outstanding total | [`reports.md`](./reports.md#monthly-invoiced-vs-received-with-outstanding-total) |
 | `GET` | `/v1/reports/stage-dwell` | Average time deals spend in each pipeline stage | [`reports.md`](./reports.md#average-time-deals-spend-in-each-pipeline-stage) |
+| `POST` | `/v1/tickets/:id/escalate` | Organization owner explicitly shares a ticket with platform support | [`support.md`](./support.md#organization-owner-explicitly-shares-a-ticket-with-platform-support) |
 | `PATCH` | `/v1/tickets/:id/status` | Change ticket status | [`support.md`](./support.md#change-ticket-status) |
 | `PATCH` | `/v1/tickets/:id/assign` | Assign ticket to a staff member | [`support.md`](./support.md#assign-ticket-to-a-staff-member) |
 | `POST` | `/v1/tickets/:id/messages` | Reply to a ticket thread | [`support.md`](./support.md#reply-to-a-ticket-thread) |
@@ -312,12 +240,12 @@ Auto-generated from the Postman API collection for Greenmouse CRM platform backe
 | `GET` | `/v1/notifications/unread-count` | Get unread notification count | [`notifications.md`](./notifications.md#get-unread-notification-count) |
 | `PATCH` | `/v1/notifications/:id/read` | Mark a single notification as read | [`notifications.md`](./notifications.md#mark-a-single-notification-as-read) |
 | `PATCH` | `/v1/notifications/read-all` | Mark all notifications as read | [`notifications.md`](./notifications.md#mark-all-notifications-as-read) |
-| `GET` | `/v1/notifications` | List notifications for the current tenant | [`notifications.md`](./notifications.md#list-notifications-for-the-current-tenant) |
+| `GET` | `/v1/notifications` | List notifications for the current company | [`notifications.md`](./notifications.md#list-notifications-for-the-current-company) |
 | `POST` | `/v1/multimedia/upload` | Upload a file (image, video, or PDF) to Cloudinary | [`media.md`](./media.md#upload-a-file-image-video-or-pdf-to-cloudinary) |
-| `GET` | `/v1/import/jobs/:id/events` | Stream import job progress (SSE, ?token=<jwt>) | [`import.md`](./import.md#stream-import-job-progress-sse-token-jwt-) |
 | `GET` | `/v1/import/jobs/:id` | Get import job status (polling fallback) | [`import.md`](./import.md#get-import-job-status-polling-fallback-) |
 | `GET` | `/v1/import/jobs` | List my recent import jobs (polling fallback) | [`import.md`](./import.md#list-my-recent-import-jobs-polling-fallback-) |
 | `GET` | `/v1/import/contracts/:entity` | Machine-readable import contract (headers, field types, limits, live plan/quota) for building the frontend uploader | [`import.md`](./import.md#machine-readable-import-contract-headers-field-types-limits-live-plan-quota-for-building-the-frontend-uploader) |
 | `GET` | `/v1/import/templates/:entity` | Download CSV template for an entity | [`import.md`](./import.md#download-csv-template-for-an-entity) |
 | `GET` | `/v1/reminders/preferences` | Get my reminder preferences (defaults if never set) | [`reminders.md`](./reminders.md#get-my-reminder-preferences-defaults-if-never-set-) |
 | `PATCH` | `/v1/reminders/preferences` | Update my reminder preferences | [`reminders.md`](./reminders.md#update-my-reminder-preferences) |
+| `POST` | `/v1/internal/cron/email` | Cron Controller process Email | [`internal.md`](./internal.md#cron-controller-process-email) |

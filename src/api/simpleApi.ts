@@ -2,11 +2,11 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import {
   get_user_value,
-  get_profile_value,
   set_user_value,
   clear_user,
 } from "@/store/authStore";
 import { toast } from "sonner";
+import { documentedEndpoints } from "./endpointManifest";
 
 export interface ApiResponse<T = any> {
   message: string;
@@ -35,6 +35,29 @@ const rawUrl =
   "https://crmgrenmouse-backend-api.onrender.com/v1/";
 export const new_url = rawUrl.endsWith("/") ? rawUrl : `${rawUrl}/`;
 
+export class UnsupportedApiEndpointError extends Error {
+  constructor(method: string, path: string) {
+    super(`${method.toUpperCase()} ${path} is not in the current Office CRM API collection.`);
+    this.name = "UnsupportedApiEndpointError";
+  }
+}
+
+const endpointPatterns = documentedEndpoints.map((signature) => {
+  const [method, path] = signature.split(" ");
+  const pattern = path.split("/").map((segment) =>
+    segment.startsWith(":") ? "[^/]+" : segment.replace(/[^a-zA-Z0-9_-]/g, "\\$&")
+  ).join("/");
+  return { method, pattern: new RegExp(`^${pattern}$`) };
+});
+
+export const isSupportedApiEndpoint = (method: string, url: string) => {
+  const pathname = new URL(url, new_url).pathname.replace(/\/$/, "") || "/";
+  const path = pathname === "/v1" || pathname.startsWith("/v1/")
+    ? pathname
+    : `/v1${pathname}`;
+  return endpointPatterns.some((entry) => entry.method === method.toUpperCase() && entry.pattern.test(path));
+};
+
 const apiClient = axios.create({
   baseURL: new_url,
   withCredentials: true,
@@ -62,6 +85,10 @@ apiClient.interceptors.request.use((config) => {
       config.url = config.url.replace(/^admin\//, "admins/");
     }
   }
+  if (config.url && !isSupportedApiEndpoint(config.method || "get", config.url)) {
+    const pathname = new URL(config.url, new_url).pathname;
+    throw new UnsupportedApiEndpointError(config.method || "get", pathname);
+  }
   return config;
 });
 
@@ -73,16 +100,7 @@ const refreshAccessToken = async (): Promise<string | null> => {
     throw new Error("No refresh token available");
   }
 
-  const profile = get_profile_value();
-  const userType = (
-    user.user?.userType ||
-    user.profile?.userType ||
-    profile?.userType ||
-    ""
-  ).toLowerCase();
-
-  const isAdmin = userType === "admin";
-  const refreshEndpoint = isAdmin ? "auth/refresh" : "tenant/auth/refresh";
+  const refreshEndpoint = "auth/refresh";
 
   const { data } = await axios.post(`${new_url}${refreshEndpoint}`, {
     refreshToken: user.refreshToken,
@@ -121,12 +139,10 @@ apiClient.interceptors.response.use(
     const url = original?.url || "";
     const isAuthEndpoint =
       url.includes("auth/refresh") ||
-      url.includes("tenant/auth/refresh") ||
       url.includes("auth/login") ||
       url.includes("auth/admin/login") ||
-      url.includes("tenant/auth/login") ||
-      url.includes("auth/users/logout") ||
-      url.includes("tenant/auth/logout");
+      url.includes("auth/staff/login") ||
+      url.includes("auth/logout");
 
     if (
       error.response?.status !== 401 ||
