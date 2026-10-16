@@ -62,22 +62,22 @@ export default function TenantDashStats() {
             className="card bg-base-100 shadow-sm hover:shadow-md border border-base-200 transition-all duration-200 hover:-translate-y-0.5"
           >
             <div className="card-body p-4">
+              <div
+                className={`p-2.5 w-fit rounded-xl bg-gradient-to-br ${card.color}`}
+              >
+                <Icon className="size-5" />
+              </div>
               <div className="flex items-start justify-between">
                 <div className="space-y-1">
-                  <span className="text-xs font-semibold text-base-content/60 uppercase tracking-wider">
-                    {card.title}
-                  </span>
                   <p className="text-2xl font-semibold text-base-content">
                     {card.value}
                   </p>
-                  <p className="text-xs text-base-content/60 font-medium">
+                  <span className=" font-semibold text-sm  text-base-content/80 uppercase tracking-wider">
+                    {card.title}
+                  </span>
+                  {/*<p className="text-xs text-base-content/60 font-medium">
                     {card.subtitle}
-                  </p>
-                </div>
-                <div
-                  className={`p-2.5 rounded-xl bg-gradient-to-br ${card.color}`}
-                >
-                  <Icon className="size-5" />
+                  </p>*/}
                 </div>
               </div>
             </div>
