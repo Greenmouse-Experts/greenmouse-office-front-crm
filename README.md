@@ -12,7 +12,7 @@ pnpm start
 ## cPanel deployment
 
 Pushes to `main` deploy the production build through `.github/workflows/deploy-cpanel.yml`.
-The `production` GitHub environment must provide these secrets:
+The repository must provide these GitHub Actions secrets:
 
 - `CPANEL_SSH_KEY` and optionally `CPANEL_KNOWN_HOSTS`
 - `CPANEL_HOST`, `CPANEL_PORT` (optional; defaults to `22`), and `CPANEL_USER`
