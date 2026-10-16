@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import CustomTable, { type columnType } from "@/components/tables/CustomTable";
@@ -10,6 +11,7 @@ import ContainerRow from "@/components/ContainerRow";
 import ActionButton from "@/components/buttons/ActionButton";
 import Modal from "@/components/DialogModal";
 import SimpleInput from "@/components/inputs/SimpleInput";
+import SimpleTextArea from "@/components/inputs/SimpleTextArea";
 import LocalSelect from "@/components/inputs/LocalSelect";
 import PageLoader from "@/components/layout/PageLoader";
 import { useSearch } from "@/stores/data";
@@ -43,8 +45,9 @@ const defaultValues = (): QuoteFormValues => ({
 });
 
 const getErrorMessage = (error: unknown, fallback: string) => {
-  const message = (error as { response?: { data?: { message?: string | string[] } } })
-    ?.response?.data?.message;
+  const message = (
+    error as { response?: { data?: { message?: string | string[] } } }
+  )?.response?.data?.message;
   return (Array.isArray(message) ? message.join(". ") : message) || fallback;
 };
 
@@ -64,13 +67,16 @@ const renderStatus = (status: string) => {
         : "badge-info";
 
   return (
-    <span className={`badge badge-sm badge-soft font-medium capitalize ${color}`}>
+    <span
+      className={`badge badge-sm badge-soft font-medium capitalize ${color}`}
+    >
       {normalized}
     </span>
   );
 };
 
 function RouteComponent() {
+  const queryClient = useQueryClient();
   const query = useQuotes();
   const createQuote = useCreateQuote();
   const updateQuote = useUpdateQuote();
@@ -132,11 +138,15 @@ function RouteComponent() {
         await createQuote.mutateAsync({ ...quote, status: values.status });
         toast.success("Quote created successfully.");
       }
+      await queryClient.invalidateQueries({ queryKey: ["quotes"] });
+      await query.refetch();
       modal.closeModal();
       methods.reset(defaultValues());
       setEditingQuote(null);
     } catch (error) {
-      toast.error(getErrorMessage(error, "Failed to save quote. Please try again."));
+      toast.error(
+        getErrorMessage(error, "Failed to save quote. Please try again."),
+      );
     }
   };
 
@@ -144,6 +154,8 @@ function RouteComponent() {
     if (!window.confirm(`Delete quote for "${quote.clientName}"?`)) return;
     try {
       await deleteQuote.mutateAsync(quote.id);
+      await queryClient.invalidateQueries({ queryKey: ["quotes"] });
+      await query.refetch();
       toast.success("Quote deleted.");
     } catch (error) {
       toast.error(getErrorMessage(error, "Failed to delete quote."));
@@ -180,7 +192,10 @@ function RouteComponent() {
       key: "description",
       label: "Description",
       render: (value: string) => (
-        <span className="block max-w-xs truncate text-sm text-base-content/70" title={value || ""}>
+        <span
+          className="block max-w-xs truncate text-sm text-base-content/70"
+          title={value || ""}
+        >
           {value || "—"}
         </span>
       ),
@@ -197,7 +212,9 @@ function RouteComponent() {
     {
       key: "delete",
       label: "Delete Quote",
-      render: () => <span className="font-medium text-error">Delete Quote</span>,
+      render: () => (
+        <span className="font-medium text-error">Delete Quote</span>
+      ),
       action: handleDelete,
     },
   ];
@@ -232,15 +249,18 @@ function RouteComponent() {
               placeholder="Customer or company name"
               {...methods.register("clientName", {
                 required: "Client name is required",
-                validate: (value) => !!value.trim() || "Client name is required",
+                validate: (value) =>
+                  !!value.trim() || "Client name is required",
               })}
             />
-            <SimpleInput
+            <SimpleTextArea
               label="Description"
               placeholder="What is this quote for?"
+              rows={3}
               {...methods.register("description", {
                 required: "Description is required",
-                validate: (value) => !!value.trim() || "Description is required",
+                validate: (value) =>
+                  !!value.trim() || "Description is required",
               })}
             />
             <LocalSelect label="Status" {...methods.register("status")}>
@@ -260,30 +280,53 @@ function RouteComponent() {
               <button type="button" className="btn" onClick={modal.closeModal}>
                 Cancel
               </button>
-              <button type="submit" className="btn btn-primary" disabled={isSaving}>
-                {isSaving ? "Saving..." : editingQuote ? "Save Changes" : "Add Quote"}
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={isSaving}
+              >
+                {isSaving
+                  ? "Saving..."
+                  : editingQuote
+                    ? "Save Changes"
+                    : "Add Quote"}
               </button>
             </div>
           </form>
         </FormProvider>
       </Modal>
-      <PageHeader title="Quotes" description="Create and manage customer quotes.">
+      <PageHeader
+        title="Quotes"
+        description="Create and manage customer quotes."
+      >
         <ActionButton onClick={openCreate}>Add Quote</ActionButton>
       </PageHeader>
-      <SimpleContainer title={<>Quotes {query.data && `(${query.data.length})`}</>}>
-        <ContainerRow searchProps={searchProps} showSearch searchPlaceholder="Search quotes..." />
+      <SimpleContainer
+        title={<>Quotes {query.data && `(${filteredQuotes.length})`}</>}
+      >
+        <ContainerRow
+          searchProps={searchProps}
+          showSearch
+          searchPlaceholder="Search quotes..."
+        />
         <PageLoader
           query={query}
           emptyState={{
             title: "No Quotes Yet",
-            description: "Create a quote to start tracking proposals for your customers.",
+            description:
+              "Create a quote to start tracking proposals for your customers.",
             actionText: "Add Quote",
             onAction: openCreate,
           }}
         >
           {() =>
             filteredQuotes.length > 0 ? (
-              <CustomTable data={filteredQuotes} columns={columns} actions={actions} ring={false} />
+              <CustomTable
+                data={filteredQuotes}
+                columns={columns}
+                actions={actions}
+                ring={false}
+              />
             ) : (
               <div className="rounded-b-box border border-base-200 bg-base-100 px-4 py-10 text-center text-sm text-base-content/70">
                 No quotes match your search.
