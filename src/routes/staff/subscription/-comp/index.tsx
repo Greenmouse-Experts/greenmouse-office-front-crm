@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { createFileRoute } from "@tanstack/react-router";
 import PaystackPop from "@paystack/inline-js";
 import { getPaystackAccessCode } from "../-checkout";
 import { priceForCycle } from "../-pricing";
@@ -31,9 +30,6 @@ import {
 } from "lucide-react";
 import QueryCompLayout from "@/components/layout/QueryCompLayout";
 
-export const Route = createFileRoute("/staff/subscription/")({
-  component: RouteComponent,
-});
 
 const PENDING_PAYMENT_KEY = "tenant-subscription-pending-reference";
 
@@ -43,7 +39,7 @@ const formatDate = (value?: string | null) => {
   return Number.isNaN(parsed.getTime()) ? "—" : parsed.toLocaleDateString();
 };
 
-function RouteComponent() {
+export default function RouteComponent() {
   const [billingCycleSelection, setBillingCycleSelection] = useState<
     "monthly" | "yearly" | null
   >(null);

@@ -144,7 +144,7 @@ export function SubscriptionCallback() {
               </button>
             )}
             <Link
-              to="/staff/subscription"
+              to="/staff"
               className={`btn ${state === "success" ? "btn-primary" : "btn-ghost"}`}
             >
               Back to subscription

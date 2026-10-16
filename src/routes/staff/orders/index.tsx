@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Plus, Trash2 } from "lucide-react";
@@ -85,6 +86,7 @@ const statusBadge = (status?: string) => {
 };
 
 function RouteComponent() {
+  const queryClient = useQueryClient();
   const ordersQuery = useOrders();
   const productsQuery = useProducts();
   const contactsQuery = useContacts();
@@ -226,6 +228,8 @@ function RouteComponent() {
         await createOrder.mutateAsync(payload);
         toast.success("Order created successfully.");
       }
+      await queryClient.invalidateQueries({ queryKey: ["orders"] });
+      await ordersQuery.refetch();
       formModalRef.current?.close();
       setEditingOrder(null);
     } catch (error) {
@@ -238,6 +242,8 @@ function RouteComponent() {
     try {
       await deleteOrder.mutateAsync(order.id);
       toast.success("Order deleted.");
+      await queryClient.invalidateQueries({ queryKey: ["orders"] });
+      await ordersQuery.refetch();
       if (selectedOrderId === order.id) detailsModalRef.current?.close();
     } catch (error) {
       toast.error(errorMessage(error, "Failed to delete order."));
@@ -398,88 +404,78 @@ function RouteComponent() {
             )}
 
             <div className="space-y-3 border-t border-base-200 pt-4">
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="text-sm font-semibold">Order items</h4>
-                  <p className="text-xs text-base-content/70">Choose products and adjust quantities or prices.</p>
+                  <h4 className="text-sm font-semibold">Order Items</h4>
+                  <p className="text-xs text-base-content/70">Add products, quantities, and negotiated unit prices.</p>
                 </div>
-                <button type="button" className="btn btn-sm btn-ghost text-primary" onClick={() => setItems((current) => [...current, emptyItem()])}>
-                  <Plus className="size-4" /> Add item
+                <button
+                  type="button"
+                  className="btn btn-outline btn-xs"
+                  onClick={() => setItems((current) => [...current, emptyItem()])}
+                >
+                  <Plus className="size-3.5" /> Add Item
                 </button>
               </div>
+
               {productsQuery.isLoading ? (
-                <p className="py-4 text-sm text-base-content/70">Loading products...</p>
+                <div className="py-4 text-center text-sm text-base-content/70">Loading product list...</div>
               ) : productsQuery.isError ? (
-                <div className="flex items-center justify-between gap-3 rounded-lg bg-error/10 p-3 text-sm text-error">
-                  <span>Products could not be loaded.</span>
-                  <button type="button" className="btn btn-sm btn-outline" onClick={() => productsQuery.refetch()}>Try again</button>
+                <div className="rounded-lg border border-error/20 bg-error/10 p-3 text-sm text-error">
+                  Products could not be loaded. Please reload the page before creating an order.
                 </div>
               ) : products.length === 0 ? (
-                <p className="rounded-lg bg-base-200 p-3 text-sm text-base-content/70">
-                  Add a product before creating an order. <Link to="/staff/products" className="font-medium text-primary underline">View products</Link>
-                </p>
+                <div className="rounded-lg border border-warning/20 bg-warning/10 p-3 text-sm text-warning-content">
+                  No products are available yet. Add products in the catalog before creating an order.
+                </div>
               ) : (
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {items.map((item, index) => (
-                    <div key={index} className="rounded-lg border border-base-200 bg-base-200/30 p-3">
-                      <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_5rem_7rem_auto] sm:items-end">
-                        <div>
-                          <label className="mb-1 block text-xs font-medium" htmlFor={`order-product-${index}`}>Product</label>
-                          <select
-                            id={`order-product-${index}`}
-                            value={item.productId}
-                            onChange={(event) => changeProduct(index, event.target.value)}
-                            className="select select-sm select-bordered w-full"
-                            required
-                          >
-                            <option value="">Select product</option>
-                            {products.map((product) => (
-                              <option key={product.id} value={product.id}>
-                                {product.name}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                        <div>
-                          <label className="mb-1 block text-xs font-medium" htmlFor={`order-qty-${index}`}>Qty</label>
-                          <input
-                            id={`order-qty-${index}`}
-                            type="number"
-                            min="1"
-                            step="1"
-                            value={item.qty}
-                            onChange={(event) => changeItemNumber(index, "qty", Number(event.target.value))}
-                            className="input input-sm input-bordered w-full"
-                            required
-                          />
-                        </div>
-                        <div>
-                          <label className="mb-1 block text-xs font-medium" htmlFor={`order-price-${index}`}>Unit price</label>
-                          <input
-                            id={`order-price-${index}`}
-                            type="number"
-                            min="0"
-                            step="0.01"
-                            value={item.unitPrice}
-                            onChange={(event) => changeItemNumber(index, "unitPrice", Number(event.target.value))}
-                            className="input input-sm input-bordered w-full"
-                            required
-                          />
-                        </div>
-                        <button
-                          type="button"
-                          aria-label={`Remove item ${index + 1}`}
-                          title="Remove item"
-                          disabled={items.length === 1}
-                          onClick={() => setItems((current) => current.filter((_, itemIndex) => itemIndex !== index))}
-                          className="btn btn-sm btn-ghost justify-self-end text-error"
-                        >
-                          <Trash2 className="size-4" />
-                        </button>
-                      </div>
-                      <p className="mt-2 text-right text-xs font-medium tabular-nums text-base-content/70">
-                        Line total: {formatMoney((Number(item.qty) || 0) * (Number(item.unitPrice) || 0), currency)}
-                      </p>
+                    <div
+                      key={index}
+                      className="grid gap-3 rounded-xl border border-base-200 bg-base-200/30 p-3 sm:grid-cols-[1.5fr_0.8fr_1fr_auto] sm:items-end"
+                    >
+                      <LocalSelect
+                        label={`Item #${index + 1}`}
+                        value={item.productId}
+                        onChange={(e) => changeProduct(index, e.target.value)}
+                      >
+                        <option value="">Select a product</option>
+                        {products.map((product) => (
+                          <option key={product.id} value={product.id}>
+                            {product.name} ({formatMoney(Number(product.price) || 0, currency)})
+                          </option>
+                        ))}
+                      </LocalSelect>
+                      <SimpleInput
+                        label="Qty"
+                        type="number"
+                        min="1"
+                        step="1"
+                        value={item.qty}
+                        onChange={(e) => changeItemNumber(index, "qty", Math.max(1, Number(e.target.value) || 1))}
+                      />
+                      <SimpleInput
+                        label="Unit Price"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={item.unitPrice}
+                        onChange={(e) =>
+                          changeItemNumber(index, "unitPrice", Math.max(0, Number(e.target.value) || 0))
+                        }
+                      />
+                      <button
+                        type="button"
+                        aria-label="Remove item"
+                        disabled={items.length === 1}
+                        className="btn btn-ghost btn-sm text-error self-end disabled:opacity-30"
+                        onClick={() =>
+                          setItems((current) => current.filter((_, itemIndex) => itemIndex !== index))
+                        }
+                      >
+                        <Trash2 className="size-4" />
+                      </button>
                     </div>
                   ))}
                 </div>
@@ -488,14 +484,14 @@ function RouteComponent() {
 
             <div className="grid gap-4 border-t border-base-200 pt-4 sm:grid-cols-2">
               <SimpleInput
-                label={`Discount (${currency})`}
+                label="Discount"
                 type="number"
                 min="0"
                 step="0.01"
                 {...methods.register("discount", { valueAsNumber: true, min: 0 })}
               />
               <SimpleInput
-                label={`Tax (${currency})`}
+                label="Tax"
                 type="number"
                 min="0"
                 step="0.01"

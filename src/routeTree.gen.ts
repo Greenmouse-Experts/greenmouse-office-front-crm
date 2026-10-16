@@ -21,7 +21,6 @@ import { Route as AuthRegisterRouteRouteImport } from './routes/auth/register/ro
 import { Route as AdminSettingsRouteRouteImport } from './routes/admin/settings/route'
 import { Route as StaffUsersIndexRouteImport } from './routes/staff/users/index'
 import { Route as StaffSupportIndexRouteImport } from './routes/staff/support/index'
-import { Route as StaffSubscriptionIndexRouteImport } from './routes/staff/subscription/index'
 import { Route as StaffSettingsIndexRouteImport } from './routes/staff/settings/index'
 import { Route as StaffReportsIndexRouteImport } from './routes/staff/reports/index'
 import { Route as StaffProductsIndexRouteImport } from './routes/staff/products/index'
@@ -129,11 +128,6 @@ const StaffUsersIndexRoute = StaffUsersIndexRouteImport.update({
 const StaffSupportIndexRoute = StaffSupportIndexRouteImport.update({
   id: '/support/',
   path: '/support/',
-  getParentRoute: () => StaffRouteRoute,
-} as any)
-const StaffSubscriptionIndexRoute = StaffSubscriptionIndexRouteImport.update({
-  id: '/subscription/',
-  path: '/subscription/',
   getParentRoute: () => StaffRouteRoute,
 } as any)
 const StaffSettingsIndexRoute = StaffSettingsIndexRouteImport.update({
@@ -429,7 +423,6 @@ export interface FileRoutesByFullPath {
   '/staff/products': typeof StaffProductsIndexRoute
   '/staff/reports': typeof StaffReportsIndexRoute
   '/staff/settings/': typeof StaffSettingsIndexRoute
-  '/staff/subscription': typeof StaffSubscriptionIndexRoute
   '/staff/support': typeof StaffSupportIndexRoute
   '/staff/users': typeof StaffUsersIndexRoute
   '/admin/settings/profile': typeof AdminSettingsProfileIndexRoute
@@ -486,7 +479,6 @@ export interface FileRoutesByTo {
   '/staff/products': typeof StaffProductsIndexRoute
   '/staff/reports': typeof StaffReportsIndexRoute
   '/staff/settings': typeof StaffSettingsIndexRoute
-  '/staff/subscription': typeof StaffSubscriptionIndexRoute
   '/staff/support': typeof StaffSupportIndexRoute
   '/staff/users': typeof StaffUsersIndexRoute
   '/admin/settings/profile': typeof AdminSettingsProfileIndexRoute
@@ -550,7 +542,6 @@ export interface FileRoutesById {
   '/staff/products/': typeof StaffProductsIndexRoute
   '/staff/reports/': typeof StaffReportsIndexRoute
   '/staff/settings/': typeof StaffSettingsIndexRoute
-  '/staff/subscription/': typeof StaffSubscriptionIndexRoute
   '/staff/support/': typeof StaffSupportIndexRoute
   '/staff/users/': typeof StaffUsersIndexRoute
   '/admin/settings/profile/': typeof AdminSettingsProfileIndexRoute
@@ -615,7 +606,6 @@ export interface FileRouteTypes {
     | '/staff/products'
     | '/staff/reports'
     | '/staff/settings/'
-    | '/staff/subscription'
     | '/staff/support'
     | '/staff/users'
     | '/admin/settings/profile'
@@ -672,7 +662,6 @@ export interface FileRouteTypes {
     | '/staff/products'
     | '/staff/reports'
     | '/staff/settings'
-    | '/staff/subscription'
     | '/staff/support'
     | '/staff/users'
     | '/admin/settings/profile'
@@ -735,7 +724,6 @@ export interface FileRouteTypes {
     | '/staff/products/'
     | '/staff/reports/'
     | '/staff/settings/'
-    | '/staff/subscription/'
     | '/staff/support/'
     | '/staff/users/'
     | '/admin/settings/profile/'
@@ -870,13 +858,6 @@ declare module '@tanstack/react-router' {
       path: '/support'
       fullPath: '/staff/support'
       preLoaderRoute: typeof StaffSupportIndexRouteImport
-      parentRoute: typeof StaffRouteRoute
-    }
-    '/staff/subscription/': {
-      id: '/staff/subscription/'
-      path: '/subscription'
-      fullPath: '/staff/subscription'
-      preLoaderRoute: typeof StaffSubscriptionIndexRouteImport
       parentRoute: typeof StaffRouteRoute
     }
     '/staff/settings/': {
@@ -1284,7 +1265,6 @@ interface StaffRouteRouteChildren {
   StaffOrdersIndexRoute: typeof StaffOrdersIndexRoute
   StaffProductsIndexRoute: typeof StaffProductsIndexRoute
   StaffReportsIndexRoute: typeof StaffReportsIndexRoute
-  StaffSubscriptionIndexRoute: typeof StaffSubscriptionIndexRoute
   StaffSupportIndexRoute: typeof StaffSupportIndexRoute
   StaffUsersIndexRoute: typeof StaffUsersIndexRoute
   StaffAccountsInvoicesIndexRoute: typeof StaffAccountsInvoicesIndexRoute
@@ -1320,7 +1300,6 @@ const StaffRouteRouteChildren: StaffRouteRouteChildren = {
   StaffOrdersIndexRoute: StaffOrdersIndexRoute,
   StaffProductsIndexRoute: StaffProductsIndexRoute,
   StaffReportsIndexRoute: StaffReportsIndexRoute,
-  StaffSubscriptionIndexRoute: StaffSubscriptionIndexRoute,
   StaffSupportIndexRoute: StaffSupportIndexRoute,
   StaffUsersIndexRoute: StaffUsersIndexRoute,
   StaffAccountsInvoicesIndexRoute: StaffAccountsInvoicesIndexRoute,

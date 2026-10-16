@@ -23,24 +23,19 @@ export interface QuoteQueryParams {
 export interface ConvertQuotePayload {
   target: "invoice" | "order" | string;
   contactId?: string;
-  currency?: string;
-  discount?: number;
-  tax?: number;
-  issuedDate?: string;
-  dueDate?: string;
-  notes?: string;
-  assignedTo?: string;
-  items?: any[];
 }
 
 export const useQuotes = (params?: QuoteQueryParams) => {
   return useQuery<Quote[]>({
     queryKey: ["quotes", params],
     queryFn: async () => {
-      const { data } = await apiClient.get<Quote[]>("/quotes", {
+      const { data } = await apiClient.get<any>("/quotes", {
         params,
       });
-      return data;
+      if (Array.isArray(data)) return data;
+      if (Array.isArray(data?.data)) return data.data;
+      if (Array.isArray(data?.quotes)) return data.quotes;
+      return [];
     },
   });
 };
@@ -50,8 +45,8 @@ export const useQuote = (id?: string) => {
     queryKey: ["quotes", id],
     queryFn: async () => {
       if (!id) throw new Error("Quote ID required");
-      const { data } = await apiClient.get<Quote>(`/quotes/${id}`);
-      return data;
+      const { data } = await apiClient.get<any>(`/quotes/${id}`);
+      return data?.data || data;
     },
     enabled: !!id,
   });
@@ -67,8 +62,8 @@ export const useQuoteStats = () => {
   }>({
     queryKey: ["quotes", "stats"],
     queryFn: async () => {
-      const { data } = await apiClient.get("/quotes/stats");
-      return data;
+      const { data } = await apiClient.get<any>("/quotes/stats");
+      return data?.data || data;
     },
   });
 };
@@ -77,8 +72,8 @@ export const useCreateQuote = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (quote: Partial<Quote>) => {
-      const { data } = await apiClient.post<Quote>("/quotes", quote);
-      return data;
+      const { data } = await apiClient.post<any>("/quotes", quote);
+      return data?.data || data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["quotes"] });
@@ -90,8 +85,8 @@ export const useUpdateQuote = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, ...quote }: Partial<Quote> & { id: string }) => {
-      const { data } = await apiClient.patch<Quote>(`/quotes/${id}`, quote);
-      return data;
+      const { data } = await apiClient.patch<any>(`/quotes/${id}`, quote);
+      return data?.data || data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["quotes"] });
@@ -104,7 +99,7 @@ export const useDeleteQuote = () => {
   return useMutation({
     mutationFn: async (id: string) => {
       const { data } = await apiClient.delete(`/quotes/${id}`);
-      return data;
+      return data?.data || data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["quotes"] });
@@ -119,7 +114,7 @@ export const useUpdateQuoteStatus = () => {
       const { data } = await apiClient.patch(`/quotes/${id}/status`, {
         status,
       });
-      return data;
+      return data?.data || data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["quotes"] });
@@ -211,10 +206,13 @@ export const useOrders = (params?: OrderQueryParams) => {
   return useQuery<Order[]>({
     queryKey: ["orders", params],
     queryFn: async () => {
-      const { data } = await apiClient.get<Order[]>("/orders", {
+      const { data } = await apiClient.get<any>("/orders", {
         params,
       });
-      return data;
+      if (Array.isArray(data)) return data;
+      if (Array.isArray(data?.data)) return data.data;
+      if (Array.isArray(data?.orders)) return data.orders;
+      return [];
     },
   });
 };
@@ -224,8 +222,8 @@ export const useOrder = (id?: string) => {
     queryKey: ["orders", id],
     queryFn: async () => {
       if (!id) throw new Error("Order ID required");
-      const { data } = await apiClient.get<Order>(`/orders/${id}`);
-      return data;
+      const { data } = await apiClient.get<any>(`/orders/${id}`);
+      return data?.data || data;
     },
     enabled: !!id,
   });
@@ -242,8 +240,8 @@ export const useOrderStats = () => {
   }>({
     queryKey: ["orders", "stats"],
     queryFn: async () => {
-      const { data } = await apiClient.get("/orders/stats");
-      return data;
+      const { data } = await apiClient.get<any>("/orders/stats");
+      return data?.data || data;
     },
   });
 };
@@ -252,8 +250,8 @@ export const useCreateOrder = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (order: CreateOrderInput) => {
-      const { data } = await apiClient.post<Order>("/orders", order);
-      return data;
+      const { data } = await apiClient.post<any>("/orders", order);
+      return data?.data || data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["orders"] });
@@ -265,8 +263,8 @@ export const useUpdateOrder = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, ...order }: UpdateOrderInput) => {
-      const { data } = await apiClient.patch<Order>(`/orders/${id}`, order);
-      return data;
+      const { data } = await apiClient.patch<any>(`/orders/${id}`, order);
+      return data?.data || data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["orders"] });
@@ -279,7 +277,7 @@ export const useDeleteOrder = () => {
   return useMutation({
     mutationFn: async (id: string) => {
       const { data } = await apiClient.delete(`/orders/${id}`);
-      return data;
+      return data?.data || data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["orders"] });
@@ -294,7 +292,7 @@ export const useUpdateOrderStatus = () => {
       const { data } = await apiClient.patch(`/orders/${id}/status`, {
         status,
       });
-      return data;
+      return data?.data || data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["orders"] });

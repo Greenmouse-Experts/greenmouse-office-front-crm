@@ -10,7 +10,6 @@ import {
   HelpCircle,
   Shirt,
   Tag,
-  CheckCircle,
   Users,
   QuoteIcon,
   List,
