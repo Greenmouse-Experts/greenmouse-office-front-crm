@@ -4,6 +4,7 @@ import { useSelectImage } from "@/helpers/images";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import SelectImage from "@/components/images/SelectImage";
 import SimpleInput from "@/components/inputs/SimpleInput";
+import PriceInput from "@/components/inputs/PriceInput";
 import { useForm, FormProvider } from "react-hook-form";
 import SimpleTextArea from "@/components/inputs/SimpleTextArea";
 import LocalSelect from "@/components/inputs/LocalSelect";
@@ -106,9 +107,8 @@ function RouteComponent() {
                 ))}
               </LocalSelect>
 
-              <SimpleInput
+              <PriceInput
                 label="Service Rate / Price (₦)"
-                type="number"
                 placeholder="0.00"
                 {...methods.register("price", {
                   required: "Price is required",

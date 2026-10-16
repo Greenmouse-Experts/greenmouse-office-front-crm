@@ -194,10 +194,10 @@ function RouteComponent() {
                             </td>
                             <td className="text-center">{item.qty}</td>
                             <td className="text-right">
-                              ${item.unitPrice.toFixed(2)}
+                              ₦{item.unitPrice.toFixed(2)}
                             </td>
                             <td className="text-right font-semibold">
-                              ${(item.qty * item.unitPrice).toFixed(2)}
+                              ₦{(item.qty * item.unitPrice).toFixed(2)}
                             </td>
                           </tr>
                         ))
@@ -222,7 +222,7 @@ function RouteComponent() {
                     <div className="flex justify-between">
                       <span className="text-base-content/70">Subtotal</span>
                       <span className="font-medium">
-                        $
+                        ₦
                         {(
                           invoice.items?.reduce(
                             (a, b) => a + (b.qty || 1) * (b.unitPrice || 0),
@@ -235,14 +235,14 @@ function RouteComponent() {
                     {!!invoice.discount && (
                       <div className="flex justify-between text-success">
                         <span>Discount</span>
-                        <span>-${Number(invoice.discount).toFixed(2)}</span>
+                        <span>-₦{Number(invoice.discount).toFixed(2)}</span>
                       </div>
                     )}
 
                     {!!invoice.tax && (
                       <div className="flex justify-between">
                         <span className="text-base-content/70">Tax</span>
-                        <span>+${Number(invoice.tax).toFixed(2)}</span>
+                        <span>+₦{Number(invoice.tax).toFixed(2)}</span>
                       </div>
                     )}
 
@@ -251,8 +251,8 @@ function RouteComponent() {
                     <div className="flex justify-between text-base font-semibold text-base-content">
                       <span>Total Amount</span>
                       <span className="text-primary">
-                        ${(invoice.total || 0).toFixed(2)}{" "}
-                        {invoice.currency || "USD"}
+                        ₦{(invoice.total || 0).toFixed(2)}{" "}
+                        {invoice.currency || "NGN"}
                       </span>
                     </div>
                   </div>

@@ -99,7 +99,7 @@ function ReportsPageComponent() {
       label: "Total Amount",
       render: (val: number, item: any) => (
         <span className="font-mono font-medium">
-          {item.currency || "$"}
+          {item.currency || "₦"}
           {(val || 0).toLocaleString()}
         </span>
       ),
@@ -109,7 +109,7 @@ function ReportsPageComponent() {
       label: "Balance Due",
       render: (val: number, item: any) => (
         <span className="font-mono font-bold text-error">
-          {item.currency || "$"}
+          {item.currency || "₦"}
           {(val || 0).toLocaleString()}
         </span>
       ),
@@ -221,7 +221,7 @@ function ReportsPageComponent() {
                     <ArrowUpRight className="size-4 text-success" />
                   </div>
                   <div className="text-3xl font-bold mt-2 text-success font-mono">
-                    ${(plReport?.incomeTotal || 0).toLocaleString()}
+                    ₦{(plReport?.incomeTotal || 0).toLocaleString()}
                   </div>
                   <div className="text-xs text-base-content/50 mt-1">
                     Recorded revenue entries
@@ -234,7 +234,7 @@ function ReportsPageComponent() {
                     <ArrowDownRight className="size-4 text-error" />
                   </div>
                   <div className="text-3xl font-bold mt-2 text-error font-mono">
-                    ${(plReport?.expenseTotal || 0).toLocaleString()}
+                    ₦{(plReport?.expenseTotal || 0).toLocaleString()}
                   </div>
                   <div className="text-xs text-base-content/50 mt-1">
                     Operational expenditures
@@ -253,7 +253,7 @@ function ReportsPageComponent() {
                         : "text-error"
                     }`}
                   >
-                    ${(plReport?.profit || 0).toLocaleString()}
+                    ₦{(plReport?.profit || 0).toLocaleString()}
                   </div>
                   <div className="text-xs text-base-content/50 mt-1">
                     Net cash margin for selected period
@@ -268,9 +268,9 @@ function ReportsPageComponent() {
                     <thead>
                       <tr>
                         <th>Month</th>
-                        <th>Income ($)</th>
-                        <th>Expenses ($)</th>
-                        <th>Net Profit ($)</th>
+                        <th>Income (₦)</th>
+                        <th>Expenses (₦)</th>
+                        <th>Net Profit (₦)</th>
                         <th>Margin</th>
                       </tr>
                     </thead>
@@ -297,10 +297,10 @@ function ReportsPageComponent() {
                                 {row.month}
                               </td>
                               <td className="font-mono text-success">
-                                +${row.income.toLocaleString()}
+                                +₦{row.income.toLocaleString()}
                               </td>
                               <td className="font-mono text-error">
-                                -${row.expenses.toLocaleString()}
+                                -₦{row.expenses.toLocaleString()}
                               </td>
                               <td
                                 className={`font-mono font-bold ${
@@ -351,7 +351,7 @@ function ReportsPageComponent() {
                     Total Invoiced
                   </div>
                   <div className="text-2xl font-bold mt-1 text-base-content font-mono">
-                    ${(invoiceReport?.invoicedTotal || 0).toLocaleString()}
+                    ₦{(invoiceReport?.invoicedTotal || 0).toLocaleString()}
                   </div>
                 </div>
 
@@ -360,7 +360,7 @@ function ReportsPageComponent() {
                     Received Revenue
                   </div>
                   <div className="text-2xl font-bold mt-1 text-success font-mono">
-                    ${(invoiceReport?.receivedTotal || 0).toLocaleString()}
+                    ₦{(invoiceReport?.receivedTotal || 0).toLocaleString()}
                   </div>
                 </div>
 
@@ -369,7 +369,7 @@ function ReportsPageComponent() {
                     Outstanding Balance
                   </div>
                   <div className="text-2xl font-bold mt-1 text-error font-mono">
-                    ${(invoiceReport?.outstandingTotal || 0).toLocaleString()}
+                    ₦{(invoiceReport?.outstandingTotal || 0).toLocaleString()}
                   </div>
                   <div className="text-xs text-base-content/60 mt-1">
                     {invoiceReport?.outstandingCount || 0} unpaid invoices
@@ -455,7 +455,7 @@ function ReportsPageComponent() {
                               {stage.count} deals
                             </span>
                             <span className="font-mono font-bold text-primary">
-                              ${(stage.value || 0).toLocaleString()}
+                              ₦{(stage.value || 0).toLocaleString()}
                             </span>
                             {stage.conversionRate !== undefined && (
                               <span className="badge badge-sm badge-outline">
@@ -533,7 +533,7 @@ function ReportsPageComponent() {
                     <NairaIcon className="size-4 text-secondary" />
                   </div>
                   <div className="text-3xl font-bold mt-2 text-secondary font-mono">
-                    ${(avgDealReport?.overallAverage || 0).toLocaleString()}
+                    ₦{(avgDealReport?.overallAverage || 0).toLocaleString()}
                   </div>
                   <div className="text-xs text-base-content/50 mt-1">
                     Across all closed won deals

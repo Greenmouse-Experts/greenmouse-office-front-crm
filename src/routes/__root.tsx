@@ -7,8 +7,8 @@ import { Toaster } from "sonner";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
+      // refetchOnMount: false,
+      // refetchOnWindowFocus: false,
     },
   },
 });

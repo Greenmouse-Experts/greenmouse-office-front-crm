@@ -8,6 +8,7 @@ import ExpenseTable from "./-components/ExpenseTable";
 import ActionButton from "@/components/buttons/ActionButton";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
 import SimpleInput from "@/components/inputs/SimpleInput";
+import PriceInput from "@/components/inputs/PriceInput";
 import SimpleTextArea from "@/components/inputs/SimpleTextArea";
 import PageHeader from "@/components/Headers/PageHeader";
 import LocalSelect from "@/components/inputs/LocalSelect";
@@ -188,10 +189,8 @@ function RouteComponent() {
       {/* Add Income Modal */}
       <Modal ref={incomeModalRef} title="Log New Income">
         <form onSubmit={handleSubmitIncome} className="space-y-4 pt-2">
-          <SimpleInput
-            label="Amount ($)"
-            type="number"
-            step="0.01"
+          <PriceInput
+            label="Amount (₦)"
             placeholder="0.00"
             value={incomeForm.amount}
             onChange={(e) =>
@@ -286,10 +285,8 @@ function RouteComponent() {
       {/* Add Expense Modal */}
       <Modal ref={expenseModalRef} title="Record New Expense">
         <form onSubmit={handleSubmitExpense} className="space-y-4 pt-2">
-          <SimpleInput
-            label="Amount ($)"
-            type="number"
-            step="0.01"
+          <PriceInput
+            label="Amount (₦)"
             placeholder="0.00"
             value={expenseForm.amount}
             onChange={(e) =>

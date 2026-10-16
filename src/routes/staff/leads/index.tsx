@@ -7,6 +7,7 @@ import CustomTable from "@/components/tables/CustomTable";
 import type { Actions } from "@/components/tables/pop-up";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
 import SimpleInput from "@/components/inputs/SimpleInput";
+import PriceInput from "@/components/inputs/PriceInput";
 import LocalSelect from "@/components/inputs/LocalSelect";
 import SimpleTextArea from "@/components/inputs/SimpleTextArea";
 import PageLoader from "@/components/layout/PageLoader";
@@ -865,9 +866,8 @@ function LeadsPageComponent() {
                   />
                 )}
 
-                <SimpleInput
-                  label="Initial Opportunity Value ($)"
-                  type="number"
+                <PriceInput
+                  label="Initial Opportunity Value (₦)"
                   value={convertData.initialValue}
                   onChange={(e) =>
                     setConvertData({

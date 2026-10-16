@@ -2,6 +2,7 @@ import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm, FormProvider } from "react-hook-form";
 import SimpleInput from "@/components/inputs/SimpleInput";
+import PriceInput from "@/components/inputs/PriceInput";
 import ActionButton from "@/components/buttons/ActionButton";
 import SimpleTitle from "@/components/SimpleTitle";
 import FormWrapper from "@/components/forms/FormWrapper";
@@ -227,10 +228,9 @@ function RouteComponent() {
                             />
                           </td>
                           <td>
-                            <input
-                              type="number"
-                              min="0"
-                              step="0.01"
+                            <PriceInput
+                              size="sm"
+                              currency={null}
                               value={item.unitPrice}
                               onChange={(e) =>
                                 handleItemChange(
@@ -239,7 +239,8 @@ function RouteComponent() {
                                   parseFloat(e.target.value) || 0,
                                 )
                               }
-                              className="input input-bordered input-sm w-32 text-right ml-auto block"
+                              className="text-right"
+                              wrapperClassName="w-32 ml-auto"
                             />
                           </td>
                           <td className="text-right font-semibold">

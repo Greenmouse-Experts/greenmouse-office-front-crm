@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-router";
 import { useForm, FormProvider } from "react-hook-form";
 import SimpleInput from "@/components/inputs/SimpleInput";
+import PriceInput from "@/components/inputs/PriceInput";
 import ActionButton from "@/components/buttons/ActionButton";
 import SimpleTitle from "@/components/SimpleTitle";
 import FormWrapper from "@/components/forms/FormWrapper";
@@ -63,7 +64,7 @@ function RouteComponent() {
       dueDate: "",
       contactId: "",
       billingAddress: "",
-      currency: "USD",
+      currency: "NGN",
       tax: 0,
       discount: 0,
       status: "draft",
@@ -77,7 +78,7 @@ function RouteComponent() {
         dueDate: formatDateForInput(invoice.dueDate),
         contactId: invoice.contactId || invoice.contact?.id || "",
         billingAddress: invoice.billingAddress || "",
-        currency: invoice.currency || "USD",
+        currency: invoice.currency || "NGN",
         tax: Number(invoice.tax) || 0,
         discount: Number(invoice.discount) || 0,
         status: invoice.status || "draft",
@@ -123,7 +124,7 @@ function RouteComponent() {
       acc + (Number(curr.qty) || 0) * (Number(curr.unitPrice) || 0),
     0,
   );
-  const currency = methods.watch("currency") || "USD";
+  const currency = methods.watch("currency") || "NGN";
   const formatAmount = (amount: number) =>
     new Intl.NumberFormat(undefined, { style: "currency", currency }).format(
       amount,
@@ -200,10 +201,10 @@ function RouteComponent() {
                       label="Currency"
                       {...methods.register("currency")}
                     >
+                      <option value="NGN">NGN (₦)</option>
                       <option value="USD">USD ($)</option>
                       <option value="EUR">EUR (€)</option>
                       <option value="GBP">GBP (£)</option>
-                      <option value="NGN">NGN (₦)</option>
                     </LocalSelect>
                     <LocalSelect label="Status" {...methods.register("status")}>
                       <option value="draft">Draft</option>
@@ -285,10 +286,9 @@ function RouteComponent() {
                                 />
                               </td>
                               <td>
-                                <input
-                                  type="number"
-                                  min="0"
-                                  step="0.01"
+                                <PriceInput
+                                  size="sm"
+                                  currency={null}
                                   value={item.unitPrice}
                                   onChange={(e) =>
                                     handleItemChange(
@@ -297,7 +297,8 @@ function RouteComponent() {
                                       parseFloat(e.target.value) || 0,
                                     )
                                   }
-                                  className="input input-bordered input-sm w-32 text-right ml-auto block"
+                                  className="text-right"
+                                  wrapperClassName="w-32 ml-auto"
                                 />
                               </td>
                               <td className="text-right font-semibold">

@@ -6,11 +6,14 @@ import apiClient from "./simpleApi";
 export interface Quote {
   id: string;
   date?: string;
-  clientName: string;
+  clientName?: string;
   amount: number;
   description?: string;
   status: "pending" | "accepted" | "rejected" | "expired" | string;
   contactId?: string;
+  companyId?: string;
+  contact?: any;
+  company?: any;
   createdAt?: string;
   updatedAt?: string;
 }

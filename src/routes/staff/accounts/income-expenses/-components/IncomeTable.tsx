@@ -3,6 +3,7 @@ import CustomTable from "@/components/tables/CustomTable";
 import { type Actions } from "@/components/tables/pop-up";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
 import SimpleInput from "@/components/inputs/SimpleInput";
+import PriceInput from "@/components/inputs/PriceInput";
 import SimpleTextArea from "@/components/inputs/SimpleTextArea";
 import LocalSelect from "@/components/inputs/LocalSelect";
 import PageLoader from "@/components/layout/PageLoader";
@@ -63,7 +64,7 @@ export default function IncomeTable() {
   const handleDelete = async (item: IncomeRecord) => {
     if (
       !window.confirm(
-        `Are you sure you want to delete this income entry for $${item.amount}?`,
+        `Are you sure you want to delete this income entry for ₦${item.amount}?`,
       )
     ) {
       return;
@@ -96,7 +97,7 @@ export default function IncomeTable() {
       label: "Amount",
       render: (value: number) => (
         <span className="font-semibold text-success">
-          +$
+          +₦
           {Number(value || 0).toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
@@ -189,10 +190,8 @@ export default function IncomeTable() {
 
       <Modal ref={editModalRef} title="Edit Income Record">
         <form onSubmit={handleSaveEdit} className="space-y-4 pt-2">
-          <SimpleInput
-            label="Amount ($)"
-            type="number"
-            step="0.01"
+          <PriceInput
+            label="Amount (₦)"
             value={editingItem.amount ?? ""}
             onChange={(e) =>
               setEditingItem((prev) => ({

@@ -2,7 +2,8 @@ import { Eye } from "lucide-react";
 import React, { forwardRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
-interface SimpleInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface SimpleInputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   icon?: React.ReactNode;
 }
@@ -63,3 +64,5 @@ const SimpleInput = forwardRef<HTMLInputElement, SimpleInputProps>(
 
 SimpleInput.displayName = "SimpleInput";
 export default SimpleInput;
+export { SimpleInput };
+export { PriceInput } from "./PriceInput";

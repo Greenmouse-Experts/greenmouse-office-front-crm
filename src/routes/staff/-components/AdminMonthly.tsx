@@ -67,10 +67,10 @@ export default function TenantMonthly() {
               <div className="bg-base-100 border border-base-200 rounded-b-box p-6 flex flex-col items-center justify-center min-h-[360px] relative">
                 <div className="absolute top-4 left-4 flex gap-2">
                   <span className="badge badge-soft badge-primary text-xs">
-                    Income: ${incomeMonth.toLocaleString()}
+                    Income: ₦{incomeMonth.toLocaleString()}
                   </span>
                   <span className="badge badge-soft badge-error text-xs">
-                    Expense: ${expenseMonth.toLocaleString()}
+                    Expense: ₦{expenseMonth.toLocaleString()}
                   </span>
                 </div>
                 {hasActivity ? (
@@ -93,7 +93,7 @@ export default function TenantMonthly() {
                         </Pie>
                         <Tooltip
                           formatter={(_value: any, name: any, item: any) => [
-                            `$${(item?.payload?.actual ?? 0).toLocaleString()}`,
+                            `₦${(item?.payload?.actual ?? 0).toLocaleString()}`,
                             name,
                           ]}
                           contentStyle={{
@@ -129,7 +129,7 @@ export default function TenantMonthly() {
                     Total Operating Balance
                   </span>
                   <h2 className="text-4xl sm:text-5xl font-semibold mt-1 text-primary">
-                    $
+                    ₦
                     {total.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
@@ -164,7 +164,7 @@ export default function TenantMonthly() {
                               : "text-error"
                           }`}
                         >
-                          $
+                          ₦
                           {item.value.toLocaleString(undefined, {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,

@@ -12,6 +12,7 @@ import ContainerRow from "@/components/ContainerRow";
 import { useSearch } from "@/stores/data";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
 import SimpleInput from "@/components/inputs/SimpleInput";
+import PriceInput from "@/components/inputs/PriceInput";
 import LocalSelect from "@/components/inputs/LocalSelect";
 import PageLoader from "@/components/layout/PageLoader";
 import { useContacts } from "@/api/crmApi";
@@ -527,11 +528,8 @@ function RouteComponent() {
                           )
                         }
                       />
-                      <SimpleInput
+                      <PriceInput
                         label="Unit Price"
-                        type="number"
-                        min="0"
-                        step="0.01"
                         value={item.unitPrice}
                         onChange={(e) =>
                           changeItemNumber(

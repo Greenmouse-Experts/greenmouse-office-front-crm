@@ -166,13 +166,13 @@ function RouteComponent() {
       label: "Total Amount",
       render: (val: number, item: Invoice) => (
         <span className="font-semibold text-base-content">
-          $
+          ₦
           {(val || 0).toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           })}{" "}
           <span className="text-xs text-base-content/50 font-normal">
-            {item.currency || "USD"}
+            {item.currency || "NGN"}
           </span>
         </span>
       ),

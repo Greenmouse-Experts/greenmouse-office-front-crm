@@ -40,7 +40,7 @@ export default function InvoicesStat({
     {
       title: "Total Invoices",
       value: totalInvoices,
-      desc: `Total volume: $${totalAmount.toLocaleString(undefined, {
+      desc: `Total volume: ₦${totalAmount.toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })}`,
@@ -49,7 +49,7 @@ export default function InvoicesStat({
     {
       title: "Paid Invoices",
       value: paidInvoices,
-      desc: `Collected: $${paidAmount.toLocaleString(undefined, {
+      desc: `Collected: ₦${paidAmount.toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })}`,
@@ -58,7 +58,7 @@ export default function InvoicesStat({
     {
       title: "Pending & Sent",
       value: pendingInvoices,
-      desc: `Outstanding: $${pendingAmount.toLocaleString(undefined, {
+      desc: `Outstanding: ₦${pendingAmount.toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })}`,

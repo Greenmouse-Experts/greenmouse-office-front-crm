@@ -94,7 +94,7 @@ export default function DashStats() {
                     </div>
                     <div className="text-right shrink-0 ml-3">
                       <span className="text-sm font-semibold text-success">
-                        +$
+                        +₦
                         {item.amount.toLocaleString(undefined, {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
@@ -194,7 +194,7 @@ export default function DashStats() {
                     </div>
                     <div className="text-right shrink-0 ml-3">
                       <span className="text-sm font-semibold text-error">
-                        -$
+                        -₦
                         {item.amount.toLocaleString(undefined, {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,

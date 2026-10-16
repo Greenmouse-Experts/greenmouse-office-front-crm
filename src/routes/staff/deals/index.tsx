@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import PageHeader from "@/components/Headers/PageHeader";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
 import SimpleInput from "@/components/inputs/SimpleInput";
+import PriceInput from "@/components/inputs/PriceInput";
 import LocalSelect from "@/components/inputs/LocalSelect";
 import SimpleTextArea from "@/components/inputs/SimpleTextArea";
 import PageLoader from "@/components/layout/PageLoader";
@@ -80,7 +81,7 @@ function DealsPageComponent() {
     pipelineId: "",
     stageId: "",
     value: 1000,
-    currency: "USD",
+    currency: "NGN",
     expectedCloseDate: "",
     notes: "",
   });
@@ -116,7 +117,7 @@ function DealsPageComponent() {
       pipelineId: activePipelineId || "",
       stageId: preselectedStageId || activePipeline?.stages?.[0]?.id || "",
       value: 1000,
-      currency: "USD",
+      currency: "NGN",
       expectedCloseDate: new Date(Date.now() + 30 * 86400000)
         .toISOString()
         .slice(0, 10),
@@ -132,7 +133,7 @@ function DealsPageComponent() {
       pipelineId: deal.pipelineId,
       stageId: deal.stageId,
       value: deal.value,
-      currency: deal.currency || "USD",
+      currency: deal.currency || "NGN",
       expectedCloseDate: deal.expectedCloseDate
         ? new Date(deal.expectedCloseDate).toISOString().slice(0, 10)
         : "",
@@ -310,7 +311,7 @@ function DealsPageComponent() {
               Pipeline Value:{" "}
             </span>
             <span className="font-bold text-primary">
-              ${metrics.totalValue.toLocaleString()}
+              ₦{metrics.totalValue.toLocaleString()}
             </span>
           </div>
         </div>
@@ -370,7 +371,7 @@ function DealsPageComponent() {
                         </span>
                       </div>
                       <div className="text-xs font-mono font-semibold text-base-content/70">
-                        ${(col.totalValue || 0).toLocaleString()}
+                        ₦{(col.totalValue || 0).toLocaleString()}
                       </div>
                     </div>
 
@@ -411,7 +412,7 @@ function DealsPageComponent() {
                             {/* Value and Date */}
                             <div className="flex items-center justify-between mt-3 text-xs">
                               <div className="font-bold text-primary font-mono text-sm">
-                                ${deal.value.toLocaleString()}
+                                ₦{deal.value.toLocaleString()}
                               </div>
                               {deal.expectedCloseDate && (
                                 <div className="flex items-center gap-1 text-base-content/60">
@@ -525,9 +526,8 @@ function DealsPageComponent() {
             />
 
             <div className="grid grid-cols-2 gap-4">
-              <SimpleInput
-                label="Deal Value ($) *"
-                type="number"
+              <PriceInput
+                label="Deal Value (₦) *"
                 value={dealForm.value}
                 onChange={(e) =>
                   setDealForm({ ...dealForm, value: Number(e.target.value) })
@@ -541,8 +541,8 @@ function DealsPageComponent() {
                   setDealForm({ ...dealForm, currency: e.target.value })
                 }
                 options={[
-                  { label: "USD ($)", value: "USD" },
                   { label: "NGN (₦)", value: "NGN" },
+                  { label: "USD ($)", value: "USD" },
                   { label: "EUR (€)", value: "EUR" },
                   { label: "GBP (£)", value: "GBP" },
                 ]}

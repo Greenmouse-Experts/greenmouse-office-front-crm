@@ -15,6 +15,7 @@ import CustomTable from "@/components/tables/CustomTable";
 import type { Actions } from "@/components/tables/pop-up";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
 import PageLoader from "@/components/layout/PageLoader";
+import PriceInput from "@/components/inputs/PriceInput";
 import {
   useServices,
   useCreateService,
@@ -347,22 +348,15 @@ function RouteComponent() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="text-xs font-semibold text-base-content/70">
-                Rate / Price (₦) *
-              </label>
-              <input
-                type="number"
-                required
-                min="0"
-                className="input input-bordered w-full mt-1"
-                placeholder="0.00"
-                value={form.price}
-                onChange={(e) =>
-                  setForm({ ...form, price: Number(e.target.value) })
-                }
-              />
-            </div>
+            <PriceInput
+              label="Rate / Price (₦) *"
+              required
+              placeholder="0.00"
+              value={form.price}
+              onChange={(e) =>
+                setForm({ ...form, price: Number(e.target.value) })
+              }
+            />
             <div>
               <label className="text-xs font-semibold text-base-content/70">
                 Category
@@ -435,21 +429,14 @@ function RouteComponent() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="text-xs font-semibold text-base-content/70">
-                Rate / Price (₦) *
-              </label>
-              <input
-                type="number"
-                required
-                min="0"
-                className="input input-bordered w-full mt-1"
-                value={form.price}
-                onChange={(e) =>
-                  setForm({ ...form, price: Number(e.target.value) })
-                }
-              />
-            </div>
+            <PriceInput
+              label="Rate / Price (₦) *"
+              required
+              value={form.price}
+              onChange={(e) =>
+                setForm({ ...form, price: Number(e.target.value) })
+              }
+            />
             <div>
               <label className="text-xs font-semibold text-base-content/70">
                 Category

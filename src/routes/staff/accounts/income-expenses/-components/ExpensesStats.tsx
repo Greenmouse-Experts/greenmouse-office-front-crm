@@ -69,7 +69,7 @@ export default function ExpensesStat() {
               <span className={`text-2xl font-semibold mt-1 text-base-content`}>
                 {item.isRaw
                   ? item.value
-                  : `$${Number(item.value).toLocaleString(undefined, {
+                  : `₦${Number(item.value).toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}`}
