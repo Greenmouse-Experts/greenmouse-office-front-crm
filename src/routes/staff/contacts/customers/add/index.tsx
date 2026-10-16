@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm, FormProvider } from "react-hook-form";
 import { Country, State } from "country-state-city";
 import SimpleInput from "@/components/inputs/SimpleInput";
@@ -31,6 +32,7 @@ interface CustomerFormData {
 }
 
 function RouteComponent() {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const createContact = useCreateContact();
   const { data: companies = [] } = useCompanies();
@@ -110,6 +112,8 @@ function RouteComponent() {
         source: data.source,
         status: data.status,
       });
+      await queryClient.invalidateQueries({ queryKey: ["contacts"] });
+      await queryClient.invalidateQueries({ queryKey: ["customers"] });
       toast.success(
         `Customer "${data.firstName} ${data.lastName}" added successfully!`,
       );

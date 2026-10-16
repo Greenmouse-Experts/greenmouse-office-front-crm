@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm, FormProvider } from "react-hook-form";
 import { Country, State } from "country-state-city";
 import SimpleInput from "@/components/inputs/SimpleInput";
@@ -51,6 +52,7 @@ interface CompanyFormData {
 }
 
 function RouteComponent() {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const createCompany = useCreateCompany();
 
@@ -131,6 +133,7 @@ function RouteComponent() {
         zipCode: data.zip,
         country: countryName,
       });
+      await queryClient.invalidateQueries({ queryKey: ["companies"] });
       toast.success(`Company "${data.companyName}" created successfully!`);
       navigate({ to: "/staff/contacts/companies" });
     } catch (err: any) {

@@ -1,5 +1,6 @@
 import { useState, useRef, useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import SimpleContainer from "@/components/SimpleContainer";
 import ContainerRow from "@/components/ContainerRow";
 import { useSearch } from "@/stores/data";
@@ -31,6 +32,7 @@ export const Route = createFileRoute("/staff/contacts/customers/")({
 });
 
 function RouteComponent() {
+  const queryClient = useQueryClient();
   const query = useContacts();
   const deleteContact = useDeleteContact();
   const searchProps = useSearch();
@@ -68,6 +70,9 @@ function RouteComponent() {
 
     try {
       await deleteContact.mutateAsync(contact.id);
+      await queryClient.invalidateQueries({ queryKey: ["contacts"] });
+      await queryClient.invalidateQueries({ queryKey: ["customers"] });
+      await query.refetch();
       toast.success(`Contact "${name}" deleted.`);
     } catch (err: any) {
       toast.error(err.response?.data?.message || "Failed to delete contact.");
@@ -194,8 +199,16 @@ function RouteComponent() {
 
       <CustomerSummary contacts={contacts} />
 
-      <SimpleContainer title="Customer Directory">
-        <ContainerRow searchProps={searchProps} />
+      <SimpleContainer
+        title={
+          <>Customer Directory {query.data && `(${filteredContacts.length})`}</>
+        }
+      >
+        <ContainerRow
+          searchProps={searchProps}
+          showSearch
+          searchPlaceholder="Search customers..."
+        />
         <PageLoader query={query}>
           <div className="bg-base-100">
             <CustomTable
