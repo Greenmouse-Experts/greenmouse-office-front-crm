@@ -11,7 +11,7 @@ export default function AdminHeader() {
         <Menu />
       </label>
       <h2 className="text-current/80 font-semibold text-md md:text-xl">
-        Tenant DashBoard
+        Staff DashBoard
       </h2>
 
       <div className="ml-auto flex items-center gap-2">

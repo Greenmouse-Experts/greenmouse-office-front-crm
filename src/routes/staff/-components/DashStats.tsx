@@ -1,6 +1,7 @@
 import { useIncomeRecords, useExpenseRecords } from "@/api/financeApi";
 import { Link } from "@tanstack/react-router";
-import { TrendingUp, TrendingDown, ArrowRight, DollarSign } from "lucide-react";
+import { TrendingUp, TrendingDown, ArrowRight } from "lucide-react";
+import { NairaIcon } from "@/components/icons";
 
 export default function DashStats() {
   const { data: incomeList = [], isLoading: incomeLoading } =
@@ -52,7 +53,7 @@ export default function DashStats() {
           ) : recentIncome.length === 0 ? (
             <div className="text-center py-8 space-y-2">
               <div className="p-2.5 bg-base-200 rounded-full w-fit mx-auto text-base-content/40">
-                <DollarSign className="size-5" />
+                <NairaIcon className="size-5" />
               </div>
               <p className="text-xs font-medium text-base-content/60">
                 No income records yet
@@ -152,7 +153,7 @@ export default function DashStats() {
           ) : recentExpenses.length === 0 ? (
             <div className="text-center py-8 space-y-2">
               <div className="p-2.5 bg-base-200 rounded-full w-fit mx-auto text-base-content/40">
-                <DollarSign className="size-5" />
+                <NairaIcon className="size-5" />
               </div>
               <p className="text-xs font-medium text-base-content/60">
                 No expense records yet

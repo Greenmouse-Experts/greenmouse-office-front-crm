@@ -8,9 +8,9 @@ import {
   PlusCircleIcon,
   Wrench,
   CheckCircle,
-  DollarSign,
   Layers,
 } from "lucide-react";
+import { NairaIcon } from "@/components/icons";
 import CustomTable from "@/components/tables/CustomTable";
 import type { Actions } from "@/components/tables/pop-up";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
@@ -313,7 +313,7 @@ function RouteComponent() {
                 </h3>
               </div>
               <div className="p-3 rounded-xl bg-blue-500/10 text-blue-500 border border-blue-500/20">
-                <DollarSign className="size-6" />
+                <NairaIcon className="size-6" />
               </div>
             </div>
           </div>

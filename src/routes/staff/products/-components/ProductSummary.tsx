@@ -1,5 +1,6 @@
 import React from "react";
-import { Package, CheckCircle2, AlertTriangle, DollarSign } from "lucide-react";
+import { Package, CheckCircle2, AlertTriangle } from "lucide-react";
+import { NairaIcon } from "@/components/icons";
 import type { Product } from "@/api/catalogApi";
 
 interface ProductSummaryProps {
@@ -45,7 +46,7 @@ const ProductSummary: React.FC<ProductSummaryProps> = ({ products }) => {
     {
       title: "Estimated Inventory Value",
       value: `₦${totalValue.toLocaleString()}`,
-      icon: <DollarSign className="size-6 text-blue-500" />,
+      icon: <NairaIcon className="size-6 text-blue-500" />,
       description: "Total stock valuation",
       color: "bg-blue-500/10 text-blue-500 border-blue-500/20",
     },

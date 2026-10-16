@@ -22,7 +22,6 @@ import {
 import {
   Kanban,
   PlusCircle,
-  DollarSign,
   Calendar,
   CheckCircle2,
   XCircle,
@@ -30,6 +29,7 @@ import {
   Layers,
   FolderPlus,
 } from "lucide-react";
+import { NairaIcon } from "@/components/icons";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/staff/deals/")({
@@ -511,7 +511,7 @@ function DealsPageComponent() {
         <div className="w-full max-w-md p-1">
           <form onSubmit={handleSaveDeal} className="space-y-4">
             <h3 className="font-bold text-lg flex items-center gap-2">
-              <DollarSign className="size-5 text-primary" />
+              <NairaIcon className="size-5 text-primary" />
               {editingDeal ? "Edit Deal" : "Create New Deal"}
             </h3>
             <SimpleInput

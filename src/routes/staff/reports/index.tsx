@@ -16,7 +16,6 @@ import { usePipelines } from "@/api/pipelinesAndDealsApi";
 import {
   BarChart3,
   TrendingUp,
-  DollarSign,
   PieChart,
   Clock,
   CheckCircle2,
@@ -25,6 +24,7 @@ import {
   Filter,
   FileSpreadsheet,
 } from "lucide-react";
+import { NairaIcon } from "@/components/icons";
 
 export const Route = createFileRoute("/staff/reports/")({
   component: ReportsPageComponent,
@@ -530,7 +530,7 @@ function ReportsPageComponent() {
                 <div className="card bg-base-100 border border-base-200 p-5 shadow-xs">
                   <div className="flex items-center justify-between text-xs font-semibold text-base-content/60 uppercase">
                     <span>Average Deal Size</span>
-                    <DollarSign className="size-4 text-secondary" />
+                    <NairaIcon className="size-4 text-secondary" />
                   </div>
                   <div className="text-3xl font-bold mt-2 text-secondary font-mono">
                     ${(avgDealReport?.overallAverage || 0).toLocaleString()}

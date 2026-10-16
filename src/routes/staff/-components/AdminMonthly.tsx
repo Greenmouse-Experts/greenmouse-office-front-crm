@@ -2,7 +2,8 @@ import SimpleContainer from "@/components/SimpleContainer";
 import { Cell, Pie, PieChart, Tooltip, ResponsiveContainer } from "recharts";
 import { useDashboardBalance } from "@/api/tenantApi";
 import QueryCompLayout from "@/components/layout/QueryCompLayout";
-import { TrendingUp, TrendingDown, DollarSign } from "lucide-react";
+import { TrendingUp, TrendingDown } from "lucide-react";
+import { NairaIcon } from "@/components/icons";
 
 export default function TenantMonthly() {
   const query = useDashboardBalance();
@@ -108,7 +109,7 @@ export default function TenantMonthly() {
                 ) : (
                   <div className="text-center py-12 space-y-2">
                     <div className="p-3 bg-base-200 rounded-full w-fit mx-auto text-base-content/40">
-                      <DollarSign className="size-8" />
+                      <NairaIcon className="size-8" />
                     </div>
                     <p className="text-sm font-semibold text-base-content/70">
                       No financial activity recorded this month
