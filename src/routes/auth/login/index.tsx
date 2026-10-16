@@ -73,9 +73,9 @@ function RouteComponent() {
       <div className="fixed inset-0 opacity-20 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:56px_96px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
       <div className="w-full flex flex-col mx-auto space-y-4 px-4  z-20  ">
         <div className="mt-12">
-          <h2 className="text-3xl font-semibold text-center leading-normal ">
+          {/*<h2 className="text-3xl font-semibold text-center leading-normal ">
             CRMgreenmouse
-          </h2>
+          </h2>*/}
           <p className="font-semibold text-primary mx-auto w-fit text-sm">
             Sign In to your workspace
           </p>
@@ -84,6 +84,8 @@ function RouteComponent() {
           className="card max-w-sm w-full mx-auto bg-base-100 border border-base-content/10 shadow-lg p-6 space-y-4"
           onSubmit={form.handleSubmit(onSubmit)}
         >
+          <img src="/logo.jpeg" className="h-15 mx-auto" alt="" />
+
           <SimpleInput
             label="Email Address"
             type="email"
