@@ -41,8 +41,10 @@ const defaultValues = (): QuoteFormValues => ({
   clientName: "",
   amount: 0,
   description: "",
-  status: "pending",
+  status: "draft",
 });
+
+const QUOTE_STATUSES = ["draft", "sent", "accepted", "rejected"];
 
 const getErrorMessage = (error: unknown, fallback: string) => {
   const message = (
@@ -58,7 +60,7 @@ const formatAmount = (amount: number) =>
   });
 
 const renderStatus = (status: string) => {
-  const normalized = (status || "pending").toLowerCase();
+  const normalized = (status || "draft").toLowerCase();
   const color =
     normalized === "accepted"
       ? "badge-success"
@@ -104,7 +106,7 @@ function RouteComponent() {
   };
 
   const openEdit = (quote: Quote) => {
-    const status = quote.status?.toLowerCase() || "pending";
+    const status = quote.status?.toLowerCase() || "draft";
     setEditingQuote(quote);
     methods.reset({
       date: quote.date?.slice(0, 10) || "",
@@ -127,7 +129,7 @@ function RouteComponent() {
     try {
       if (editingQuote) {
         const statusChanged =
-          values.status !== (editingQuote.status?.toLowerCase() || "pending");
+          values.status !== (editingQuote.status?.toLowerCase() || "draft");
         await updateQuote.mutateAsync({
           id: editingQuote.id,
           ...quote,
@@ -138,11 +140,10 @@ function RouteComponent() {
         await createQuote.mutateAsync({ ...quote, status: values.status });
         toast.success("Quote created successfully.");
       }
-      await queryClient.invalidateQueries({ queryKey: ["quotes"] });
-      await query.refetch();
       modal.closeModal();
       methods.reset(defaultValues());
       setEditingQuote(null);
+      void queryClient.invalidateQueries({ queryKey: ["quotes"] });
     } catch (error) {
       toast.error(
         getErrorMessage(error, "Failed to save quote. Please try again."),
@@ -264,13 +265,12 @@ function RouteComponent() {
               })}
             />
             <LocalSelect label="Status" {...methods.register("status")}>
-              <option value="pending">Pending</option>
+              <option value="draft">Draft</option>
+              <option value="sent">Sent</option>
               <option value="accepted">Accepted</option>
               <option value="rejected">Rejected</option>
               {editingQuote &&
-                !["pending", "accepted", "rejected"].includes(
-                  editingQuote.status.toLowerCase(),
-                ) && (
+                !QUOTE_STATUSES.includes(editingQuote.status.toLowerCase()) && (
                   <option value={editingQuote.status.toLowerCase()}>
                     {editingQuote.status}
                   </option>
