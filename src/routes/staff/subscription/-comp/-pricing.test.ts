@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { priceForCycle } from "./-pricing";
+import { priceForCycle } from "../-pricing";
 
 describe("priceForCycle", () => {
   it("uses the billing cycle price in the current subscription response", () => {

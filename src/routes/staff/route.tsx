@@ -177,13 +177,13 @@ const nav_links = [
     type: "menu",
     children: null,
   },
-  {
-    path: "/staff/subscription",
-    label: "Subscription",
-    icon: <CheckCircle size={ICON_SIZE} />,
-    type: "menu",
-    children: null,
-  },
+  // {
+  //   path: "/staff/subscription",
+  //   label: "Subscription",
+  //   icon: <CheckCircle size={ICON_SIZE} />,
+  //   type: "menu",
+  //   children: null,
+  // },
 
   {
     path: "/staff/support",

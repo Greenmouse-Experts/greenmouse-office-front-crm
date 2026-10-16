@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import PaystackPop from "@paystack/inline-js";
-import { getPaystackAccessCode } from "./-checkout";
-import { priceForCycle } from "./-pricing";
+import { getPaystackAccessCode } from "../-checkout";
+import { priceForCycle } from "../-pricing";
 import PageHeader from "@/components/Headers/PageHeader";
 import PageLoader from "@/components/layout/PageLoader";
 import SimpleContainer from "@/components/SimpleContainer";
@@ -197,11 +197,7 @@ function RouteComponent() {
   };
 
   const handleCancel = async () => {
-    if (
-      !window.confirm(
-        "Are you sure you want to cancel your subscription?",
-      )
-    ) {
+    if (!window.confirm("Are you sure you want to cancel your subscription?")) {
       return;
     }
     try {
@@ -343,8 +339,12 @@ function RouteComponent() {
                   <div className="bg-gradient-to-r from-primary/10 via-base-100 to-base-100 p-6 border-b border-base-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className={`badge uppercase text-[10px] font-semibold tracking-wider ${statusBadgeClass}`}>
-                          {subscriptionStatus === "trial" ? "Trial plan" : "Current plan"}
+                        <span
+                          className={`badge uppercase text-[10px] font-semibold tracking-wider ${statusBadgeClass}`}
+                        >
+                          {subscriptionStatus === "trial"
+                            ? "Trial plan"
+                            : "Current plan"}
                         </span>
                         {currentSub.cancelAtPeriodEnd && (
                           <span className="badge badge-warning text-[10px] font-semibold gap-1">
@@ -411,8 +411,7 @@ function RouteComponent() {
                         <p className="font-semibold text-base text-base-content">
                           {formatCurrency(currentPlanPrice)}
                           <span className="text-xs font-normal text-base-content/60">
-                            /
-                            {currentBillingCycle === "yearly" ? "yr" : "mo"}
+                            /{currentBillingCycle === "yearly" ? "yr" : "mo"}
                           </span>
                         </p>
                       </div>
@@ -424,7 +423,9 @@ function RouteComponent() {
                           <Calendar className="size-5" />
                         </div>
                         <div>
-                          <p className="text-xs text-base-content/60">Period Start</p>
+                          <p className="text-xs text-base-content/60">
+                            Period Start
+                          </p>
                           <p className="font-semibold text-base-content">
                             {formatDate(currentSub.currentPeriodStart)}
                           </p>
@@ -438,12 +439,15 @@ function RouteComponent() {
                       </div>
                       <div>
                         <p className="text-xs text-base-content/60">
-                          {subscriptionStatus === "trial" ? "Trial Ends" : "Renews / Expiration"}
+                          {subscriptionStatus === "trial"
+                            ? "Trial Ends"
+                            : "Renews / Expiration"}
                         </p>
                         <p className="font-semibold text-base-content">
                           {formatDate(
                             subscriptionStatus === "trial"
-                              ? currentSub.trialEndsAt || currentSub.currentPeriodEnd
+                              ? currentSub.trialEndsAt ||
+                                  currentSub.currentPeriodEnd
                               : currentSub.currentPeriodEnd,
                           )}
                         </p>
@@ -517,7 +521,10 @@ function RouteComponent() {
               {plans.map((plan: any) => {
                 const isCurrent = currentPlanId === plan.id;
                 const price = priceForCycle(plan, billingCycle);
-                const comparisonPrice = priceForCycle(currentPlan, billingCycle);
+                const comparisonPrice = priceForCycle(
+                  currentPlan,
+                  billingCycle,
+                );
                 const isHigher =
                   price === undefined ||
                   comparisonPrice === undefined ||
@@ -535,7 +542,9 @@ function RouteComponent() {
                     <div className="card-body p-6 space-y-4">
                       {isCurrent && (
                         <div className="badge badge-primary font-semibold text-[10px] uppercase tracking-wider self-start">
-                          {subscriptionStatus === "trial" ? "Your Trial Plan" : "Your Current Plan"}
+                          {subscriptionStatus === "trial"
+                            ? "Your Trial Plan"
+                            : "Your Current Plan"}
                         </div>
                       )}
 
