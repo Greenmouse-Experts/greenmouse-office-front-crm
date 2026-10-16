@@ -606,13 +606,9 @@ function DealsPageComponent() {
       </Modal>
 
       {/* CREATE PIPELINE MODAL */}
-      <Modal ref={pipelineModalRef}>
-        <div className="w-full max-w-md p-1">
+      <Modal ref={pipelineModalRef} title="Create Sales Pipeline">
+        <div className="w-full  p-1">
           <form onSubmit={handleCreatePipeline} className="space-y-4">
-            <h3 className="font-bold text-lg flex items-center gap-2">
-              <FolderPlus className="size-5 text-primary" /> Create Sales
-              Pipeline
-            </h3>
             <SimpleInput
               label="Pipeline Name *"
               placeholder="e.g. Enterprise Sales, Inbound SMB"
