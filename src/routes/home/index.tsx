@@ -16,7 +16,7 @@ function RouteComponent() {
             effortless.
           </span>
         </h1>
-        <p className="text-xl opacity-70 max-w-2xl mx-auto mb-10">
+        <p className="text-xl opacity-70  mx-auto mb-10">
           The all-in-one business suite for modern teams. Streamline your
           workflow, track your growth, and manage your customers with
           CRMgreenmouse.

@@ -76,7 +76,7 @@ function RouteComponent() {
   };
 
   return (
-    <div className="p-4 max-w-2xl mx-auto space-y-6">
+    <div className="p-4  mx-auto space-y-6">
       <SimpleTitle title={"Add New Staff"} />
       <section className="p-6 bg-base-100 shadow-sm border border-base-200 rounded-2xl">
         <FormProvider {...methods}>
@@ -157,5 +157,5 @@ function RouteComponent() {
         </FormProvider>
       </section>
     </div>
-  )
+  );
 }
