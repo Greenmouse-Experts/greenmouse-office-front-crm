@@ -260,7 +260,7 @@ function RouteComponent() {
                 // Submenus should be open by default
                 return (
                   <li key={link.path} className="mb-2">
-                    <details open>
+                    <details>
                       <summary className="text-md  ">
                         {link.icon}
                         {link.label}
