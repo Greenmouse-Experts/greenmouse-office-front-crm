@@ -9,6 +9,19 @@ pnpm install
 pnpm start
 ```
 
+## cPanel deployment
+
+Pushes to `main` deploy the production build through `.github/workflows/deploy-cpanel.yml`.
+The `production` GitHub environment must provide these secrets:
+
+- `CPANEL_SSH_KEY` and optionally `CPANEL_KNOWN_HOSTS`
+- `CPANEL_HOST`, `CPANEL_PORT` (optional; defaults to `22`), and `CPANEL_USER`
+- `CPANEL_APP_PATH` — the cPanel document-root directory for this frontend
+- `VITE_API_URL` — the API URL embedded into the Vite production build
+
+The workflow builds with Bun, uploads the generated static files over SSH, and extracts
+them into `CPANEL_APP_PATH`.
+
 # Building For Production
 
 To build this application for production:
