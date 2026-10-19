@@ -57,7 +57,7 @@ function RouteComponent() {
     try {
       if (image) {
         const uploaded = await uploadImage.mutateAsync(image);
-        const url = uploaded?.data?.url;
+        const url = uploaded.url;
         if (!url) throw new Error("The profile photo upload did not return a URL.");
         payload.profilePic = url;
       } else if (removeCurrentPhoto) {

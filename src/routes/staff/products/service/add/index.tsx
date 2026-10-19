@@ -49,7 +49,7 @@ function RouteComponent() {
       if (image) {
         try {
           const uploadRes = await uploadImage.mutateAsync(image);
-          imageUrl = uploadRes?.data?.url;
+          imageUrl = uploadRes.url;
         } catch {
           // If image upload fails, proceed without it
         }

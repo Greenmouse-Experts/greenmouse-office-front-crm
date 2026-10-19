@@ -58,10 +58,7 @@ function RouteComponent() {
         for (const file of filesArr) {
           try {
             const uploadRes = await uploadImage.mutateAsync(file);
-            const url =
-              uploadRes?.data?.url ||
-              (uploadRes as any)?.url ||
-              (uploadRes as any)?.payload?.url;
+            const url = uploadRes.url;
             if (url) uploadedUrls.push(url);
           } catch {
             // Proceed if single image fails

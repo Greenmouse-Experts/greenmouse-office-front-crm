@@ -143,8 +143,7 @@ function RouteComponent() {
       for (const file of filesArr) {
         try {
           const res = await uploadImage.mutateAsync(file);
-          const url =
-            res?.data?.url || (res as any)?.url || (res as any)?.payload?.url;
+          const url = res.url;
           if (url) uploadedUrls.push(url);
         } catch (err) {
           console.error("Failed to upload image file:", err);

@@ -5,7 +5,7 @@ export async function uploadTicketAttachments(
 ): Promise<string[]> {
   const uploaded = await Promise.all(files.map((file) => uploadImage(file)));
   return uploaded.map((response) => {
-    const url = response.data?.url;
+    const url = response.url;
     if (!url) throw new Error("An attachment upload returned no URL.");
     return url;
   });
