@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import apiClient from "./simpleApi";
+import { get_user_value, get_profile_value, set_user_value, set_profile_value } from "@/store/authStore";
 
 // ==================== TENANT PROFILE & ONBOARDING ====================
 
@@ -263,6 +264,51 @@ export interface StaffMember {
   profilePic?: string;
   createdAt?: string;
 }
+
+export interface StaffProfile {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber?: string | null;
+  profilePic?: string | null;
+  role?: StaffMember["role"];
+}
+
+export type UpdateStaffProfilePayload = Pick<StaffProfile, "firstName" | "lastName"> &
+  Partial<Pick<StaffProfile, "phoneNumber" | "profilePic">>;
+
+export const useStaffProfile = () =>
+  useQuery<StaffProfile>({
+    queryKey: ["staff", "profile"],
+    queryFn: async () => {
+      const { data } = await apiClient.get<any>("/staffs/profile");
+      return data?.data ?? data;
+    },
+  });
+
+export const useUpdateStaffProfile = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (profile: UpdateStaffProfilePayload) => {
+      const { data } = await apiClient.patch<any>("/staffs/profile", profile);
+      return data?.data ?? data;
+    },
+    onSuccess: (_, profile) => {
+      queryClient.setQueryData<StaffProfile>(["staff", "profile"], (current) =>
+        current ? { ...current, ...profile } : current,
+      );
+      void queryClient.invalidateQueries({ queryKey: ["staff", "profile"] });
+      const auth = get_user_value();
+      if (auth) {
+        const storedProfile = { ...profile, phoneNumber: profile.phoneNumber ?? "" };
+        set_user_value({ ...auth, user: { ...auth.user, ...storedProfile } });
+        const currentProfile = get_profile_value();
+        set_profile_value({ ...(currentProfile ?? auth.user), ...storedProfile });
+      }
+    },
+  });
+};
 
 export const useStaff = (id: string) => {
   return useQuery<StaffMember>({

@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "14bfde9b-aaa6-4211-ae49-39982ba4f99b",
+    "_postman_id": "c1178b7a-d32a-44df-b936-b8821919e95a",
     "name": "Greenmouse Office CRM",
     "description": "API documentation for the Greenmouse CRM backend",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -233,6 +233,92 @@
               ]
             },
             {
+              "name": "owner",
+              "item": [
+                {
+                  "name": "login",
+                  "item": [
+                    {
+                      "name": "CRM owner login",
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"email\": \"admin@greenmouse.com\",\n  \"password\": \"password123\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/auth/owner/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "auth",
+                            "owner",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "name": "201",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"email\": \"admin@greenmouse.com\",\n  \"password\": \"password123\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/auth/owner/login",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "auth",
+                                "owner",
+                                "login"
+                              ]
+                            }
+                          },
+                          "status": "Created",
+                          "code": 201,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "body": null
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
               "name": "refresh",
               "item": [
                 {
@@ -384,6 +470,129 @@
         {
           "name": "staffs",
           "item": [
+            {
+              "name": "profile",
+              "item": [
+                {
+                  "name": "Get own staff or Owner profile",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/staffs/profile",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "staffs",
+                        "profile"
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "name": "200",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/staffs/profile",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "staffs",
+                            "profile"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "body": null
+                    }
+                  ]
+                },
+                {
+                  "name": "Update own staff or Owner profile",
+                  "request": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Doe\",\n  \"phoneNumber\": \"+2348012345678\",\n  \"profilePic\": \"https://res.cloudinary.com/...\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/staffs/profile",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "staffs",
+                        "profile"
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "name": "200",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Doe\",\n  \"phoneNumber\": \"+2348012345678\",\n  \"profilePic\": \"https://res.cloudinary.com/...\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/staffs/profile",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "staffs",
+                            "profile"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "body": null
+                    }
+                  ]
+                }
+              ]
+            },
             {
               "name": "{id}",
               "item": [
@@ -2271,7 +2480,7 @@
                             }
                           ],
                           "cookie": [],
-                          "body": "{\n  \"page\": 2819.845133997083,\n  \"limit\": 3611.4093259098045,\n  \"total\": 2875.434560831662,\n  \"totalPages\": 9667.3148682491,\n  \"hasNextPage\": false,\n  \"hasPrevPage\": true,\n  \"data\": [\n    {\n      \"id\": \"a37440ef-6f66-da00-d2d0-76c53731a17d\",\n      \"customerId\": \"8201b14e-379a-9ace-c420-2931b09db209\",\n      \"content\": \"string\",\n      \"createdBy\": \"29e5a54b-6fb5-4006-676f-44a21a9ddd82\",\n      \"createdAt\": \"1960-12-22T19:05:53.191Z\",\n      \"author\": {\n        \"id\": \"6eca4436-f204-ee21-c26c-f53b9fa8d69b\",\n        \"firstName\": \"string\",\n        \"lastName\": \"string\"\n      }\n    },\n    {\n      \"id\": \"98c2baf4-922f-3523-c3c1-07e595cf48aa\",\n      \"customerId\": \"0c795f08-13db-b2bb-b767-fe947bddc385\",\n      \"content\": \"string\",\n      \"createdBy\": \"e59108d8-4cd1-c94f-3714-9ec7294fae2f\",\n      \"createdAt\": \"1978-02-13T06:10:15.662Z\",\n      \"author\": {\n        \"id\": \"9de6c6b2-ec0f-7323-0837-d1839384cf15\",\n        \"firstName\": \"string\",\n        \"lastName\": \"string\"\n      }\n    }\n  ]\n}"
+                          "body": "{\n  \"page\": 5912.1502645991295,\n  \"limit\": 9812.770768973758,\n  \"total\": 9866.10497597539,\n  \"totalPages\": 2204.505454286667,\n  \"hasNextPage\": true,\n  \"hasPrevPage\": false,\n  \"data\": [\n    {\n      \"id\": \"7d566eab-5616-848a-2e60-f945185c45f9\",\n      \"customerId\": \"9b1d0321-c471-1ffd-cebb-4321c70d71f2\",\n      \"content\": \"string\",\n      \"createdBy\": \"1a64a551-747e-161e-e2c7-0f7c2db92357\",\n      \"createdAt\": \"2020-02-01T15:42:12.866Z\",\n      \"author\": {\n        \"id\": \"8f961a85-b66c-c1a9-26d0-4c5a25f5b19c\",\n        \"firstName\": \"string\",\n        \"lastName\": \"string\"\n      }\n    },\n    {\n      \"id\": \"9ff2f779-3366-a538-3e28-2815dcc82b18\",\n      \"customerId\": \"ec625d26-8ecc-8fbc-8dde-d14deb11ef35\",\n      \"content\": \"string\",\n      \"createdBy\": \"d5c56192-d9d7-17c0-fddb-98d86534219f\",\n      \"createdAt\": \"2019-05-27T14:17:51.341Z\",\n      \"author\": {\n        \"id\": \"bdb9dc72-f346-8823-f35b-7b8514fae65e\",\n        \"firstName\": \"string\",\n        \"lastName\": \"string\"\n      }\n    }\n  ]\n}"
                         },
                         {
                           "name": "Invalid UUID or pagination",
@@ -2501,7 +2710,7 @@
                             }
                           ],
                           "cookie": [],
-                          "body": "{\n  \"id\": \"cab05fec-e7ec-4f5a-55d2-6e005004fa61\",\n  \"companyId\": \"4f90e0b6-9c4d-0a89-0fe7-74a1df1daf06\",\n  \"contactId\": \"9de2dcc2-60b1-e88a-4315-9aae213f44af\",\n  \"type\": \"call\",\n  \"notes\": \"string\",\n  \"staffId\": \"1269a5c8-3156-4a45-cf66-17555b9f278f\",\n  \"createdBy\": \"5f4d0f0c-b181-2777-c733-a12e24dae890\",\n  \"createdByType\": \"staff\",\n  \"occurredAt\": \"1987-11-25T05:14:08.453Z\",\n  \"createdAt\": \"1951-12-21T13:38:15.500Z\",\n  \"staff\": {\n    \"id\": \"63c3bbd9-f805-0da5-de63-3365abfd270d\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\"\n  }\n}"
+                          "body": "{\n  \"id\": \"bcc80d33-4ceb-c9a6-56aa-1f50b309a0fe\",\n  \"companyId\": \"cee3f97c-005e-cd24-36a7-65827ec89e91\",\n  \"contactId\": \"a7795d37-fc33-8e24-1e33-f64c7ddeb050\",\n  \"type\": \"email\",\n  \"notes\": \"string\",\n  \"staffId\": \"6ada9ed8-38b6-85b3-0961-d0d923d98575\",\n  \"createdBy\": \"4eca96eb-9871-294f-bcef-575ca7b3a630\",\n  \"createdByType\": \"company\",\n  \"occurredAt\": \"2022-01-17T22:58:26.694Z\",\n  \"createdAt\": \"2005-12-10T18:12:53.320Z\",\n  \"staff\": {\n    \"id\": \"db8d8604-328b-eddd-f837-980c958f2bfc\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\"\n  }\n}"
                         },
                         {
                           "name": "Invalid fields, UUID or timezone-aware date",
@@ -2654,7 +2863,7 @@
                           }
                         ],
                         "url": {
-                          "raw": "{{baseUrl}}/v1/contacts/:id/interactions?page=1&limit=20&type=call&staffId=21f5bf2a-1d50-9bd0-e812-cc54679ae4e2&from=1970-01-07T11:46:13.897Z&to=1970-01-07T11:46:13.897Z",
+                          "raw": "{{baseUrl}}/v1/contacts/:id/interactions?page=1&limit=20&type=call&staffId=7d9bed9b-e8f9-4b77-121d-af43500c5c24&from=1994-01-20T21:21:40.882Z&to=1994-01-20T21:21:40.882Z",
                           "host": [
                             "{{baseUrl}}"
                           ],
@@ -2679,17 +2888,17 @@
                             },
                             {
                               "key": "staffId",
-                              "value": "21f5bf2a-1d50-9bd0-e812-cc54679ae4e2"
+                              "value": "7d9bed9b-e8f9-4b77-121d-af43500c5c24"
                             },
                             {
                               "description": "Inclusive occurredAt lower bound; explicit timezone required",
                               "key": "from",
-                              "value": "1970-01-07T11:46:13.897Z"
+                              "value": "1994-01-20T21:21:40.882Z"
                             },
                             {
                               "description": "Inclusive occurredAt upper bound; explicit timezone required",
                               "key": "to",
-                              "value": "1970-01-07T11:46:13.897Z"
+                              "value": "1994-01-20T21:21:40.882Z"
                             }
                           ],
                           "variable": [
@@ -2713,7 +2922,7 @@
                               }
                             ],
                             "url": {
-                              "raw": "{{baseUrl}}/v1/contacts/:id/interactions?page=1&limit=20&type=call&staffId=21f5bf2a-1d50-9bd0-e812-cc54679ae4e2&from=1970-01-07T11:46:13.897Z&to=1970-01-07T11:46:13.897Z",
+                              "raw": "{{baseUrl}}/v1/contacts/:id/interactions?page=1&limit=20&type=call&staffId=7d9bed9b-e8f9-4b77-121d-af43500c5c24&from=1994-01-20T21:21:40.882Z&to=1994-01-20T21:21:40.882Z",
                               "host": [
                                 "{{baseUrl}}"
                               ],
@@ -2738,17 +2947,17 @@
                                 },
                                 {
                                   "key": "staffId",
-                                  "value": "21f5bf2a-1d50-9bd0-e812-cc54679ae4e2"
+                                  "value": "7d9bed9b-e8f9-4b77-121d-af43500c5c24"
                                 },
                                 {
                                   "description": "Inclusive occurredAt lower bound; explicit timezone required",
                                   "key": "from",
-                                  "value": "1970-01-07T11:46:13.897Z"
+                                  "value": "1994-01-20T21:21:40.882Z"
                                 },
                                 {
                                   "description": "Inclusive occurredAt upper bound; explicit timezone required",
                                   "key": "to",
-                                  "value": "1970-01-07T11:46:13.897Z"
+                                  "value": "1994-01-20T21:21:40.882Z"
                                 }
                               ],
                               "variable": [
@@ -2769,7 +2978,7 @@
                             }
                           ],
                           "cookie": [],
-                          "body": "{\n  \"page\": 8002.682299199911,\n  \"limit\": 1507.6449055797748,\n  \"total\": 9759.054370536047,\n  \"totalPages\": 4123.763521879425,\n  \"hasNextPage\": true,\n  \"hasPrevPage\": false,\n  \"data\": [\n    {\n      \"id\": \"39038bc2-ea94-dfce-f6ff-7dc5358205ef\",\n      \"companyId\": \"f00277a5-33cb-ca07-07f3-74124f21db67\",\n      \"contactId\": \"9eb9be8b-ae30-ba10-2993-aee304683ba6\",\n      \"type\": \"call\",\n      \"notes\": \"string\",\n      \"staffId\": \"ae43a7b4-44bb-8c1a-775c-9d216caca41c\",\n      \"createdBy\": \"6ee42fdb-d6a0-53ac-a224-1c666c220a37\",\n      \"createdByType\": \"staff\",\n      \"occurredAt\": \"1953-02-09T08:30:46.050Z\",\n      \"createdAt\": \"1975-08-23T00:25:28.236Z\",\n      \"staff\": {\n        \"id\": \"057a3207-6efb-080e-c186-3304967d415b\",\n        \"firstName\": \"string\",\n        \"lastName\": \"string\"\n      }\n    },\n    {\n      \"id\": \"05180a3b-4cb3-4fe9-6d9f-c1eb7611cfd2\",\n      \"companyId\": \"c271d191-c14f-80ca-eec9-e428d67d7281\",\n      \"contactId\": \"fad137f5-cd5f-b89f-7350-2855fe2a0584\",\n      \"type\": \"email\",\n      \"notes\": \"string\",\n      \"staffId\": \"240377aa-81d9-48ba-3884-402291737b18\",\n      \"createdBy\": \"81d7c08e-8373-ef2e-9d7a-673429c72062\",\n      \"createdByType\": \"staff\",\n      \"occurredAt\": \"2015-03-13T15:09:54.494Z\",\n      \"createdAt\": \"1975-10-02T09:24:36.423Z\",\n      \"staff\": {\n        \"id\": \"9f13251d-3610-adb1-5aa9-04c61b3bdb45\",\n        \"firstName\": \"string\",\n        \"lastName\": \"string\"\n      }\n    }\n  ]\n}"
+                          "body": "{\n  \"page\": 2877.3937991859234,\n  \"limit\": 2520.3284171808928,\n  \"total\": 1814.5376706982286,\n  \"totalPages\": 8191.765871011203,\n  \"hasNextPage\": true,\n  \"hasPrevPage\": true,\n  \"data\": [\n    {\n      \"id\": \"07e01b26-2e47-9e47-746c-e0fe071a8622\",\n      \"companyId\": \"9dd78617-56d1-df84-fefa-b38f32e304d7\",\n      \"contactId\": \"7b323cbe-302d-872a-7669-ade04f044954\",\n      \"type\": \"email\",\n      \"notes\": \"string\",\n      \"staffId\": \"0822b7e3-7da1-9751-3330-d7ee77801fcc\",\n      \"createdBy\": \"ee755e76-909a-6bc2-ff64-3ac68e513cdd\",\n      \"createdByType\": \"staff\",\n      \"occurredAt\": \"1946-11-08T23:57:10.689Z\",\n      \"createdAt\": \"2019-02-22T14:05:40.817Z\",\n      \"staff\": {\n        \"id\": \"cdc148cd-4fbe-b332-1bf0-b4ef188b4fd9\",\n        \"firstName\": \"string\",\n        \"lastName\": \"string\"\n      }\n    },\n    {\n      \"id\": \"76532468-e50b-6ebf-c7cd-a73869705835\",\n      \"companyId\": \"939fc702-a026-ccc2-915a-8a37bc5755ea\",\n      \"contactId\": \"0f92ad77-baf7-cdbc-b714-24a61a038998\",\n      \"type\": \"meeting\",\n      \"notes\": \"string\",\n      \"staffId\": \"7a8ac107-8cb9-c6f2-a617-ea90cc6250e7\",\n      \"createdBy\": \"3eeb7750-2020-73c4-92cc-02a9ad7acf01\",\n      \"createdByType\": \"company\",\n      \"occurredAt\": \"1970-03-12T17:55:53.751Z\",\n      \"createdAt\": \"2012-09-24T04:11:11.838Z\",\n      \"staff\": {\n        \"id\": \"8894dc4c-3784-797c-7a58-e1ca3c1cc9db\",\n        \"firstName\": \"string\",\n        \"lastName\": \"string\"\n      }\n    }\n  ]\n}"
                         },
                         {
                           "name": "Invalid UUID, pagination or date range",
@@ -2777,7 +2986,7 @@
                             "method": "GET",
                             "header": [],
                             "url": {
-                              "raw": "{{baseUrl}}/v1/contacts/:id/interactions?page=1&limit=20&type=call&staffId=21f5bf2a-1d50-9bd0-e812-cc54679ae4e2&from=1970-01-07T11:46:13.897Z&to=1970-01-07T11:46:13.897Z",
+                              "raw": "{{baseUrl}}/v1/contacts/:id/interactions?page=1&limit=20&type=call&staffId=7d9bed9b-e8f9-4b77-121d-af43500c5c24&from=1994-01-20T21:21:40.882Z&to=1994-01-20T21:21:40.882Z",
                               "host": [
                                 "{{baseUrl}}"
                               ],
@@ -2802,17 +3011,17 @@
                                 },
                                 {
                                   "key": "staffId",
-                                  "value": "21f5bf2a-1d50-9bd0-e812-cc54679ae4e2"
+                                  "value": "7d9bed9b-e8f9-4b77-121d-af43500c5c24"
                                 },
                                 {
                                   "description": "Inclusive occurredAt lower bound; explicit timezone required",
                                   "key": "from",
-                                  "value": "1970-01-07T11:46:13.897Z"
+                                  "value": "1994-01-20T21:21:40.882Z"
                                 },
                                 {
                                   "description": "Inclusive occurredAt upper bound; explicit timezone required",
                                   "key": "to",
-                                  "value": "1970-01-07T11:46:13.897Z"
+                                  "value": "1994-01-20T21:21:40.882Z"
                                 }
                               ],
                               "variable": [
@@ -2836,7 +3045,7 @@
                             "method": "GET",
                             "header": [],
                             "url": {
-                              "raw": "{{baseUrl}}/v1/contacts/:id/interactions?page=1&limit=20&type=call&staffId=21f5bf2a-1d50-9bd0-e812-cc54679ae4e2&from=1970-01-07T11:46:13.897Z&to=1970-01-07T11:46:13.897Z",
+                              "raw": "{{baseUrl}}/v1/contacts/:id/interactions?page=1&limit=20&type=call&staffId=7d9bed9b-e8f9-4b77-121d-af43500c5c24&from=1994-01-20T21:21:40.882Z&to=1994-01-20T21:21:40.882Z",
                               "host": [
                                 "{{baseUrl}}"
                               ],
@@ -2861,17 +3070,17 @@
                                 },
                                 {
                                   "key": "staffId",
-                                  "value": "21f5bf2a-1d50-9bd0-e812-cc54679ae4e2"
+                                  "value": "7d9bed9b-e8f9-4b77-121d-af43500c5c24"
                                 },
                                 {
                                   "description": "Inclusive occurredAt lower bound; explicit timezone required",
                                   "key": "from",
-                                  "value": "1970-01-07T11:46:13.897Z"
+                                  "value": "1994-01-20T21:21:40.882Z"
                                 },
                                 {
                                   "description": "Inclusive occurredAt upper bound; explicit timezone required",
                                   "key": "to",
-                                  "value": "1970-01-07T11:46:13.897Z"
+                                  "value": "1994-01-20T21:21:40.882Z"
                                 }
                               ],
                               "variable": [
@@ -2895,7 +3104,7 @@
                             "method": "GET",
                             "header": [],
                             "url": {
-                              "raw": "{{baseUrl}}/v1/contacts/:id/interactions?page=1&limit=20&type=call&staffId=21f5bf2a-1d50-9bd0-e812-cc54679ae4e2&from=1970-01-07T11:46:13.897Z&to=1970-01-07T11:46:13.897Z",
+                              "raw": "{{baseUrl}}/v1/contacts/:id/interactions?page=1&limit=20&type=call&staffId=7d9bed9b-e8f9-4b77-121d-af43500c5c24&from=1994-01-20T21:21:40.882Z&to=1994-01-20T21:21:40.882Z",
                               "host": [
                                 "{{baseUrl}}"
                               ],
@@ -2920,17 +3129,17 @@
                                 },
                                 {
                                   "key": "staffId",
-                                  "value": "21f5bf2a-1d50-9bd0-e812-cc54679ae4e2"
+                                  "value": "7d9bed9b-e8f9-4b77-121d-af43500c5c24"
                                 },
                                 {
                                   "description": "Inclusive occurredAt lower bound; explicit timezone required",
                                   "key": "from",
-                                  "value": "1970-01-07T11:46:13.897Z"
+                                  "value": "1994-01-20T21:21:40.882Z"
                                 },
                                 {
                                   "description": "Inclusive occurredAt upper bound; explicit timezone required",
                                   "key": "to",
-                                  "value": "1970-01-07T11:46:13.897Z"
+                                  "value": "1994-01-20T21:21:40.882Z"
                                 }
                               ],
                               "variable": [
@@ -3850,7 +4059,7 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n  \"id\": \"3ad2372e-1d17-c89d-b314-2060a2c98cc9\",\n  \"companyId\": \"0c63b628-54ad-e1a7-6f78-374ea4ec37a2\",\n  \"kind\": \"income\",\n  \"name\": \"string\",\n  \"isActive\": true,\n  \"createdAt\": \"1967-05-13T21:38:24.873Z\",\n  \"updatedAt\": \"1996-08-14T02:02:25.545Z\"\n}"
+                      "body": "{\n  \"id\": \"94238d2c-ba3e-7e17-d87d-28db118a9c81\",\n  \"companyId\": \"2f940c31-694a-d209-29ef-d1bc9ee6c307\",\n  \"kind\": \"expense\",\n  \"name\": \"string\",\n  \"isActive\": false,\n  \"createdAt\": \"2018-10-06T11:14:45.365Z\",\n  \"updatedAt\": \"1998-02-07T00:03:29.586Z\"\n}"
                     }
                   ]
                 },
@@ -3880,7 +4089,7 @@
                     ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"name\": \"Consulting\",\n  \"isActive\": true\n}",
+                      "raw": "{\n  \"name\": \"Consulting\",\n  \"isActive\": false\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -3928,7 +4137,7 @@
                         ],
                         "body": {
                           "mode": "raw",
-                          "raw": "{\n  \"name\": \"Consulting\",\n  \"isActive\": true\n}",
+                          "raw": "{\n  \"name\": \"Consulting\",\n  \"isActive\": false\n}",
                           "options": {
                             "raw": {
                               "headerFamily": "json",
@@ -3964,7 +4173,7 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n  \"id\": \"3ad2372e-1d17-c89d-b314-2060a2c98cc9\",\n  \"companyId\": \"0c63b628-54ad-e1a7-6f78-374ea4ec37a2\",\n  \"kind\": \"income\",\n  \"name\": \"string\",\n  \"isActive\": true,\n  \"createdAt\": \"1967-05-13T21:38:24.873Z\",\n  \"updatedAt\": \"1996-08-14T02:02:25.545Z\"\n}"
+                      "body": "{\n  \"id\": \"94238d2c-ba3e-7e17-d87d-28db118a9c81\",\n  \"companyId\": \"2f940c31-694a-d209-29ef-d1bc9ee6c307\",\n  \"kind\": \"expense\",\n  \"name\": \"string\",\n  \"isActive\": false,\n  \"createdAt\": \"2018-10-06T11:14:45.365Z\",\n  \"updatedAt\": \"1998-02-07T00:03:29.586Z\"\n}"
                     }
                   ]
                 }
@@ -4066,7 +4275,7 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n  \"id\": \"3ad2372e-1d17-c89d-b314-2060a2c98cc9\",\n  \"companyId\": \"0c63b628-54ad-e1a7-6f78-374ea4ec37a2\",\n  \"kind\": \"income\",\n  \"name\": \"string\",\n  \"isActive\": true,\n  \"createdAt\": \"1967-05-13T21:38:24.873Z\",\n  \"updatedAt\": \"1996-08-14T02:02:25.545Z\"\n}"
+                  "body": "{\n  \"id\": \"94238d2c-ba3e-7e17-d87d-28db118a9c81\",\n  \"companyId\": \"2f940c31-694a-d209-29ef-d1bc9ee6c307\",\n  \"kind\": \"expense\",\n  \"name\": \"string\",\n  \"isActive\": false,\n  \"createdAt\": \"2018-10-06T11:14:45.365Z\",\n  \"updatedAt\": \"1998-02-07T00:03:29.586Z\"\n}"
                 }
               ]
             },
@@ -4091,7 +4300,7 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{baseUrl}}/v1/financial-categories?kind=income&isActive=false",
+                  "raw": "{{baseUrl}}/v1/financial-categories?kind=income&isActive=true",
                   "host": [
                     "{{baseUrl}}"
                   ],
@@ -4107,7 +4316,7 @@
                     {
                       "description": "Omit to include active and archived categories",
                       "key": "isActive",
-                      "value": "false"
+                      "value": "true"
                     }
                   ]
                 }
@@ -4129,7 +4338,7 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{baseUrl}}/v1/financial-categories?kind=income&isActive=false",
+                      "raw": "{{baseUrl}}/v1/financial-categories?kind=income&isActive=true",
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -4145,7 +4354,7 @@
                         {
                           "description": "Omit to include active and archived categories",
                           "key": "isActive",
-                          "value": "false"
+                          "value": "true"
                         }
                       ]
                     }
@@ -4160,7 +4369,7 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "[\n  {\n    \"id\": \"86c78d81-bff4-e6aa-e24e-861b9b45a83e\",\n    \"companyId\": \"e12030d7-8dd6-e1e0-9d41-2e4f6af4fe3d\",\n    \"kind\": \"income\",\n    \"name\": \"string\",\n    \"isActive\": true,\n    \"createdAt\": \"1996-08-01T09:09:02.101Z\",\n    \"updatedAt\": \"1990-10-22T08:41:44.203Z\"\n  },\n  {\n    \"id\": \"302b49fa-e5e5-180e-cb6d-5df6495f8191\",\n    \"companyId\": \"f330056c-7811-a63f-c3c3-c9c4c9c6cef3\",\n    \"kind\": \"income\",\n    \"name\": \"string\",\n    \"isActive\": false,\n    \"createdAt\": \"2009-06-02T13:52:51.235Z\",\n    \"updatedAt\": \"1975-02-03T22:22:53.909Z\"\n  }\n]"
+                  "body": "[\n  {\n    \"id\": \"34ef97f1-3659-b615-7244-009bf84f2e58\",\n    \"companyId\": \"336e977f-3040-a47e-f1a3-8c1c0d82d3a7\",\n    \"kind\": \"expense\",\n    \"name\": \"string\",\n    \"isActive\": false,\n    \"createdAt\": \"1980-08-15T16:09:17.882Z\",\n    \"updatedAt\": \"2018-12-13T17:03:01.471Z\"\n  },\n  {\n    \"id\": \"b71bb6b1-1949-040a-dd52-cc829d36a8be\",\n    \"companyId\": \"264ac5cf-9c0e-44e2-7567-7272efb511c1\",\n    \"kind\": \"income\",\n    \"name\": \"string\",\n    \"isActive\": true,\n    \"createdAt\": \"1949-01-10T21:53:32.939Z\",\n    \"updatedAt\": \"2015-12-06T09:49:20.269Z\"\n  }\n]"
                 }
               ]
             }
@@ -4244,7 +4453,7 @@
                             }
                           ],
                           "cookie": [],
-                          "body": "{\n  \"id\": \"4ea43ee9-76a5-a992-8436-103b21cde000\",\n  \"amount\": 2120.3559738968947,\n  \"categoryId\": \"858743f2-2a13-5442-7997-e4cef24395d1\",\n  \"category\": {\n    \"id\": \"42b1dc3c-d4cd-1560-7827-850e61de9224\",\n    \"companyId\": \"9bcdfca5-e556-b57c-7dbf-fffa09f7c603\",\n    \"kind\": \"income\",\n    \"name\": \"string\",\n    \"isActive\": false,\n    \"createdAt\": \"1960-11-07T10:48:45.677Z\",\n    \"updatedAt\": \"1995-11-17T19:16:53.262Z\"\n  },\n  \"description\": \"string\",\n  \"status\": \"Rejected\",\n  \"companyId\": \"3382fd12-7058-129c-465e-718540208a72\",\n  \"createdAt\": \"2005-12-23T18:29:27.037Z\",\n  \"updatedAt\": \"2015-01-04T09:10:34.102Z\",\n  \"source\": \"string\"\n}"
+                          "body": "{\n  \"id\": \"a445a231-29a9-6f65-42fb-53a9b9060659\",\n  \"amount\": 227.04018469646536,\n  \"categoryId\": \"79599bd0-1c19-6948-f249-82203db30efa\",\n  \"category\": {\n    \"id\": \"c903c00f-5efb-ded6-0ee0-f887ddef2ea0\",\n    \"companyId\": \"65c32379-2e32-3257-4a43-a4e2c14f6c43\",\n    \"kind\": \"income\",\n    \"name\": \"string\",\n    \"isActive\": false,\n    \"createdAt\": \"1976-11-13T12:19:16.787Z\",\n    \"updatedAt\": \"1978-08-13T16:59:17.912Z\"\n  },\n  \"description\": \"string\",\n  \"status\": \"Pending\",\n  \"companyId\": \"484e07da-d685-637e-17fc-975abdd4e932\",\n  \"createdAt\": \"2002-01-05T23:57:02.704Z\",\n  \"updatedAt\": \"1959-12-05T18:52:35.771Z\",\n  \"source\": \"string\"\n}"
                         }
                       ]
                     }
@@ -4317,7 +4526,7 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n  \"id\": \"4ea43ee9-76a5-a992-8436-103b21cde000\",\n  \"amount\": 2120.3559738968947,\n  \"categoryId\": \"858743f2-2a13-5442-7997-e4cef24395d1\",\n  \"category\": {\n    \"id\": \"42b1dc3c-d4cd-1560-7827-850e61de9224\",\n    \"companyId\": \"9bcdfca5-e556-b57c-7dbf-fffa09f7c603\",\n    \"kind\": \"income\",\n    \"name\": \"string\",\n    \"isActive\": false,\n    \"createdAt\": \"1960-11-07T10:48:45.677Z\",\n    \"updatedAt\": \"1995-11-17T19:16:53.262Z\"\n  },\n  \"description\": \"string\",\n  \"status\": \"Rejected\",\n  \"companyId\": \"3382fd12-7058-129c-465e-718540208a72\",\n  \"createdAt\": \"2005-12-23T18:29:27.037Z\",\n  \"updatedAt\": \"2015-01-04T09:10:34.102Z\",\n  \"source\": \"string\"\n}"
+                      "body": "{\n  \"id\": \"a445a231-29a9-6f65-42fb-53a9b9060659\",\n  \"amount\": 227.04018469646536,\n  \"categoryId\": \"79599bd0-1c19-6948-f249-82203db30efa\",\n  \"category\": {\n    \"id\": \"c903c00f-5efb-ded6-0ee0-f887ddef2ea0\",\n    \"companyId\": \"65c32379-2e32-3257-4a43-a4e2c14f6c43\",\n    \"kind\": \"income\",\n    \"name\": \"string\",\n    \"isActive\": false,\n    \"createdAt\": \"1976-11-13T12:19:16.787Z\",\n    \"updatedAt\": \"1978-08-13T16:59:17.912Z\"\n  },\n  \"description\": \"string\",\n  \"status\": \"Pending\",\n  \"companyId\": \"484e07da-d685-637e-17fc-975abdd4e932\",\n  \"createdAt\": \"2002-01-05T23:57:02.704Z\",\n  \"updatedAt\": \"1959-12-05T18:52:35.771Z\",\n  \"source\": \"string\"\n}"
                     }
                   ]
                 },
@@ -4337,7 +4546,7 @@
                     ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"amount\": 2000,\n  \"categoryId\": \"e73bf626-0692-110b-f0bf-79c7a3b8d478\",\n  \"source\": \"Greenmouse Ltd.\",\n  \"description\": \"Updated description\",\n  \"status\": \"Approved\"\n}",
+                      "raw": "{\n  \"amount\": 2000,\n  \"categoryId\": \"be5519c4-4bd0-851e-68c4-db7bf429ecb4\",\n  \"source\": \"Greenmouse Ltd.\",\n  \"description\": \"Updated description\",\n  \"status\": \"Approved\"\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -4380,7 +4589,7 @@
                         ],
                         "body": {
                           "mode": "raw",
-                          "raw": "{\n  \"amount\": 2000,\n  \"categoryId\": \"e73bf626-0692-110b-f0bf-79c7a3b8d478\",\n  \"source\": \"Greenmouse Ltd.\",\n  \"description\": \"Updated description\",\n  \"status\": \"Approved\"\n}",
+                          "raw": "{\n  \"amount\": 2000,\n  \"categoryId\": \"be5519c4-4bd0-851e-68c4-db7bf429ecb4\",\n  \"source\": \"Greenmouse Ltd.\",\n  \"description\": \"Updated description\",\n  \"status\": \"Approved\"\n}",
                           "options": {
                             "raw": {
                               "headerFamily": "json",
@@ -4416,7 +4625,7 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n  \"id\": \"4ea43ee9-76a5-a992-8436-103b21cde000\",\n  \"amount\": 2120.3559738968947,\n  \"categoryId\": \"858743f2-2a13-5442-7997-e4cef24395d1\",\n  \"category\": {\n    \"id\": \"42b1dc3c-d4cd-1560-7827-850e61de9224\",\n    \"companyId\": \"9bcdfca5-e556-b57c-7dbf-fffa09f7c603\",\n    \"kind\": \"income\",\n    \"name\": \"string\",\n    \"isActive\": false,\n    \"createdAt\": \"1960-11-07T10:48:45.677Z\",\n    \"updatedAt\": \"1995-11-17T19:16:53.262Z\"\n  },\n  \"description\": \"string\",\n  \"status\": \"Rejected\",\n  \"companyId\": \"3382fd12-7058-129c-465e-718540208a72\",\n  \"createdAt\": \"2005-12-23T18:29:27.037Z\",\n  \"updatedAt\": \"2015-01-04T09:10:34.102Z\",\n  \"source\": \"string\"\n}"
+                      "body": "{\n  \"id\": \"a445a231-29a9-6f65-42fb-53a9b9060659\",\n  \"amount\": 227.04018469646536,\n  \"categoryId\": \"79599bd0-1c19-6948-f249-82203db30efa\",\n  \"category\": {\n    \"id\": \"c903c00f-5efb-ded6-0ee0-f887ddef2ea0\",\n    \"companyId\": \"65c32379-2e32-3257-4a43-a4e2c14f6c43\",\n    \"kind\": \"income\",\n    \"name\": \"string\",\n    \"isActive\": false,\n    \"createdAt\": \"1976-11-13T12:19:16.787Z\",\n    \"updatedAt\": \"1978-08-13T16:59:17.912Z\"\n  },\n  \"description\": \"string\",\n  \"status\": \"Pending\",\n  \"companyId\": \"484e07da-d685-637e-17fc-975abdd4e932\",\n  \"createdAt\": \"2002-01-05T23:57:02.704Z\",\n  \"updatedAt\": \"1959-12-05T18:52:35.771Z\",\n  \"source\": \"string\"\n}"
                     }
                   ]
                 },
@@ -4494,7 +4703,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"amount\": 1500,\n  \"categoryId\": \"33b39fee-8a79-84a3-c7b9-ffd076256129\",\n  \"source\": \"Greenmouse Ltd.\",\n  \"description\": \"Monthly salary for April\",\n  \"status\": \"Pending\"\n}",
+                  "raw": "{\n  \"amount\": 1500,\n  \"categoryId\": \"d24f403a-af09-de39-3c7c-e7730b5fc734\",\n  \"source\": \"Greenmouse Ltd.\",\n  \"description\": \"Monthly salary for April\",\n  \"status\": \"Pending\"\n}",
                   "options": {
                     "raw": {
                       "headerFamily": "json",
@@ -4530,7 +4739,7 @@
                     ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"amount\": 1500,\n  \"categoryId\": \"33b39fee-8a79-84a3-c7b9-ffd076256129\",\n  \"source\": \"Greenmouse Ltd.\",\n  \"description\": \"Monthly salary for April\",\n  \"status\": \"Pending\"\n}",
+                      "raw": "{\n  \"amount\": 1500,\n  \"categoryId\": \"d24f403a-af09-de39-3c7c-e7730b5fc734\",\n  \"source\": \"Greenmouse Ltd.\",\n  \"description\": \"Monthly salary for April\",\n  \"status\": \"Pending\"\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -4559,7 +4768,7 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n  \"id\": \"4ea43ee9-76a5-a992-8436-103b21cde000\",\n  \"amount\": 2120.3559738968947,\n  \"categoryId\": \"858743f2-2a13-5442-7997-e4cef24395d1\",\n  \"category\": {\n    \"id\": \"42b1dc3c-d4cd-1560-7827-850e61de9224\",\n    \"companyId\": \"9bcdfca5-e556-b57c-7dbf-fffa09f7c603\",\n    \"kind\": \"income\",\n    \"name\": \"string\",\n    \"isActive\": false,\n    \"createdAt\": \"1960-11-07T10:48:45.677Z\",\n    \"updatedAt\": \"1995-11-17T19:16:53.262Z\"\n  },\n  \"description\": \"string\",\n  \"status\": \"Rejected\",\n  \"companyId\": \"3382fd12-7058-129c-465e-718540208a72\",\n  \"createdAt\": \"2005-12-23T18:29:27.037Z\",\n  \"updatedAt\": \"2015-01-04T09:10:34.102Z\",\n  \"source\": \"string\"\n}"
+                  "body": "{\n  \"id\": \"a445a231-29a9-6f65-42fb-53a9b9060659\",\n  \"amount\": 227.04018469646536,\n  \"categoryId\": \"79599bd0-1c19-6948-f249-82203db30efa\",\n  \"category\": {\n    \"id\": \"c903c00f-5efb-ded6-0ee0-f887ddef2ea0\",\n    \"companyId\": \"65c32379-2e32-3257-4a43-a4e2c14f6c43\",\n    \"kind\": \"income\",\n    \"name\": \"string\",\n    \"isActive\": false,\n    \"createdAt\": \"1976-11-13T12:19:16.787Z\",\n    \"updatedAt\": \"1978-08-13T16:59:17.912Z\"\n  },\n  \"description\": \"string\",\n  \"status\": \"Pending\",\n  \"companyId\": \"484e07da-d685-637e-17fc-975abdd4e932\",\n  \"createdAt\": \"2002-01-05T23:57:02.704Z\",\n  \"updatedAt\": \"1959-12-05T18:52:35.771Z\",\n  \"source\": \"string\"\n}"
                 }
               ]
             },
@@ -4574,7 +4783,7 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{baseUrl}}/v1/income?search=string&categoryId=21f5bf2a-1d50-9bd0-e812-cc54679ae4e2&status=Pending",
+                  "raw": "{{baseUrl}}/v1/income?search=string&categoryId=7d9bed9b-e8f9-4b77-121d-af43500c5c24&status=Paid",
                   "host": [
                     "{{baseUrl}}"
                   ],
@@ -4589,11 +4798,11 @@
                     },
                     {
                       "key": "categoryId",
-                      "value": "21f5bf2a-1d50-9bd0-e812-cc54679ae4e2"
+                      "value": "7d9bed9b-e8f9-4b77-121d-af43500c5c24"
                     },
                     {
                       "key": "status",
-                      "value": "Pending"
+                      "value": "Paid"
                     }
                   ]
                 }
@@ -4610,7 +4819,7 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{baseUrl}}/v1/income?search=string&categoryId=21f5bf2a-1d50-9bd0-e812-cc54679ae4e2&status=Pending",
+                      "raw": "{{baseUrl}}/v1/income?search=string&categoryId=7d9bed9b-e8f9-4b77-121d-af43500c5c24&status=Paid",
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -4625,11 +4834,11 @@
                         },
                         {
                           "key": "categoryId",
-                          "value": "21f5bf2a-1d50-9bd0-e812-cc54679ae4e2"
+                          "value": "7d9bed9b-e8f9-4b77-121d-af43500c5c24"
                         },
                         {
                           "key": "status",
-                          "value": "Pending"
+                          "value": "Paid"
                         }
                       ]
                     }
@@ -4644,7 +4853,7 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "[\n  {\n    \"id\": \"53e46070-8a0c-50d3-2bb5-aa8de40eece8\",\n    \"amount\": 8820.56512987522,\n    \"categoryId\": \"a37470c4-3f22-63fa-fb5d-3dc2bbf76e6e\",\n    \"category\": {\n      \"id\": \"cd0d69ed-1593-3d68-2450-6dd6a45f10ce\",\n      \"companyId\": \"488dc64e-9ef1-331a-b939-3ca12c572680\",\n      \"kind\": \"expense\",\n      \"name\": \"string\",\n      \"isActive\": true,\n      \"createdAt\": \"1986-05-26T01:02:13.238Z\",\n      \"updatedAt\": \"1960-10-16T22:03:52.825Z\"\n    },\n    \"description\": \"string\",\n    \"status\": \"Rejected\",\n    \"companyId\": \"a3143f46-7278-abf9-d7ea-e3e55e4f2184\",\n    \"createdAt\": \"1968-11-22T06:40:19.752Z\",\n    \"updatedAt\": \"1986-08-23T05:47:17.105Z\",\n    \"source\": \"string\"\n  },\n  {\n    \"id\": \"07e6d325-4495-7018-0390-04ce3b3d519c\",\n    \"amount\": 6432.925220737707,\n    \"categoryId\": \"b07315ad-1fdc-8439-da6b-ff5f4dcac103\",\n    \"category\": {\n      \"id\": \"172736c9-0c12-e2bd-361c-5a2b804e3688\",\n      \"companyId\": \"32498746-33b7-c2ed-e3b8-35c9be5426d4\",\n      \"kind\": \"expense\",\n      \"name\": \"string\",\n      \"isActive\": true,\n      \"createdAt\": \"1985-06-07T22:51:09.175Z\",\n      \"updatedAt\": \"1998-03-01T06:23:55.430Z\"\n    },\n    \"description\": \"string\",\n    \"status\": \"Pending\",\n    \"companyId\": \"3929a250-9b2d-eab0-38ce-935acc5aa6a4\",\n    \"createdAt\": \"1989-09-26T08:50:12.514Z\",\n    \"updatedAt\": \"2013-06-06T19:07:29.314Z\",\n    \"source\": \"string\"\n  }\n]"
+                  "body": "[\n  {\n    \"id\": \"066f7a8e-381b-5938-f5c2-6dc21ad61ce2\",\n    \"amount\": 8642.14730144499,\n    \"categoryId\": \"076ab3c6-0719-44e0-9f31-f5b2df57f839\",\n    \"category\": {\n      \"id\": \"97b2f914-8f14-f57e-7fdd-5e2ad5506877\",\n      \"companyId\": \"3f7f9581-0334-619c-ac1c-07ef41a5c1c5\",\n      \"kind\": \"income\",\n      \"name\": \"string\",\n      \"isActive\": false,\n      \"createdAt\": \"1967-09-23T06:53:06.934Z\",\n      \"updatedAt\": \"2018-11-17T18:56:49.483Z\"\n    },\n    \"description\": \"string\",\n    \"status\": \"Approved\",\n    \"companyId\": \"f2a980c6-066f-55e1-a29b-8ed5cc179fb1\",\n    \"createdAt\": \"1959-03-05T14:17:38.649Z\",\n    \"updatedAt\": \"1991-02-23T21:59:04.522Z\",\n    \"source\": \"string\"\n  },\n  {\n    \"id\": \"3529fac6-c794-039f-403f-ad071dbf7988\",\n    \"amount\": 5918.13026191964,\n    \"categoryId\": \"71b9b108-d9ec-df7b-f0bc-352c3f0b50d6\",\n    \"category\": {\n      \"id\": \"e188f0af-d50a-d03c-aa0a-185b85b06f48\",\n      \"companyId\": \"44d94892-aeee-719d-e137-2456f22d4aa3\",\n      \"kind\": \"expense\",\n      \"name\": \"string\",\n      \"isActive\": false,\n      \"createdAt\": \"2013-09-11T15:31:08.650Z\",\n      \"updatedAt\": \"2024-05-10T22:23:50.606Z\"\n    },\n    \"description\": \"string\",\n    \"status\": \"Pending\",\n    \"companyId\": \"14d00ef7-413c-db72-3585-f31d9135ca3d\",\n    \"createdAt\": \"1980-07-24T08:31:07.207Z\",\n    \"updatedAt\": \"2014-09-24T12:41:11.462Z\",\n    \"source\": \"string\"\n  }\n]"
                 }
               ]
             }
@@ -4756,7 +4965,7 @@
                             }
                           ],
                           "cookie": [],
-                          "body": "{\n  \"id\": \"32b0ff16-85fa-930f-5096-9d2f333bb15c\",\n  \"amount\": 1218.672556592777,\n  \"categoryId\": \"4583532f-458d-a5c4-d15d-9580ecb178d3\",\n  \"category\": {\n    \"id\": \"fd624082-af1b-899b-1a5a-7255a2d2069d\",\n    \"companyId\": \"954cfe9e-e936-972c-699b-fb18b0d9f181\",\n    \"kind\": \"expense\",\n    \"name\": \"string\",\n    \"isActive\": false,\n    \"createdAt\": \"1962-03-23T20:32:39.740Z\",\n    \"updatedAt\": \"1995-08-06T01:25:08.415Z\"\n  },\n  \"description\": \"string\",\n  \"status\": \"Rejected\",\n  \"companyId\": \"cb835600-cff7-6054-b675-8c1023128a38\",\n  \"createdAt\": \"1954-12-21T03:36:09.891Z\",\n  \"updatedAt\": \"1992-11-03T21:56:24.122Z\",\n  \"date\": \"1994-09-12\",\n  \"receipt\": {\n    \"url\": \"string\",\n    \"publicId\": \"string\",\n    \"resourceType\": \"string\",\n    \"mimeType\": \"image/jpeg\",\n    \"size\": 3055676.8180539855,\n    \"uploadedBy\": \"6576c46d-bdb6-34fc-8e6b-cfeb03e529a9\",\n    \"uploadedAt\": \"1994-10-15T12:06:53.541Z\"\n  },\n  \"paidTo\": \"string\"\n}"
+                          "body": "{\n  \"id\": \"07947abb-d431-8137-1095-dd5494fa3ece\",\n  \"amount\": 5341.844883706386,\n  \"categoryId\": \"f11e8686-fb89-d166-d951-cdf7bc394f3d\",\n  \"category\": {\n    \"id\": \"8ad1e65f-10c9-2603-dc22-e14b716b6381\",\n    \"companyId\": \"38fd923b-4f58-7aaf-bfa1-6d2ea60f766b\",\n    \"kind\": \"income\",\n    \"name\": \"string\",\n    \"isActive\": true,\n    \"createdAt\": \"2022-01-09T19:45:56.267Z\",\n    \"updatedAt\": \"1971-05-14T05:21:46.853Z\"\n  },\n  \"description\": \"string\",\n  \"status\": \"Rejected\",\n  \"companyId\": \"c89b4264-1027-b070-78bd-eb3cc354a8af\",\n  \"createdAt\": \"1956-07-22T00:37:42.107Z\",\n  \"updatedAt\": \"1970-04-22T23:51:57.698Z\",\n  \"date\": \"1994-04-02\",\n  \"receipt\": {\n    \"url\": \"string\",\n    \"publicId\": \"string\",\n    \"resourceType\": \"string\",\n    \"mimeType\": \"application/pdf\",\n    \"size\": 2325683.75330655,\n    \"uploadedBy\": \"d0938e22-307b-cbe5-c07b-2d69bf20db70\",\n    \"uploadedAt\": \"2000-11-02T12:40:08.249Z\"\n  },\n  \"paidTo\": \"string\"\n}"
                         },
                         {
                           "name": "Invalid UUID, file type/signature, missing file or receipt larger than 5 MB",
@@ -4969,7 +5178,7 @@
                             }
                           ],
                           "cookie": [],
-                          "body": "{\n  \"id\": \"32b0ff16-85fa-930f-5096-9d2f333bb15c\",\n  \"amount\": 1218.672556592777,\n  \"categoryId\": \"4583532f-458d-a5c4-d15d-9580ecb178d3\",\n  \"category\": {\n    \"id\": \"fd624082-af1b-899b-1a5a-7255a2d2069d\",\n    \"companyId\": \"954cfe9e-e936-972c-699b-fb18b0d9f181\",\n    \"kind\": \"expense\",\n    \"name\": \"string\",\n    \"isActive\": false,\n    \"createdAt\": \"1962-03-23T20:32:39.740Z\",\n    \"updatedAt\": \"1995-08-06T01:25:08.415Z\"\n  },\n  \"description\": \"string\",\n  \"status\": \"Rejected\",\n  \"companyId\": \"cb835600-cff7-6054-b675-8c1023128a38\",\n  \"createdAt\": \"1954-12-21T03:36:09.891Z\",\n  \"updatedAt\": \"1992-11-03T21:56:24.122Z\",\n  \"date\": \"1994-09-12\",\n  \"receipt\": {\n    \"url\": \"string\",\n    \"publicId\": \"string\",\n    \"resourceType\": \"string\",\n    \"mimeType\": \"image/jpeg\",\n    \"size\": 3055676.8180539855,\n    \"uploadedBy\": \"6576c46d-bdb6-34fc-8e6b-cfeb03e529a9\",\n    \"uploadedAt\": \"1994-10-15T12:06:53.541Z\"\n  },\n  \"paidTo\": \"string\"\n}"
+                          "body": "{\n  \"id\": \"07947abb-d431-8137-1095-dd5494fa3ece\",\n  \"amount\": 5341.844883706386,\n  \"categoryId\": \"f11e8686-fb89-d166-d951-cdf7bc394f3d\",\n  \"category\": {\n    \"id\": \"8ad1e65f-10c9-2603-dc22-e14b716b6381\",\n    \"companyId\": \"38fd923b-4f58-7aaf-bfa1-6d2ea60f766b\",\n    \"kind\": \"income\",\n    \"name\": \"string\",\n    \"isActive\": true,\n    \"createdAt\": \"2022-01-09T19:45:56.267Z\",\n    \"updatedAt\": \"1971-05-14T05:21:46.853Z\"\n  },\n  \"description\": \"string\",\n  \"status\": \"Rejected\",\n  \"companyId\": \"c89b4264-1027-b070-78bd-eb3cc354a8af\",\n  \"createdAt\": \"1956-07-22T00:37:42.107Z\",\n  \"updatedAt\": \"1970-04-22T23:51:57.698Z\",\n  \"date\": \"1994-04-02\",\n  \"receipt\": {\n    \"url\": \"string\",\n    \"publicId\": \"string\",\n    \"resourceType\": \"string\",\n    \"mimeType\": \"application/pdf\",\n    \"size\": 2325683.75330655,\n    \"uploadedBy\": \"d0938e22-307b-cbe5-c07b-2d69bf20db70\",\n    \"uploadedAt\": \"2000-11-02T12:40:08.249Z\"\n  },\n  \"paidTo\": \"string\"\n}"
                         }
                       ]
                     }
@@ -5042,7 +5251,7 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n  \"id\": \"32b0ff16-85fa-930f-5096-9d2f333bb15c\",\n  \"amount\": 1218.672556592777,\n  \"categoryId\": \"4583532f-458d-a5c4-d15d-9580ecb178d3\",\n  \"category\": {\n    \"id\": \"fd624082-af1b-899b-1a5a-7255a2d2069d\",\n    \"companyId\": \"954cfe9e-e936-972c-699b-fb18b0d9f181\",\n    \"kind\": \"expense\",\n    \"name\": \"string\",\n    \"isActive\": false,\n    \"createdAt\": \"1962-03-23T20:32:39.740Z\",\n    \"updatedAt\": \"1995-08-06T01:25:08.415Z\"\n  },\n  \"description\": \"string\",\n  \"status\": \"Rejected\",\n  \"companyId\": \"cb835600-cff7-6054-b675-8c1023128a38\",\n  \"createdAt\": \"1954-12-21T03:36:09.891Z\",\n  \"updatedAt\": \"1992-11-03T21:56:24.122Z\",\n  \"date\": \"1994-09-12\",\n  \"receipt\": {\n    \"url\": \"string\",\n    \"publicId\": \"string\",\n    \"resourceType\": \"string\",\n    \"mimeType\": \"image/jpeg\",\n    \"size\": 3055676.8180539855,\n    \"uploadedBy\": \"6576c46d-bdb6-34fc-8e6b-cfeb03e529a9\",\n    \"uploadedAt\": \"1994-10-15T12:06:53.541Z\"\n  },\n  \"paidTo\": \"string\"\n}"
+                      "body": "{\n  \"id\": \"07947abb-d431-8137-1095-dd5494fa3ece\",\n  \"amount\": 5341.844883706386,\n  \"categoryId\": \"f11e8686-fb89-d166-d951-cdf7bc394f3d\",\n  \"category\": {\n    \"id\": \"8ad1e65f-10c9-2603-dc22-e14b716b6381\",\n    \"companyId\": \"38fd923b-4f58-7aaf-bfa1-6d2ea60f766b\",\n    \"kind\": \"income\",\n    \"name\": \"string\",\n    \"isActive\": true,\n    \"createdAt\": \"2022-01-09T19:45:56.267Z\",\n    \"updatedAt\": \"1971-05-14T05:21:46.853Z\"\n  },\n  \"description\": \"string\",\n  \"status\": \"Rejected\",\n  \"companyId\": \"c89b4264-1027-b070-78bd-eb3cc354a8af\",\n  \"createdAt\": \"1956-07-22T00:37:42.107Z\",\n  \"updatedAt\": \"1970-04-22T23:51:57.698Z\",\n  \"date\": \"1994-04-02\",\n  \"receipt\": {\n    \"url\": \"string\",\n    \"publicId\": \"string\",\n    \"resourceType\": \"string\",\n    \"mimeType\": \"application/pdf\",\n    \"size\": 2325683.75330655,\n    \"uploadedBy\": \"d0938e22-307b-cbe5-c07b-2d69bf20db70\",\n    \"uploadedAt\": \"2000-11-02T12:40:08.249Z\"\n  },\n  \"paidTo\": \"string\"\n}"
                     }
                   ]
                 },
@@ -5062,7 +5271,7 @@
                     ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"amount\": 75000,\n  \"date\": \"1970-07-13\",\n  \"categoryId\": \"67834787-f9ae-9c0c-88f3-d0a5b26351d4\",\n  \"paidTo\": \"Jane Smith\",\n  \"description\": \"Updated description\",\n  \"status\": \"Approved\"\n}",
+                      "raw": "{\n  \"amount\": 75000,\n  \"date\": \"1998-03-29\",\n  \"categoryId\": \"d0328514-787e-c2f8-fab8-e404e3443b3a\",\n  \"paidTo\": \"Jane Smith\",\n  \"description\": \"Updated description\",\n  \"status\": \"Rejected\"\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -5105,7 +5314,7 @@
                         ],
                         "body": {
                           "mode": "raw",
-                          "raw": "{\n  \"amount\": 75000,\n  \"date\": \"1970-07-13\",\n  \"categoryId\": \"67834787-f9ae-9c0c-88f3-d0a5b26351d4\",\n  \"paidTo\": \"Jane Smith\",\n  \"description\": \"Updated description\",\n  \"status\": \"Approved\"\n}",
+                          "raw": "{\n  \"amount\": 75000,\n  \"date\": \"1998-03-29\",\n  \"categoryId\": \"d0328514-787e-c2f8-fab8-e404e3443b3a\",\n  \"paidTo\": \"Jane Smith\",\n  \"description\": \"Updated description\",\n  \"status\": \"Rejected\"\n}",
                           "options": {
                             "raw": {
                               "headerFamily": "json",
@@ -5141,7 +5350,7 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n  \"id\": \"32b0ff16-85fa-930f-5096-9d2f333bb15c\",\n  \"amount\": 1218.672556592777,\n  \"categoryId\": \"4583532f-458d-a5c4-d15d-9580ecb178d3\",\n  \"category\": {\n    \"id\": \"fd624082-af1b-899b-1a5a-7255a2d2069d\",\n    \"companyId\": \"954cfe9e-e936-972c-699b-fb18b0d9f181\",\n    \"kind\": \"expense\",\n    \"name\": \"string\",\n    \"isActive\": false,\n    \"createdAt\": \"1962-03-23T20:32:39.740Z\",\n    \"updatedAt\": \"1995-08-06T01:25:08.415Z\"\n  },\n  \"description\": \"string\",\n  \"status\": \"Rejected\",\n  \"companyId\": \"cb835600-cff7-6054-b675-8c1023128a38\",\n  \"createdAt\": \"1954-12-21T03:36:09.891Z\",\n  \"updatedAt\": \"1992-11-03T21:56:24.122Z\",\n  \"date\": \"1994-09-12\",\n  \"receipt\": {\n    \"url\": \"string\",\n    \"publicId\": \"string\",\n    \"resourceType\": \"string\",\n    \"mimeType\": \"image/jpeg\",\n    \"size\": 3055676.8180539855,\n    \"uploadedBy\": \"6576c46d-bdb6-34fc-8e6b-cfeb03e529a9\",\n    \"uploadedAt\": \"1994-10-15T12:06:53.541Z\"\n  },\n  \"paidTo\": \"string\"\n}"
+                      "body": "{\n  \"id\": \"07947abb-d431-8137-1095-dd5494fa3ece\",\n  \"amount\": 5341.844883706386,\n  \"categoryId\": \"f11e8686-fb89-d166-d951-cdf7bc394f3d\",\n  \"category\": {\n    \"id\": \"8ad1e65f-10c9-2603-dc22-e14b716b6381\",\n    \"companyId\": \"38fd923b-4f58-7aaf-bfa1-6d2ea60f766b\",\n    \"kind\": \"income\",\n    \"name\": \"string\",\n    \"isActive\": true,\n    \"createdAt\": \"2022-01-09T19:45:56.267Z\",\n    \"updatedAt\": \"1971-05-14T05:21:46.853Z\"\n  },\n  \"description\": \"string\",\n  \"status\": \"Rejected\",\n  \"companyId\": \"c89b4264-1027-b070-78bd-eb3cc354a8af\",\n  \"createdAt\": \"1956-07-22T00:37:42.107Z\",\n  \"updatedAt\": \"1970-04-22T23:51:57.698Z\",\n  \"date\": \"1994-04-02\",\n  \"receipt\": {\n    \"url\": \"string\",\n    \"publicId\": \"string\",\n    \"resourceType\": \"string\",\n    \"mimeType\": \"application/pdf\",\n    \"size\": 2325683.75330655,\n    \"uploadedBy\": \"d0938e22-307b-cbe5-c07b-2d69bf20db70\",\n    \"uploadedAt\": \"2000-11-02T12:40:08.249Z\"\n  },\n  \"paidTo\": \"string\"\n}"
                     }
                   ]
                 },
@@ -5219,7 +5428,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"amount\": 52615,\n  \"categoryId\": \"5195f014-7e14-7850-23ae-1943b8d43cce\",\n  \"date\": \"2026-10-09\",\n  \"paidTo\": \"Vernon Effertz\",\n  \"description\": \"Team offsite travel and accommodation\",\n  \"status\": \"Pending\"\n}",
+                  "raw": "{\n  \"amount\": 52615,\n  \"categoryId\": \"3cde8a3b-963c-cd0b-064f-513218a51334\",\n  \"date\": \"2026-10-09\",\n  \"paidTo\": \"Vernon Effertz\",\n  \"description\": \"Team offsite travel and accommodation\",\n  \"status\": \"Pending\"\n}",
                   "options": {
                     "raw": {
                       "headerFamily": "json",
@@ -5255,7 +5464,7 @@
                     ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"amount\": 52615,\n  \"categoryId\": \"5195f014-7e14-7850-23ae-1943b8d43cce\",\n  \"date\": \"2026-10-09\",\n  \"paidTo\": \"Vernon Effertz\",\n  \"description\": \"Team offsite travel and accommodation\",\n  \"status\": \"Pending\"\n}",
+                      "raw": "{\n  \"amount\": 52615,\n  \"categoryId\": \"3cde8a3b-963c-cd0b-064f-513218a51334\",\n  \"date\": \"2026-10-09\",\n  \"paidTo\": \"Vernon Effertz\",\n  \"description\": \"Team offsite travel and accommodation\",\n  \"status\": \"Pending\"\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -5284,7 +5493,7 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n  \"id\": \"32b0ff16-85fa-930f-5096-9d2f333bb15c\",\n  \"amount\": 1218.672556592777,\n  \"categoryId\": \"4583532f-458d-a5c4-d15d-9580ecb178d3\",\n  \"category\": {\n    \"id\": \"fd624082-af1b-899b-1a5a-7255a2d2069d\",\n    \"companyId\": \"954cfe9e-e936-972c-699b-fb18b0d9f181\",\n    \"kind\": \"expense\",\n    \"name\": \"string\",\n    \"isActive\": false,\n    \"createdAt\": \"1962-03-23T20:32:39.740Z\",\n    \"updatedAt\": \"1995-08-06T01:25:08.415Z\"\n  },\n  \"description\": \"string\",\n  \"status\": \"Rejected\",\n  \"companyId\": \"cb835600-cff7-6054-b675-8c1023128a38\",\n  \"createdAt\": \"1954-12-21T03:36:09.891Z\",\n  \"updatedAt\": \"1992-11-03T21:56:24.122Z\",\n  \"date\": \"1994-09-12\",\n  \"receipt\": {\n    \"url\": \"string\",\n    \"publicId\": \"string\",\n    \"resourceType\": \"string\",\n    \"mimeType\": \"image/jpeg\",\n    \"size\": 3055676.8180539855,\n    \"uploadedBy\": \"6576c46d-bdb6-34fc-8e6b-cfeb03e529a9\",\n    \"uploadedAt\": \"1994-10-15T12:06:53.541Z\"\n  },\n  \"paidTo\": \"string\"\n}"
+                  "body": "{\n  \"id\": \"07947abb-d431-8137-1095-dd5494fa3ece\",\n  \"amount\": 5341.844883706386,\n  \"categoryId\": \"f11e8686-fb89-d166-d951-cdf7bc394f3d\",\n  \"category\": {\n    \"id\": \"8ad1e65f-10c9-2603-dc22-e14b716b6381\",\n    \"companyId\": \"38fd923b-4f58-7aaf-bfa1-6d2ea60f766b\",\n    \"kind\": \"income\",\n    \"name\": \"string\",\n    \"isActive\": true,\n    \"createdAt\": \"2022-01-09T19:45:56.267Z\",\n    \"updatedAt\": \"1971-05-14T05:21:46.853Z\"\n  },\n  \"description\": \"string\",\n  \"status\": \"Rejected\",\n  \"companyId\": \"c89b4264-1027-b070-78bd-eb3cc354a8af\",\n  \"createdAt\": \"1956-07-22T00:37:42.107Z\",\n  \"updatedAt\": \"1970-04-22T23:51:57.698Z\",\n  \"date\": \"1994-04-02\",\n  \"receipt\": {\n    \"url\": \"string\",\n    \"publicId\": \"string\",\n    \"resourceType\": \"string\",\n    \"mimeType\": \"application/pdf\",\n    \"size\": 2325683.75330655,\n    \"uploadedBy\": \"d0938e22-307b-cbe5-c07b-2d69bf20db70\",\n    \"uploadedAt\": \"2000-11-02T12:40:08.249Z\"\n  },\n  \"paidTo\": \"string\"\n}"
                 }
               ]
             },
@@ -5299,7 +5508,7 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{baseUrl}}/v1/expenses?search=string&categoryId=21f5bf2a-1d50-9bd0-e812-cc54679ae4e2&status=Pending",
+                  "raw": "{{baseUrl}}/v1/expenses?search=string&categoryId=7d9bed9b-e8f9-4b77-121d-af43500c5c24&status=Paid",
                   "host": [
                     "{{baseUrl}}"
                   ],
@@ -5314,11 +5523,11 @@
                     },
                     {
                       "key": "categoryId",
-                      "value": "21f5bf2a-1d50-9bd0-e812-cc54679ae4e2"
+                      "value": "7d9bed9b-e8f9-4b77-121d-af43500c5c24"
                     },
                     {
                       "key": "status",
-                      "value": "Pending"
+                      "value": "Paid"
                     }
                   ]
                 }
@@ -5335,7 +5544,7 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{baseUrl}}/v1/expenses?search=string&categoryId=21f5bf2a-1d50-9bd0-e812-cc54679ae4e2&status=Pending",
+                      "raw": "{{baseUrl}}/v1/expenses?search=string&categoryId=7d9bed9b-e8f9-4b77-121d-af43500c5c24&status=Paid",
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -5350,11 +5559,11 @@
                         },
                         {
                           "key": "categoryId",
-                          "value": "21f5bf2a-1d50-9bd0-e812-cc54679ae4e2"
+                          "value": "7d9bed9b-e8f9-4b77-121d-af43500c5c24"
                         },
                         {
                           "key": "status",
-                          "value": "Pending"
+                          "value": "Paid"
                         }
                       ]
                     }
@@ -5369,7 +5578,7 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "[\n  {\n    \"id\": \"152252db-39c9-4ec9-79ae-b79c19bf3101\",\n    \"amount\": 9669.312472619898,\n    \"categoryId\": \"133805e6-4010-a0c4-af92-8682edca50f6\",\n    \"category\": {\n      \"id\": \"dcbd3353-df6f-e597-bb80-ca9d83cb7062\",\n      \"companyId\": \"f6b97724-cfb4-1c58-1457-86c80d1719b9\",\n      \"kind\": \"expense\",\n      \"name\": \"string\",\n      \"isActive\": false,\n      \"createdAt\": \"1966-09-20T13:35:24.453Z\",\n      \"updatedAt\": \"1991-04-08T11:36:23.944Z\"\n    },\n    \"description\": \"string\",\n    \"status\": \"Rejected\",\n    \"companyId\": \"fc2d4655-85c8-7921-a840-67df2bffb8f0\",\n    \"createdAt\": \"1980-05-23T00:31:23.889Z\",\n    \"updatedAt\": \"1965-05-01T02:01:34.745Z\",\n    \"date\": \"1958-03-09\",\n    \"receipt\": {\n      \"url\": \"string\",\n      \"publicId\": \"string\",\n      \"resourceType\": \"string\",\n      \"mimeType\": \"image/jpeg\",\n      \"size\": 2208218.861339405,\n      \"uploadedBy\": \"4d2a983c-c2f4-8765-ff86-b7a65a6fddfd\",\n      \"uploadedAt\": \"1949-04-18T17:23:28.374Z\"\n    },\n    \"paidTo\": \"string\"\n  },\n  {\n    \"id\": \"e37212e6-988a-5fb1-50fe-6b47d23fb701\",\n    \"amount\": 3179.47040656251,\n    \"categoryId\": \"663bd9b7-88c3-337f-ac24-ad231cd00654\",\n    \"category\": {\n      \"id\": \"094d665e-97c6-815f-1c2a-61c35487dc53\",\n      \"companyId\": \"145340e9-5a9a-555f-6afb-a9a5f5d0cfe1\",\n      \"kind\": \"expense\",\n      \"name\": \"string\",\n      \"isActive\": false,\n      \"createdAt\": \"2026-05-31T12:53:05.385Z\",\n      \"updatedAt\": \"2014-06-07T15:14:58.744Z\"\n    },\n    \"description\": \"string\",\n    \"status\": \"Approved\",\n    \"companyId\": \"df78a95f-8dba-9581-9a3c-d86bbf1c913c\",\n    \"createdAt\": \"2009-05-17T23:55:32.122Z\",\n    \"updatedAt\": \"1987-09-15T04:58:36.778Z\",\n    \"date\": \"1988-09-18\",\n    \"receipt\": {\n      \"url\": \"string\",\n      \"publicId\": \"string\",\n      \"resourceType\": \"string\",\n      \"mimeType\": \"application/pdf\",\n      \"size\": 2542192.202820367,\n      \"uploadedBy\": \"4a384e80-745a-ba5b-0134-2842491f029f\",\n      \"uploadedAt\": \"2003-03-22T18:51:37.171Z\"\n    },\n    \"paidTo\": \"string\"\n  }\n]"
+                  "body": "[\n  {\n    \"id\": \"3884c22c-8aa5-5684-363c-fe73107d90b7\",\n    \"amount\": 432.90311823291904,\n    \"categoryId\": \"0e02dae1-5f0a-9009-de4f-7d93a0b8f309\",\n    \"category\": {\n      \"id\": \"3e5ed251-29a2-353b-a598-bffb8e204b78\",\n      \"companyId\": \"4ffea685-aba7-4e12-cd06-87bb10d4fc97\",\n      \"kind\": \"income\",\n      \"name\": \"string\",\n      \"isActive\": false,\n      \"createdAt\": \"2014-12-17T14:49:42.051Z\",\n      \"updatedAt\": \"1986-11-17T00:45:36.265Z\"\n    },\n    \"description\": \"string\",\n    \"status\": \"Paid\",\n    \"companyId\": \"9ecced05-1361-cb3d-0399-3cedea65180b\",\n    \"createdAt\": \"2000-02-29T19:11:44.399Z\",\n    \"updatedAt\": \"1947-02-21T14:34:56.500Z\",\n    \"date\": \"2020-07-28\",\n    \"receipt\": {\n      \"url\": \"string\",\n      \"publicId\": \"string\",\n      \"resourceType\": \"string\",\n      \"mimeType\": \"application/pdf\",\n      \"size\": 11083.73054586933,\n      \"uploadedBy\": \"29299b14-e4e6-4c4a-4e7e-d7e3c5eff19a\",\n      \"uploadedAt\": \"2012-08-09T15:38:54.278Z\"\n    },\n    \"paidTo\": \"string\"\n  },\n  {\n    \"id\": \"b7a7646d-15fc-0a38-e3d6-727c1563e7ba\",\n    \"amount\": 8878.177802821561,\n    \"categoryId\": \"3d326c6f-81bb-6f82-31dd-9dd697dd1a5c\",\n    \"category\": {\n      \"id\": \"8e32997f-9a14-32ca-7703-7ef70b31df02\",\n      \"companyId\": \"d78a529b-844e-bf22-0025-8e4521c6e1ea\",\n      \"kind\": \"income\",\n      \"name\": \"string\",\n      \"isActive\": true,\n      \"createdAt\": \"1948-07-10T17:51:25.239Z\",\n      \"updatedAt\": \"1951-05-25T20:18:20.939Z\"\n    },\n    \"description\": \"string\",\n    \"status\": \"Approved\",\n    \"companyId\": \"c5ef2ecd-f020-b8ec-7c7a-9316504df55d\",\n    \"createdAt\": \"2017-06-24T08:12:17.335Z\",\n    \"updatedAt\": \"1987-04-22T15:54:06.997Z\",\n    \"date\": \"1962-09-22\",\n    \"receipt\": {\n      \"url\": \"string\",\n      \"publicId\": \"string\",\n      \"resourceType\": \"string\",\n      \"mimeType\": \"image/png\",\n      \"size\": 563886.427367857,\n      \"uploadedBy\": \"804a6796-094b-fcfa-59b1-7f7a462f2a90\",\n      \"uploadedAt\": \"1998-03-17T20:52:08.745Z\"\n    },\n    \"paidTo\": \"string\"\n  }\n]"
                 }
               ]
             }
@@ -5820,7 +6029,7 @@
                         ],
                         "body": {
                           "mode": "raw",
-                          "raw": "{\n  \"status\": \"partial\"\n}",
+                          "raw": "{\n  \"status\": \"cancelled\"\n}",
                           "options": {
                             "raw": {
                               "headerFamily": "json",
@@ -5860,7 +6069,7 @@
                             ],
                             "body": {
                               "mode": "raw",
-                              "raw": "{\n  \"status\": \"partial\"\n}",
+                              "raw": "{\n  \"status\": \"cancelled\"\n}",
                               "options": {
                                 "raw": {
                                   "headerFamily": "json",
@@ -6390,7 +6599,7 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/v1/invoices?search=string&contactId=string&status=draft",
+                  "raw": "{{baseUrl}}/v1/invoices?search=string&contactId=string&status=paid",
                   "host": [
                     "{{baseUrl}}"
                   ],
@@ -6410,7 +6619,7 @@
                     },
                     {
                       "key": "status",
-                      "value": "draft"
+                      "value": "paid"
                     }
                   ]
                 }
@@ -6422,7 +6631,7 @@
                     "method": "GET",
                     "header": [],
                     "url": {
-                      "raw": "{{baseUrl}}/v1/invoices?search=string&contactId=string&status=draft",
+                      "raw": "{{baseUrl}}/v1/invoices?search=string&contactId=string&status=paid",
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -6442,7 +6651,7 @@
                         },
                         {
                           "key": "status",
-                          "value": "draft"
+                          "value": "paid"
                         }
                       ]
                     }
@@ -6876,7 +7085,7 @@
                         ],
                         "body": {
                           "mode": "raw",
-                          "raw": "{\n  \"status\": \"confirmed\"\n}",
+                          "raw": "{\n  \"status\": \"delivered\"\n}",
                           "options": {
                             "raw": {
                               "headerFamily": "json",
@@ -6916,7 +7125,7 @@
                             ],
                             "body": {
                               "mode": "raw",
-                              "raw": "{\n  \"status\": \"confirmed\"\n}",
+                              "raw": "{\n  \"status\": \"delivered\"\n}",
                               "options": {
                                 "raw": {
                                   "headerFamily": "json",
@@ -7232,7 +7441,7 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/v1/orders?search=string&status=cancelled",
+                  "raw": "{{baseUrl}}/v1/orders?search=string&status=pending",
                   "host": [
                     "{{baseUrl}}"
                   ],
@@ -7247,7 +7456,7 @@
                     },
                     {
                       "key": "status",
-                      "value": "cancelled"
+                      "value": "pending"
                     }
                   ]
                 }
@@ -7259,7 +7468,7 @@
                     "method": "GET",
                     "header": [],
                     "url": {
-                      "raw": "{{baseUrl}}/v1/orders?search=string&status=cancelled",
+                      "raw": "{{baseUrl}}/v1/orders?search=string&status=pending",
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -7274,7 +7483,7 @@
                         },
                         {
                           "key": "status",
-                          "value": "cancelled"
+                          "value": "pending"
                         }
                       ]
                     }
@@ -7466,7 +7675,7 @@
                             }
                           ],
                           "cookie": [],
-                          "body": "{\n  \"data\": [\n    {\n      \"id\": \"d9671bbd-b280-b7ce-c85c-24a9dacd6e2c\",\n      \"productId\": \"648374bb-580b-b7d5-051f-3eb7c9a72dce\",\n      \"companyId\": \"b634b2a2-a8b2-d462-f8fd-b22b4faa6a92\",\n      \"change\": 6984.519499322181,\n      \"previousStock\": 8278.563402817956,\n      \"newStock\": 7148.742599900246,\n      \"source\": \"adjustment\",\n      \"createdBy\": \"9f89b231-bdb3-90e0-e76b-c63580a00ae6\",\n      \"createdAt\": \"1963-11-01T11:02:30.685Z\"\n    },\n    {\n      \"id\": \"68aab960-a7d0-a70c-5583-e663e4eb87b3\",\n      \"productId\": \"debf9bd4-2696-8182-260f-1cbdc7fb04ce\",\n      \"companyId\": \"2d102f68-b206-fcf6-1592-0cc949f7d4c8\",\n      \"change\": 3695.947010195235,\n      \"previousStock\": 9097.635313646999,\n      \"newStock\": 4171.501035530252,\n      \"source\": \"adjustment\",\n      \"createdBy\": \"c28c4aac-7231-1497-6e93-50225cc75a18\",\n      \"createdAt\": \"2004-03-14T16:13:08.307Z\"\n    }\n  ],\n  \"total\": 1052.1042140364866,\n  \"page\": 1572.4414051772228,\n  \"limit\": 6633.0894961339945,\n  \"totalPages\": 9021.200220593097,\n  \"hasNextPage\": false,\n  \"hasPrevPage\": false\n}"
+                          "body": "{\n  \"data\": [\n    {\n      \"id\": \"d1a67d23-b4db-9230-51a7-44492e9dadb9\",\n      \"productId\": \"98922cc1-72ef-02b7-eda1-8036ad4980d3\",\n      \"companyId\": \"8e3ce455-d464-b81a-424b-2d04327d6bd1\",\n      \"change\": 2082.9087394774206,\n      \"previousStock\": 6992.2511434956805,\n      \"newStock\": 1694.8886826156984,\n      \"source\": \"import\",\n      \"createdBy\": \"86b8fb8a-3fa0-146a-791f-71a070f75c0e\",\n      \"createdAt\": \"1981-05-17T19:35:15.658Z\"\n    },\n    {\n      \"id\": \"3f7a2f32-beb8-79e0-b84a-5537dfc849fa\",\n      \"productId\": \"bb3c678a-9f27-7caa-652a-cad894608e2b\",\n      \"companyId\": \"ea2f45ee-9415-cd89-d0d5-c6839b6c74a4\",\n      \"change\": 9943.04009174164,\n      \"previousStock\": 6639.385003229899,\n      \"newStock\": 8634.410272670157,\n      \"source\": \"import\",\n      \"createdBy\": \"ca508c80-c94f-652b-96d1-d8d4ec90eff9\",\n      \"createdAt\": \"2005-04-20T15:46:50.140Z\"\n    }\n  ],\n  \"total\": 177.16323119564282,\n  \"page\": 7723.08553947572,\n  \"limit\": 6171.716730556344,\n  \"totalPages\": 275.47055985672307,\n  \"hasNextPage\": false,\n  \"hasPrevPage\": true\n}"
                         },
                         {
                           "name": "Product not found, including other-organization products",
@@ -7674,7 +7883,7 @@
                     ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"name\": \"string\",\n  \"type\": \"product\",\n  \"price\": 1380859721.28384,\n  \"cost\": 490190541.84201443,\n  \"currency\": \"string\",\n  \"stock\": 827606091.2636967,\n  \"trackInventory\": true,\n  \"images\": [\n    \"string\",\n    \"string\"\n  ],\n  \"isActive\": true,\n  \"supplier\": \"string\",\n  \"reorderLevel\": 997722671.9661005,\n  \"description\": \"string\",\n  \"categoryId\": \"bbc5e479-efbb-cc7f-16ab-0b4f889b9243\",\n  \"quantity\": 1676265287.7709136,\n  \"inStock\": false\n}",
+                      "raw": "{\n  \"name\": \"string\",\n  \"type\": \"product\",\n  \"price\": 1646969112.3578918,\n  \"cost\": 84379935.27505957,\n  \"currency\": \"string\",\n  \"stock\": 144816909.9226004,\n  \"trackInventory\": false,\n  \"images\": [\n    \"string\",\n    \"string\"\n  ],\n  \"isActive\": false,\n  \"supplier\": \"string\",\n  \"reorderLevel\": 169974679.60473543,\n  \"description\": \"string\",\n  \"categoryId\": \"d0620395-6443-8fd3-a3e4-ae39b3e579d8\",\n  \"quantity\": 2055848383.1745894,\n  \"inStock\": true\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -7713,7 +7922,7 @@
                         ],
                         "body": {
                           "mode": "raw",
-                          "raw": "{\n  \"name\": \"string\",\n  \"type\": \"product\",\n  \"price\": 1380859721.28384,\n  \"cost\": 490190541.84201443,\n  \"currency\": \"string\",\n  \"stock\": 827606091.2636967,\n  \"trackInventory\": true,\n  \"images\": [\n    \"string\",\n    \"string\"\n  ],\n  \"isActive\": true,\n  \"supplier\": \"string\",\n  \"reorderLevel\": 997722671.9661005,\n  \"description\": \"string\",\n  \"categoryId\": \"bbc5e479-efbb-cc7f-16ab-0b4f889b9243\",\n  \"quantity\": 1676265287.7709136,\n  \"inStock\": false\n}",
+                          "raw": "{\n  \"name\": \"string\",\n  \"type\": \"product\",\n  \"price\": 1646969112.3578918,\n  \"cost\": 84379935.27505957,\n  \"currency\": \"string\",\n  \"stock\": 144816909.9226004,\n  \"trackInventory\": false,\n  \"images\": [\n    \"string\",\n    \"string\"\n  ],\n  \"isActive\": false,\n  \"supplier\": \"string\",\n  \"reorderLevel\": 169974679.60473543,\n  \"description\": \"string\",\n  \"categoryId\": \"d0620395-6443-8fd3-a3e4-ae39b3e579d8\",\n  \"quantity\": 2055848383.1745894,\n  \"inStock\": true\n}",
                           "options": {
                             "raw": {
                               "headerFamily": "json",
@@ -7976,7 +8185,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"name\": \"Office Chair\",\n  \"price\": 45000,\n  \"sku\": \"CHAIR-01\",\n  \"reorderLevel\": 1862371008.406165,\n  \"supplier\": \"Acme Supplies\",\n  \"description\": \"Ergonomic office chair with lumbar support\",\n  \"categoryId\": \"664f1b2c-9d3e-4a5b-8c7d-8e9f0a1b2c3d\",\n  \"type\": \"product\",\n  \"cost\": 30000,\n  \"currency\": \"NGN\",\n  \"stock\": 20,\n  \"trackInventory\": true,\n  \"images\": [\n    \"https://res.cloudinary.com/example/image1.jpg\"\n  ],\n  \"isActive\": true\n}",
+                  "raw": "{\n  \"name\": \"Office Chair\",\n  \"price\": 45000,\n  \"sku\": \"CHAIR-01\",\n  \"reorderLevel\": 1803274371.0256443,\n  \"supplier\": \"Acme Supplies\",\n  \"description\": \"Ergonomic office chair with lumbar support\",\n  \"categoryId\": \"664f1b2c-9d3e-4a5b-8c7d-8e9f0a1b2c3d\",\n  \"type\": \"product\",\n  \"cost\": 30000,\n  \"currency\": \"NGN\",\n  \"stock\": 20,\n  \"trackInventory\": true,\n  \"images\": [\n    \"https://res.cloudinary.com/example/image1.jpg\"\n  ],\n  \"isActive\": true\n}",
                   "options": {
                     "raw": {
                       "headerFamily": "json",
@@ -8008,7 +8217,7 @@
                     ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"name\": \"Office Chair\",\n  \"price\": 45000,\n  \"sku\": \"CHAIR-01\",\n  \"reorderLevel\": 1862371008.406165,\n  \"supplier\": \"Acme Supplies\",\n  \"description\": \"Ergonomic office chair with lumbar support\",\n  \"categoryId\": \"664f1b2c-9d3e-4a5b-8c7d-8e9f0a1b2c3d\",\n  \"type\": \"product\",\n  \"cost\": 30000,\n  \"currency\": \"NGN\",\n  \"stock\": 20,\n  \"trackInventory\": true,\n  \"images\": [\n    \"https://res.cloudinary.com/example/image1.jpg\"\n  ],\n  \"isActive\": true\n}",
+                      "raw": "{\n  \"name\": \"Office Chair\",\n  \"price\": 45000,\n  \"sku\": \"CHAIR-01\",\n  \"reorderLevel\": 1803274371.0256443,\n  \"supplier\": \"Acme Supplies\",\n  \"description\": \"Ergonomic office chair with lumbar support\",\n  \"categoryId\": \"664f1b2c-9d3e-4a5b-8c7d-8e9f0a1b2c3d\",\n  \"type\": \"product\",\n  \"cost\": 30000,\n  \"currency\": \"NGN\",\n  \"stock\": 20,\n  \"trackInventory\": true,\n  \"images\": [\n    \"https://res.cloudinary.com/example/image1.jpg\"\n  ],\n  \"isActive\": true\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -8042,7 +8251,7 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/v1/products?search=string&categoryId=string&isActive=false&type=service",
+                  "raw": "{{baseUrl}}/v1/products?search=string&categoryId=string&isActive=true&type=product",
                   "host": [
                     "{{baseUrl}}"
                   ],
@@ -8061,11 +8270,11 @@
                     },
                     {
                       "key": "isActive",
-                      "value": "false"
+                      "value": "true"
                     },
                     {
                       "key": "type",
-                      "value": "service"
+                      "value": "product"
                     }
                   ]
                 }
@@ -8077,7 +8286,7 @@
                     "method": "GET",
                     "header": [],
                     "url": {
-                      "raw": "{{baseUrl}}/v1/products?search=string&categoryId=string&isActive=false&type=service",
+                      "raw": "{{baseUrl}}/v1/products?search=string&categoryId=string&isActive=true&type=product",
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -8096,11 +8305,11 @@
                         },
                         {
                           "key": "isActive",
-                          "value": "false"
+                          "value": "true"
                         },
                         {
                           "key": "type",
-                          "value": "service"
+                          "value": "product"
                         }
                       ]
                     }
@@ -8698,7 +8907,7 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/v1/services?search=string&categoryId=string&isActive=false",
+                  "raw": "{{baseUrl}}/v1/services?search=string&categoryId=string&isActive=true",
                   "host": [
                     "{{baseUrl}}"
                   ],
@@ -8718,7 +8927,7 @@
                     },
                     {
                       "key": "isActive",
-                      "value": "false"
+                      "value": "true"
                     }
                   ]
                 }
@@ -8730,7 +8939,7 @@
                     "method": "GET",
                     "header": [],
                     "url": {
-                      "raw": "{{baseUrl}}/v1/services?search=string&categoryId=string&isActive=false",
+                      "raw": "{{baseUrl}}/v1/services?search=string&categoryId=string&isActive=true",
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -8750,7 +8959,7 @@
                         },
                         {
                           "key": "isActive",
-                          "value": "false"
+                          "value": "true"
                         }
                       ]
                     }
@@ -8773,7 +8982,7 @@
               "name": "stats",
               "item": [
                 {
-                  "name": "Stat cards — total staffs, invoices, pending orders, customers, products",
+                  "name": "Stat cards — totals and month-over-month changes for customers, products, services, pending orders and invoices",
                   "request": {
                     "auth": {
                       "type": "bearer",
@@ -9234,7 +9443,7 @@
                         ],
                         "body": {
                           "mode": "raw",
-                          "raw": "{\n  \"status\": \"in_progress\"\n}",
+                          "raw": "{\n  \"status\": \"resolved\"\n}",
                           "options": {
                             "raw": {
                               "headerFamily": "json",
@@ -9274,7 +9483,7 @@
                             ],
                             "body": {
                               "mode": "raw",
-                              "raw": "{\n  \"status\": \"in_progress\"\n}",
+                              "raw": "{\n  \"status\": \"resolved\"\n}",
                               "options": {
                                 "raw": {
                                   "headerFamily": "json",
@@ -10019,7 +10228,7 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/v1/notifications?page=1&limit=20&unreadOnly=false",
+                  "raw": "{{baseUrl}}/v1/notifications?page=1&limit=20&unreadOnly=true",
                   "host": [
                     "{{baseUrl}}"
                   ],
@@ -10039,7 +10248,7 @@
                     {
                       "description": "Filter to unread only",
                       "key": "unreadOnly",
-                      "value": "false"
+                      "value": "true"
                     }
                   ]
                 }
@@ -10051,7 +10260,7 @@
                     "method": "GET",
                     "header": [],
                     "url": {
-                      "raw": "{{baseUrl}}/v1/notifications?page=1&limit=20&unreadOnly=false",
+                      "raw": "{{baseUrl}}/v1/notifications?page=1&limit=20&unreadOnly=true",
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -10071,7 +10280,7 @@
                         {
                           "description": "Filter to unread only",
                           "key": "unreadOnly",
-                          "value": "false"
+                          "value": "true"
                         }
                       ]
                     }
@@ -10242,7 +10451,7 @@
                             }
                           ],
                           "cookie": [],
-                          "body": "{\n  \"id\": \"b22a772c-c8d4-cdf1-0d0b-0f8eeb88a82c\",\n  \"quoteNumber\": \"QT-2026-001\",\n  \"date\": \"1975-10-17\",\n  \"clientName\": \"string\",\n  \"amount\": 6811.986015291953,\n  \"description\": \"string\",\n  \"notes\": \"string\",\n  \"expiresAt\": \"1967-08-31\",\n  \"status\": \"sent\",\n  \"companyId\": \"065c276b-9326-f2b3-ee52-a1ef2ac332e4\",\n  \"createdAt\": \"1969-01-10T13:10:54.750Z\",\n  \"updatedAt\": \"2008-05-11T07:14:07.328Z\"\n}"
+                          "body": "{\n  \"id\": \"95447fa7-d4ed-820a-bbe2-c4509528308f\",\n  \"quoteNumber\": \"QT-2026-001\",\n  \"date\": \"2026-07-08\",\n  \"clientName\": \"string\",\n  \"amount\": 6790.345942841917,\n  \"description\": \"string\",\n  \"notes\": \"string\",\n  \"expiresAt\": \"1948-12-14\",\n  \"status\": \"rejected\",\n  \"companyId\": \"aa0dd01f-5a0f-1988-47ed-6a6628b952c5\",\n  \"createdAt\": \"2014-09-17T19:04:06.538Z\",\n  \"updatedAt\": \"1998-12-20T14:05:59.281Z\"\n}"
                         }
                       ]
                     }
@@ -10348,7 +10557,7 @@
                             }
                           ],
                           "cookie": [],
-                          "body": "{\n  \"quote\": {\n    \"id\": \"3a9f31bc-7c7f-3bcb-d1bd-4e8b1e24183d\",\n    \"quoteNumber\": \"QT-2026-001\",\n    \"date\": \"1949-07-04\",\n    \"clientName\": \"string\",\n    \"amount\": 5230.105153061681,\n    \"description\": \"string\",\n    \"notes\": \"string\",\n    \"expiresAt\": \"2016-04-05\",\n    \"status\": \"sent\",\n    \"companyId\": \"81d37ecf-97a1-a72e-1e3b-5cb4535e5873\",\n    \"createdAt\": \"1998-12-29T19:34:16.638Z\",\n    \"updatedAt\": \"1984-12-24T22:55:17.516Z\"\n  },\n  \"invoice\": {\n    \"key_0\": true,\n    \"key_1\": 6706,\n    \"key_2\": true\n  },\n  \"order\": {\n    \"key_0\": 5490,\n    \"key_1\": 5963.942375421081\n  }\n}"
+                          "body": "{\n  \"quote\": {\n    \"id\": \"2cd4a067-2b3d-2cf9-854a-0d5df0a7ca02\",\n    \"quoteNumber\": \"QT-2026-001\",\n    \"date\": \"1996-03-03\",\n    \"clientName\": \"string\",\n    \"amount\": 6923.7710856962685,\n    \"description\": \"string\",\n    \"notes\": \"string\",\n    \"expiresAt\": \"2025-12-06\",\n    \"status\": \"rejected\",\n    \"companyId\": \"ed13576e-6ac5-2045-58bc-c48ccbd18dad\",\n    \"createdAt\": \"1957-09-29T14:12:34.772Z\",\n    \"updatedAt\": \"2019-12-13T04:32:03.417Z\"\n  },\n  \"invoice\": {\n    \"key_0\": true\n  },\n  \"order\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
                         },
                         {
                           "name": "Quote not found, or the invoice contact was not found in the authenticated company. Nonexistent and cross-company contacts both return \"Contact not found\".",
@@ -10467,7 +10676,7 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n  \"id\": \"b22a772c-c8d4-cdf1-0d0b-0f8eeb88a82c\",\n  \"quoteNumber\": \"QT-2026-001\",\n  \"date\": \"1975-10-17\",\n  \"clientName\": \"string\",\n  \"amount\": 6811.986015291953,\n  \"description\": \"string\",\n  \"notes\": \"string\",\n  \"expiresAt\": \"1967-08-31\",\n  \"status\": \"sent\",\n  \"companyId\": \"065c276b-9326-f2b3-ee52-a1ef2ac332e4\",\n  \"createdAt\": \"1969-01-10T13:10:54.750Z\",\n  \"updatedAt\": \"2008-05-11T07:14:07.328Z\"\n}"
+                      "body": "{\n  \"id\": \"95447fa7-d4ed-820a-bbe2-c4509528308f\",\n  \"quoteNumber\": \"QT-2026-001\",\n  \"date\": \"2026-07-08\",\n  \"clientName\": \"string\",\n  \"amount\": 6790.345942841917,\n  \"description\": \"string\",\n  \"notes\": \"string\",\n  \"expiresAt\": \"1948-12-14\",\n  \"status\": \"rejected\",\n  \"companyId\": \"aa0dd01f-5a0f-1988-47ed-6a6628b952c5\",\n  \"createdAt\": \"2014-09-17T19:04:06.538Z\",\n  \"updatedAt\": \"1998-12-20T14:05:59.281Z\"\n}"
                     }
                   ]
                 },
@@ -10487,7 +10696,7 @@
                     ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"date\": \"2026-06-15\",\n  \"clientName\": \"Acme Corp\",\n  \"amount\": 150000,\n  \"description\": \"Website redesign and SEO optimization\",\n  \"status\": \"draft\",\n  \"expiresAt\": \"2026-10-31\",\n  \"notes\": \"Payment due within 30 days\"\n}",
+                      "raw": "{\n  \"contactId\": \"f1dfe258-e1d6-83e2-dc22-4f6d8a2253d4\",\n  \"companyRecordId\": \"92351f64-195e-6404-9ba0-89f513cedde0\",\n  \"date\": \"2026-06-15\",\n  \"amount\": 150000,\n  \"description\": \"Website redesign and SEO optimization\",\n  \"status\": \"draft\",\n  \"expiresAt\": \"2026-10-31\",\n  \"notes\": \"Payment due within 30 days\"\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -10530,7 +10739,7 @@
                         ],
                         "body": {
                           "mode": "raw",
-                          "raw": "{\n  \"date\": \"2026-06-15\",\n  \"clientName\": \"Acme Corp\",\n  \"amount\": 150000,\n  \"description\": \"Website redesign and SEO optimization\",\n  \"status\": \"draft\",\n  \"expiresAt\": \"2026-10-31\",\n  \"notes\": \"Payment due within 30 days\"\n}",
+                          "raw": "{\n  \"contactId\": \"f1dfe258-e1d6-83e2-dc22-4f6d8a2253d4\",\n  \"companyRecordId\": \"92351f64-195e-6404-9ba0-89f513cedde0\",\n  \"date\": \"2026-06-15\",\n  \"amount\": 150000,\n  \"description\": \"Website redesign and SEO optimization\",\n  \"status\": \"draft\",\n  \"expiresAt\": \"2026-10-31\",\n  \"notes\": \"Payment due within 30 days\"\n}",
                           "options": {
                             "raw": {
                               "headerFamily": "json",
@@ -10566,7 +10775,7 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n  \"id\": \"b22a772c-c8d4-cdf1-0d0b-0f8eeb88a82c\",\n  \"quoteNumber\": \"QT-2026-001\",\n  \"date\": \"1975-10-17\",\n  \"clientName\": \"string\",\n  \"amount\": 6811.986015291953,\n  \"description\": \"string\",\n  \"notes\": \"string\",\n  \"expiresAt\": \"1967-08-31\",\n  \"status\": \"sent\",\n  \"companyId\": \"065c276b-9326-f2b3-ee52-a1ef2ac332e4\",\n  \"createdAt\": \"1969-01-10T13:10:54.750Z\",\n  \"updatedAt\": \"2008-05-11T07:14:07.328Z\"\n}"
+                      "body": "{\n  \"id\": \"95447fa7-d4ed-820a-bbe2-c4509528308f\",\n  \"quoteNumber\": \"QT-2026-001\",\n  \"date\": \"2026-07-08\",\n  \"clientName\": \"string\",\n  \"amount\": 6790.345942841917,\n  \"description\": \"string\",\n  \"notes\": \"string\",\n  \"expiresAt\": \"1948-12-14\",\n  \"status\": \"rejected\",\n  \"companyId\": \"aa0dd01f-5a0f-1988-47ed-6a6628b952c5\",\n  \"createdAt\": \"2014-09-17T19:04:06.538Z\",\n  \"updatedAt\": \"1998-12-20T14:05:59.281Z\"\n}"
                     }
                   ]
                 },
@@ -10644,7 +10853,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"date\": \"2026-06-15\",\n  \"clientName\": \"Acme Corp\",\n  \"amount\": 150000,\n  \"description\": \"Website redesign and SEO optimization\",\n  \"status\": \"draft\",\n  \"expiresAt\": \"2026-10-31\",\n  \"notes\": \"Payment due within 30 days\"\n}",
+                  "raw": "{\n  \"date\": \"2026-06-15\",\n  \"amount\": 150000,\n  \"description\": \"Website redesign and SEO optimization\",\n  \"status\": \"draft\",\n  \"contactId\": \"d26fc1dd-4a12-31fe-d757-e3ca2ee2a0fa\",\n  \"companyRecordId\": \"325cdde0-5e61-7a58-93ce-d6017dc0b849\",\n  \"expiresAt\": \"2026-10-31\",\n  \"notes\": \"Payment due within 30 days\"\n}",
                   "options": {
                     "raw": {
                       "headerFamily": "json",
@@ -10680,7 +10889,7 @@
                     ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"date\": \"2026-06-15\",\n  \"clientName\": \"Acme Corp\",\n  \"amount\": 150000,\n  \"description\": \"Website redesign and SEO optimization\",\n  \"status\": \"draft\",\n  \"expiresAt\": \"2026-10-31\",\n  \"notes\": \"Payment due within 30 days\"\n}",
+                      "raw": "{\n  \"date\": \"2026-06-15\",\n  \"amount\": 150000,\n  \"description\": \"Website redesign and SEO optimization\",\n  \"status\": \"draft\",\n  \"contactId\": \"d26fc1dd-4a12-31fe-d757-e3ca2ee2a0fa\",\n  \"companyRecordId\": \"325cdde0-5e61-7a58-93ce-d6017dc0b849\",\n  \"expiresAt\": \"2026-10-31\",\n  \"notes\": \"Payment due within 30 days\"\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -10709,7 +10918,7 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n  \"id\": \"b22a772c-c8d4-cdf1-0d0b-0f8eeb88a82c\",\n  \"quoteNumber\": \"QT-2026-001\",\n  \"date\": \"1975-10-17\",\n  \"clientName\": \"string\",\n  \"amount\": 6811.986015291953,\n  \"description\": \"string\",\n  \"notes\": \"string\",\n  \"expiresAt\": \"1967-08-31\",\n  \"status\": \"sent\",\n  \"companyId\": \"065c276b-9326-f2b3-ee52-a1ef2ac332e4\",\n  \"createdAt\": \"1969-01-10T13:10:54.750Z\",\n  \"updatedAt\": \"2008-05-11T07:14:07.328Z\"\n}"
+                  "body": "{\n  \"id\": \"95447fa7-d4ed-820a-bbe2-c4509528308f\",\n  \"quoteNumber\": \"QT-2026-001\",\n  \"date\": \"2026-07-08\",\n  \"clientName\": \"string\",\n  \"amount\": 6790.345942841917,\n  \"description\": \"string\",\n  \"notes\": \"string\",\n  \"expiresAt\": \"1948-12-14\",\n  \"status\": \"rejected\",\n  \"companyId\": \"aa0dd01f-5a0f-1988-47ed-6a6628b952c5\",\n  \"createdAt\": \"2014-09-17T19:04:06.538Z\",\n  \"updatedAt\": \"1998-12-20T14:05:59.281Z\"\n}"
                 }
               ]
             },
@@ -10790,7 +10999,7 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "[\n  {\n    \"id\": \"31dd763a-b109-ee5f-0257-c9f469ed52e1\",\n    \"quoteNumber\": \"QT-2026-001\",\n    \"date\": \"1950-12-10\",\n    \"clientName\": \"string\",\n    \"amount\": 7056.413092310796,\n    \"description\": \"string\",\n    \"notes\": \"string\",\n    \"expiresAt\": \"1953-12-21\",\n    \"status\": \"converted_to_invoice\",\n    \"companyId\": \"c8f97291-c2d6-f552-bf2a-90305674259f\",\n    \"createdAt\": \"1953-01-15T05:21:00.198Z\",\n    \"updatedAt\": \"1965-10-07T05:07:19.977Z\"\n  },\n  {\n    \"id\": \"0b814956-a40c-2fbb-9ad8-6e8db2e8f39f\",\n    \"quoteNumber\": \"QT-2026-001\",\n    \"date\": \"2012-07-16\",\n    \"clientName\": \"string\",\n    \"amount\": 6649.495391081421,\n    \"description\": \"string\",\n    \"notes\": \"string\",\n    \"expiresAt\": \"1970-02-28\",\n    \"status\": \"rejected\",\n    \"companyId\": \"5ea56a5d-fb01-c824-bcdf-486ef6ed3ea1\",\n    \"createdAt\": \"2010-05-12T05:05:45.768Z\",\n    \"updatedAt\": \"1981-04-10T18:50:37.269Z\"\n  }\n]"
+                  "body": "[\n  {\n    \"id\": \"07df022f-cdf5-bc56-ce25-858a79dabec3\",\n    \"quoteNumber\": \"QT-2026-001\",\n    \"date\": \"1964-06-05\",\n    \"clientName\": \"string\",\n    \"amount\": 4824.69015117357,\n    \"description\": \"string\",\n    \"notes\": \"string\",\n    \"expiresAt\": \"1999-05-18\",\n    \"status\": \"draft\",\n    \"companyId\": \"6dbf6f32-554a-84ef-06f7-a03934a1eaa0\",\n    \"createdAt\": \"2003-08-28T19:22:22.166Z\",\n    \"updatedAt\": \"2021-02-11T18:50:44.526Z\"\n  },\n  {\n    \"id\": \"e4ee77c9-48ed-3200-d54a-1fbffb7a6c55\",\n    \"quoteNumber\": \"QT-2026-001\",\n    \"date\": \"2017-02-19\",\n    \"clientName\": \"string\",\n    \"amount\": 3005.708668385987,\n    \"description\": \"string\",\n    \"notes\": \"string\",\n    \"expiresAt\": \"1951-04-16\",\n    \"status\": \"converted_to_invoice\",\n    \"companyId\": \"22fb0384-5ced-24c3-2dfc-0ac1a8b14b00\",\n    \"createdAt\": \"1988-06-01T12:33:11.996Z\",\n    \"updatedAt\": \"1950-04-30T11:26:58.561Z\"\n  }\n]"
                 }
               ]
             }
@@ -10885,7 +11094,7 @@
                     "method": "GET",
                     "header": [],
                     "url": {
-                      "raw": "{{baseUrl}}/v1/company/login-activity?page=607.016967160765&limit=607.016967160765",
+                      "raw": "{{baseUrl}}/v1/company/login-activity?page=8374.767654383664&limit=8374.767654383664",
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -10897,11 +11106,11 @@
                       "query": [
                         {
                           "key": "page",
-                          "value": "607.016967160765"
+                          "value": "8374.767654383664"
                         },
                         {
                           "key": "limit",
-                          "value": "607.016967160765"
+                          "value": "8374.767654383664"
                         }
                       ]
                     }
@@ -10919,7 +11128,7 @@
                           }
                         ],
                         "url": {
-                          "raw": "{{baseUrl}}/v1/company/login-activity?page=607.016967160765&limit=607.016967160765",
+                          "raw": "{{baseUrl}}/v1/company/login-activity?page=8374.767654383664&limit=8374.767654383664",
                           "host": [
                             "{{baseUrl}}"
                           ],
@@ -10931,11 +11140,11 @@
                           "query": [
                             {
                               "key": "page",
-                              "value": "607.016967160765"
+                              "value": "8374.767654383664"
                             },
                             {
                               "key": "limit",
-                              "value": "607.016967160765"
+                              "value": "8374.767654383664"
                             }
                           ]
                         }
@@ -11205,7 +11414,7 @@
                     ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john@acme.com\",\n  \"phone\": \"+2348012345678\",\n  \"companyName\": \"Acme Corp\",\n  \"source\": \"social_media\",\n  \"status\": \"contacted\",\n  \"score\": 75,\n  \"notes\": \"Updated notes\",\n  \"assignedTo\": \"uuid-of-staff\"\n}",
+                      "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john@acme.com\",\n  \"phone\": \"+2348012345678\",\n  \"companyName\": \"Acme Corp\",\n  \"source\": \"social_media\",\n  \"status\": \"unqualified\",\n  \"score\": 75,\n  \"notes\": \"Updated notes\",\n  \"assignedTo\": \"uuid-of-staff\"\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -11244,7 +11453,7 @@
                         ],
                         "body": {
                           "mode": "raw",
-                          "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john@acme.com\",\n  \"phone\": \"+2348012345678\",\n  \"companyName\": \"Acme Corp\",\n  \"source\": \"social_media\",\n  \"status\": \"contacted\",\n  \"score\": 75,\n  \"notes\": \"Updated notes\",\n  \"assignedTo\": \"uuid-of-staff\"\n}",
+                          "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john@acme.com\",\n  \"phone\": \"+2348012345678\",\n  \"companyName\": \"Acme Corp\",\n  \"source\": \"social_media\",\n  \"status\": \"unqualified\",\n  \"score\": 75,\n  \"notes\": \"Updated notes\",\n  \"assignedTo\": \"uuid-of-staff\"\n}",
                           "options": {
                             "raw": {
                               "headerFamily": "json",
@@ -11573,7 +11782,7 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/v1/leads?status=contacted&source=other&assignedTo=string&search=string",
+                  "raw": "{{baseUrl}}/v1/leads?status=contacted&source=website&assignedTo=string&search=string",
                   "host": [
                     "{{baseUrl}}"
                   ],
@@ -11588,7 +11797,7 @@
                     },
                     {
                       "key": "source",
-                      "value": "other"
+                      "value": "website"
                     },
                     {
                       "key": "assignedTo",
@@ -11608,7 +11817,7 @@
                     "method": "GET",
                     "header": [],
                     "url": {
-                      "raw": "{{baseUrl}}/v1/leads?status=contacted&source=other&assignedTo=string&search=string",
+                      "raw": "{{baseUrl}}/v1/leads?status=contacted&source=website&assignedTo=string&search=string",
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -11623,7 +11832,7 @@
                         },
                         {
                           "key": "source",
-                          "value": "other"
+                          "value": "website"
                         },
                         {
                           "key": "assignedTo",
@@ -12689,7 +12898,7 @@
                     ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"name\": \"Acme Q4 Deal v2\",\n  \"value\": 75000,\n  \"currency\": \"NGN\",\n  \"expectedCloseDate\": \"2026-12-31\",\n  \"status\": \"lost\",\n  \"notes\": \"Updated notes\",\n  \"assignedTo\": \"uuid-of-staff\",\n  \"stageId\": \"uuid-of-stage\",\n  \"pipelineId\": \"uuid-of-pipeline\"\n}",
+                      "raw": "{\n  \"name\": \"Acme Q4 Deal v2\",\n  \"value\": 75000,\n  \"currency\": \"NGN\",\n  \"expectedCloseDate\": \"2026-12-31\",\n  \"status\": \"on_hold\",\n  \"notes\": \"Updated notes\",\n  \"assignedTo\": \"uuid-of-staff\",\n  \"stageId\": \"uuid-of-stage\",\n  \"pipelineId\": \"uuid-of-pipeline\"\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -12728,7 +12937,7 @@
                         ],
                         "body": {
                           "mode": "raw",
-                          "raw": "{\n  \"name\": \"Acme Q4 Deal v2\",\n  \"value\": 75000,\n  \"currency\": \"NGN\",\n  \"expectedCloseDate\": \"2026-12-31\",\n  \"status\": \"lost\",\n  \"notes\": \"Updated notes\",\n  \"assignedTo\": \"uuid-of-staff\",\n  \"stageId\": \"uuid-of-stage\",\n  \"pipelineId\": \"uuid-of-pipeline\"\n}",
+                          "raw": "{\n  \"name\": \"Acme Q4 Deal v2\",\n  \"value\": 75000,\n  \"currency\": \"NGN\",\n  \"expectedCloseDate\": \"2026-12-31\",\n  \"status\": \"on_hold\",\n  \"notes\": \"Updated notes\",\n  \"assignedTo\": \"uuid-of-staff\",\n  \"stageId\": \"uuid-of-stage\",\n  \"pipelineId\": \"uuid-of-pipeline\"\n}",
                           "options": {
                             "raw": {
                               "headerFamily": "json",
@@ -12899,7 +13108,7 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/v1/deals?pipelineId=string&stageId=string&status=open&assignedTo=string",
+                  "raw": "{{baseUrl}}/v1/deals?pipelineId=string&stageId=string&status=on_hold&assignedTo=string",
                   "host": [
                     "{{baseUrl}}"
                   ],
@@ -12918,7 +13127,7 @@
                     },
                     {
                       "key": "status",
-                      "value": "open"
+                      "value": "on_hold"
                     },
                     {
                       "key": "assignedTo",
@@ -12934,7 +13143,7 @@
                     "method": "GET",
                     "header": [],
                     "url": {
-                      "raw": "{{baseUrl}}/v1/deals?pipelineId=string&stageId=string&status=open&assignedTo=string",
+                      "raw": "{{baseUrl}}/v1/deals?pipelineId=string&stageId=string&status=on_hold&assignedTo=string",
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -12953,7 +13162,7 @@
                         },
                         {
                           "key": "status",
-                          "value": "open"
+                          "value": "on_hold"
                         },
                         {
                           "key": "assignedTo",
@@ -13000,7 +13209,7 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{baseUrl}}/v1/reports/profit-loss?year=2657.0056544389954&from=1956-01-31&to=1956-01-31",
+                      "raw": "{{baseUrl}}/v1/reports/profit-loss?year=6134.231606311661&from=1983-12-04&to=1983-12-04",
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -13013,16 +13222,16 @@
                         {
                           "description": "Current UTC year by default. Cannot be combined with from/to.",
                           "key": "year",
-                          "value": "2657.0056544389954"
+                          "value": "6134.231606311661"
                         },
                         {
                           "description": "Inclusive date; from/to must both be supplied",
                           "key": "from",
-                          "value": "1956-01-31"
+                          "value": "1983-12-04"
                         },
                         {
                           "key": "to",
-                          "value": "1956-01-31"
+                          "value": "1983-12-04"
                         }
                       ]
                     },
@@ -13045,7 +13254,7 @@
                           }
                         ],
                         "url": {
-                          "raw": "{{baseUrl}}/v1/reports/profit-loss?year=2657.0056544389954&from=1956-01-31&to=1956-01-31",
+                          "raw": "{{baseUrl}}/v1/reports/profit-loss?year=6134.231606311661&from=1983-12-04&to=1983-12-04",
                           "host": [
                             "{{baseUrl}}"
                           ],
@@ -13058,16 +13267,16 @@
                             {
                               "description": "Current UTC year by default. Cannot be combined with from/to.",
                               "key": "year",
-                              "value": "2657.0056544389954"
+                              "value": "6134.231606311661"
                             },
                             {
                               "description": "Inclusive date; from/to must both be supplied",
                               "key": "from",
-                              "value": "1956-01-31"
+                              "value": "1983-12-04"
                             },
                             {
                               "key": "to",
-                              "value": "1956-01-31"
+                              "value": "1983-12-04"
                             }
                           ]
                         }
@@ -13082,7 +13291,7 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n  \"basis\": \"paid-ledger\",\n  \"period\": {\n    \"from\": \"2004-04-21\",\n    \"to\": \"2014-01-21\"\n  },\n  \"incomeTotal\": 5459.737738678281,\n  \"expenseTotal\": 6657.772883865862,\n  \"profit\": 9233.367518166748,\n  \"monthly\": [\n    {\n      \"month\": \"string\",\n      \"income\": 1439.4109968648006,\n      \"expenses\": 3047.243336347134,\n      \"profit\": 5682.190669374742\n    },\n    {\n      \"month\": \"string\",\n      \"income\": 7226.928848161931,\n      \"expenses\": 9978.654449065762,\n      \"profit\": 9230.139438354345\n    }\n  ],\n  \"incomeByCategory\": [\n    {\n      \"categoryId\": \"66d58ac7-6fae-a269-e7dd-614d1dc21b49\",\n      \"name\": \"string\",\n      \"total\": 2084.4620855607186,\n      \"count\": 306.3412450100134\n    },\n    {\n      \"categoryId\": \"6387a61b-3b02-620f-6d54-7cca3a9ec5bd\",\n      \"name\": \"string\",\n      \"total\": 4871.047198855056,\n      \"count\": 2522.826390578499\n    }\n  ],\n  \"expenseByCategory\": [\n    {\n      \"categoryId\": \"7fbcc3c1-8753-d0ac-32ab-263ba3d72589\",\n      \"name\": \"string\",\n      \"total\": 295.1912041376148,\n      \"count\": 2112.5037707119886\n    },\n    {\n      \"categoryId\": \"a286231f-e9ce-f7bd-b78a-0ad17fb18fd1\",\n      \"name\": \"string\",\n      \"total\": 5619.911774618169,\n      \"count\": 1910.4306370172153\n    }\n  ]\n}"
+                      "body": "{\n  \"basis\": \"paid-ledger\",\n  \"period\": {\n    \"from\": \"2002-10-05\",\n    \"to\": \"1979-10-27\"\n  },\n  \"incomeTotal\": 3089.917671241196,\n  \"expenseTotal\": 3225.873011897804,\n  \"profit\": 3640.4453272736737,\n  \"monthly\": [\n    {\n      \"month\": \"string\",\n      \"income\": 889.7296651451536,\n      \"expenses\": 5756.610807739921,\n      \"profit\": 2017.285262427253\n    },\n    {\n      \"month\": \"string\",\n      \"income\": 4607.188468345101,\n      \"expenses\": 8911.124121650573,\n      \"profit\": 7207.359036207348\n    }\n  ],\n  \"incomeByCategory\": [\n    {\n      \"categoryId\": \"8f29aae1-a2ed-0d81-3d1b-48ec3c8ed0d1\",\n      \"name\": \"string\",\n      \"total\": 7366.933416709809,\n      \"count\": 5362.220178402106\n    },\n    {\n      \"categoryId\": \"813771fb-3120-4435-4727-79f3598a4a50\",\n      \"name\": \"string\",\n      \"total\": 8373.033295713818,\n      \"count\": 1944.1174775042791\n    }\n  ],\n  \"expenseByCategory\": [\n    {\n      \"categoryId\": \"2a7f9bdc-cfcb-8f48-6cfb-5d3af286479f\",\n      \"name\": \"string\",\n      \"total\": 6810.5119425503035,\n      \"count\": 7360.7070411316445\n    },\n    {\n      \"categoryId\": \"4de1f508-c1bf-413e-74bf-bf1832311705\",\n      \"name\": \"string\",\n      \"total\": 1703.895554809607,\n      \"count\": 1777.6691640051956\n    }\n  ]\n}"
                     },
                     {
                       "name": "Invalid period; use year or paired inclusive from/to dates",
@@ -13096,7 +13305,7 @@
                           }
                         ],
                         "url": {
-                          "raw": "{{baseUrl}}/v1/reports/profit-loss?year=2657.0056544389954&from=1956-01-31&to=1956-01-31",
+                          "raw": "{{baseUrl}}/v1/reports/profit-loss?year=6134.231606311661&from=1983-12-04&to=1983-12-04",
                           "host": [
                             "{{baseUrl}}"
                           ],
@@ -13109,16 +13318,16 @@
                             {
                               "description": "Current UTC year by default. Cannot be combined with from/to.",
                               "key": "year",
-                              "value": "2657.0056544389954"
+                              "value": "6134.231606311661"
                             },
                             {
                               "description": "Inclusive date; from/to must both be supplied",
                               "key": "from",
-                              "value": "1956-01-31"
+                              "value": "1983-12-04"
                             },
                             {
                               "key": "to",
-                              "value": "1956-01-31"
+                              "value": "1983-12-04"
                             }
                           ]
                         }
@@ -13142,7 +13351,7 @@
                           }
                         ],
                         "url": {
-                          "raw": "{{baseUrl}}/v1/reports/profit-loss?year=2657.0056544389954&from=1956-01-31&to=1956-01-31",
+                          "raw": "{{baseUrl}}/v1/reports/profit-loss?year=6134.231606311661&from=1983-12-04&to=1983-12-04",
                           "host": [
                             "{{baseUrl}}"
                           ],
@@ -13155,16 +13364,16 @@
                             {
                               "description": "Current UTC year by default. Cannot be combined with from/to.",
                               "key": "year",
-                              "value": "2657.0056544389954"
+                              "value": "6134.231606311661"
                             },
                             {
                               "description": "Inclusive date; from/to must both be supplied",
                               "key": "from",
-                              "value": "1956-01-31"
+                              "value": "1983-12-04"
                             },
                             {
                               "key": "to",
-                              "value": "1956-01-31"
+                              "value": "1983-12-04"
                             }
                           ]
                         }
@@ -13204,7 +13413,7 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{baseUrl}}/v1/reports/revenue?year=2657.0056544389954&from=1956-01-31&to=1956-01-31",
+                      "raw": "{{baseUrl}}/v1/reports/revenue?year=6134.231606311661&from=1983-12-04&to=1983-12-04",
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -13217,16 +13426,16 @@
                         {
                           "description": "Current UTC year by default. Cannot be combined with from/to.",
                           "key": "year",
-                          "value": "2657.0056544389954"
+                          "value": "6134.231606311661"
                         },
                         {
                           "description": "Inclusive date; from/to must both be supplied",
                           "key": "from",
-                          "value": "1956-01-31"
+                          "value": "1983-12-04"
                         },
                         {
                           "key": "to",
-                          "value": "1956-01-31"
+                          "value": "1983-12-04"
                         }
                       ]
                     },
@@ -13249,7 +13458,7 @@
                           }
                         ],
                         "url": {
-                          "raw": "{{baseUrl}}/v1/reports/revenue?year=2657.0056544389954&from=1956-01-31&to=1956-01-31",
+                          "raw": "{{baseUrl}}/v1/reports/revenue?year=6134.231606311661&from=1983-12-04&to=1983-12-04",
                           "host": [
                             "{{baseUrl}}"
                           ],
@@ -13262,16 +13471,16 @@
                             {
                               "description": "Current UTC year by default. Cannot be combined with from/to.",
                               "key": "year",
-                              "value": "2657.0056544389954"
+                              "value": "6134.231606311661"
                             },
                             {
                               "description": "Inclusive date; from/to must both be supplied",
                               "key": "from",
-                              "value": "1956-01-31"
+                              "value": "1983-12-04"
                             },
                             {
                               "key": "to",
-                              "value": "1956-01-31"
+                              "value": "1983-12-04"
                             }
                           ]
                         }
@@ -13286,7 +13495,7 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n  \"basis\": \"paid-ledger\",\n  \"period\": {\n    \"from\": \"1974-09-28\",\n    \"to\": \"1981-07-27\"\n  },\n  \"total\": 2849.1946599006824,\n  \"count\": 1378.9622992815343,\n  \"monthly\": [\n    {\n      \"month\": \"2026-01\",\n      \"total\": 3216.393501251502,\n      \"count\": 9704.446867510414\n    },\n    {\n      \"month\": \"2026-01\",\n      \"total\": 3420.125036272652,\n      \"count\": 2129.945196718865\n    }\n  ],\n  \"byCategory\": [\n    {\n      \"categoryId\": \"06ff1824-cb13-b7d1-5ce3-37bdce63aab9\",\n      \"name\": \"string\",\n      \"total\": 9461.379657984195,\n      \"count\": 3292.3590375620406\n    },\n    {\n      \"categoryId\": \"8190c229-4ce8-2cab-fc7a-804830f79643\",\n      \"name\": \"string\",\n      \"total\": 6287.4626797073915,\n      \"count\": 8623.721963798067\n    }\n  ]\n}"
+                      "body": "{\n  \"basis\": \"paid-ledger\",\n  \"period\": {\n    \"from\": \"1959-05-03\",\n    \"to\": \"1966-04-18\"\n  },\n  \"total\": 8856.029343388094,\n  \"count\": 1646.4853068349794,\n  \"monthly\": [\n    {\n      \"month\": \"2026-01\",\n      \"total\": 6606.49114791102,\n      \"count\": 8404.88107098432\n    },\n    {\n      \"month\": \"2026-01\",\n      \"total\": 4868.123811684275,\n      \"count\": 906.672685001959\n    }\n  ],\n  \"byCategory\": [\n    {\n      \"categoryId\": \"0197952f-8a6f-36d2-816c-55269b962890\",\n      \"name\": \"string\",\n      \"total\": 1371.6455195810463,\n      \"count\": 9696.471448491826\n    },\n    {\n      \"categoryId\": \"38fda1b1-5a8c-5c43-8890-bc8f5c558287\",\n      \"name\": \"string\",\n      \"total\": 3292.263724539797,\n      \"count\": 9966.097237639626\n    }\n  ]\n}"
                     }
                   ]
                 }
@@ -13316,7 +13525,7 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{baseUrl}}/v1/reports/expenses?year=2657.0056544389954&from=1956-01-31&to=1956-01-31",
+                      "raw": "{{baseUrl}}/v1/reports/expenses?year=6134.231606311661&from=1983-12-04&to=1983-12-04",
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -13329,16 +13538,16 @@
                         {
                           "description": "Current UTC year by default. Cannot be combined with from/to.",
                           "key": "year",
-                          "value": "2657.0056544389954"
+                          "value": "6134.231606311661"
                         },
                         {
                           "description": "Inclusive date; from/to must both be supplied",
                           "key": "from",
-                          "value": "1956-01-31"
+                          "value": "1983-12-04"
                         },
                         {
                           "key": "to",
-                          "value": "1956-01-31"
+                          "value": "1983-12-04"
                         }
                       ]
                     },
@@ -13361,7 +13570,7 @@
                           }
                         ],
                         "url": {
-                          "raw": "{{baseUrl}}/v1/reports/expenses?year=2657.0056544389954&from=1956-01-31&to=1956-01-31",
+                          "raw": "{{baseUrl}}/v1/reports/expenses?year=6134.231606311661&from=1983-12-04&to=1983-12-04",
                           "host": [
                             "{{baseUrl}}"
                           ],
@@ -13374,16 +13583,16 @@
                             {
                               "description": "Current UTC year by default. Cannot be combined with from/to.",
                               "key": "year",
-                              "value": "2657.0056544389954"
+                              "value": "6134.231606311661"
                             },
                             {
                               "description": "Inclusive date; from/to must both be supplied",
                               "key": "from",
-                              "value": "1956-01-31"
+                              "value": "1983-12-04"
                             },
                             {
                               "key": "to",
-                              "value": "1956-01-31"
+                              "value": "1983-12-04"
                             }
                           ]
                         }
@@ -13398,7 +13607,7 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n  \"basis\": \"paid-ledger\",\n  \"period\": {\n    \"from\": \"1974-09-28\",\n    \"to\": \"1981-07-27\"\n  },\n  \"total\": 2849.1946599006824,\n  \"count\": 1378.9622992815343,\n  \"monthly\": [\n    {\n      \"month\": \"2026-01\",\n      \"total\": 3216.393501251502,\n      \"count\": 9704.446867510414\n    },\n    {\n      \"month\": \"2026-01\",\n      \"total\": 3420.125036272652,\n      \"count\": 2129.945196718865\n    }\n  ],\n  \"byCategory\": [\n    {\n      \"categoryId\": \"06ff1824-cb13-b7d1-5ce3-37bdce63aab9\",\n      \"name\": \"string\",\n      \"total\": 9461.379657984195,\n      \"count\": 3292.3590375620406\n    },\n    {\n      \"categoryId\": \"8190c229-4ce8-2cab-fc7a-804830f79643\",\n      \"name\": \"string\",\n      \"total\": 6287.4626797073915,\n      \"count\": 8623.721963798067\n    }\n  ]\n}"
+                      "body": "{\n  \"basis\": \"paid-ledger\",\n  \"period\": {\n    \"from\": \"1959-05-03\",\n    \"to\": \"1966-04-18\"\n  },\n  \"total\": 8856.029343388094,\n  \"count\": 1646.4853068349794,\n  \"monthly\": [\n    {\n      \"month\": \"2026-01\",\n      \"total\": 6606.49114791102,\n      \"count\": 8404.88107098432\n    },\n    {\n      \"month\": \"2026-01\",\n      \"total\": 4868.123811684275,\n      \"count\": 906.672685001959\n    }\n  ],\n  \"byCategory\": [\n    {\n      \"categoryId\": \"0197952f-8a6f-36d2-816c-55269b962890\",\n      \"name\": \"string\",\n      \"total\": 1371.6455195810463,\n      \"count\": 9696.471448491826\n    },\n    {\n      \"categoryId\": \"38fda1b1-5a8c-5c43-8890-bc8f5c558287\",\n      \"name\": \"string\",\n      \"total\": 3292.263724539797,\n      \"count\": 9966.097237639626\n    }\n  ]\n}"
                     }
                   ]
                 }
@@ -13428,7 +13637,7 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{baseUrl}}/v1/reports/invoice-revenue?year=2657.0056544389954&from=1956-01-31&to=1956-01-31&currency=NGN",
+                      "raw": "{{baseUrl}}/v1/reports/invoice-revenue?year=6134.231606311661&from=1983-12-04&to=1983-12-04&currency=NGN",
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -13441,16 +13650,16 @@
                         {
                           "description": "Current UTC year by default. Cannot be combined with from/to.",
                           "key": "year",
-                          "value": "2657.0056544389954"
+                          "value": "6134.231606311661"
                         },
                         {
                           "description": "Inclusive date; from/to must both be supplied",
                           "key": "from",
-                          "value": "1956-01-31"
+                          "value": "1983-12-04"
                         },
                         {
                           "key": "to",
-                          "value": "1956-01-31"
+                          "value": "1983-12-04"
                         },
                         {
                           "key": "currency",
@@ -13477,7 +13686,7 @@
                           }
                         ],
                         "url": {
-                          "raw": "{{baseUrl}}/v1/reports/invoice-revenue?year=2657.0056544389954&from=1956-01-31&to=1956-01-31&currency=NGN",
+                          "raw": "{{baseUrl}}/v1/reports/invoice-revenue?year=6134.231606311661&from=1983-12-04&to=1983-12-04&currency=NGN",
                           "host": [
                             "{{baseUrl}}"
                           ],
@@ -13490,16 +13699,16 @@
                             {
                               "description": "Current UTC year by default. Cannot be combined with from/to.",
                               "key": "year",
-                              "value": "2657.0056544389954"
+                              "value": "6134.231606311661"
                             },
                             {
                               "description": "Inclusive date; from/to must both be supplied",
                               "key": "from",
-                              "value": "1956-01-31"
+                              "value": "1983-12-04"
                             },
                             {
                               "key": "to",
-                              "value": "1956-01-31"
+                              "value": "1983-12-04"
                             },
                             {
                               "key": "currency",
@@ -13518,7 +13727,7 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n  \"period\": {\n    \"from\": \"1991-12-26\",\n    \"to\": \"2007-12-20\"\n  },\n  \"currency\": \"string\",\n  \"invoicedTotal\": 6938.023447018045,\n  \"receivedTotal\": 5644.680731489604,\n  \"outstandingTotal\": 9128.985826844213,\n  \"outstandingCount\": 402.37537703183614,\n  \"legacyPaidWithoutDateCount\": 3691.690100769027,\n  \"monthly\": [\n    {\n      \"month\": \"string\",\n      \"invoiced\": 7901.009916262274,\n      \"received\": 385.33763392085916\n    },\n    {\n      \"month\": \"string\",\n      \"invoiced\": 7580.258216609402,\n      \"received\": 7583.444501851975\n    }\n  ]\n}"
+                      "body": "{\n  \"period\": {\n    \"from\": \"1955-07-01\",\n    \"to\": \"1954-06-11\"\n  },\n  \"currency\": \"string\",\n  \"invoicedTotal\": 235.42562424925472,\n  \"receivedTotal\": 893.5788456830585,\n  \"outstandingTotal\": 2488.6457112354133,\n  \"outstandingCount\": 3340.5748783110644,\n  \"legacyPaidWithoutDateCount\": 8743.332978918994,\n  \"monthly\": [\n    {\n      \"month\": \"string\",\n      \"invoiced\": 4506.285519851834,\n      \"received\": 5109.772331644172\n    },\n    {\n      \"month\": \"string\",\n      \"invoiced\": 6282.812033471759,\n      \"received\": 1837.6128177242833\n    }\n  ]\n}"
                     }
                   ]
                 }
@@ -13626,7 +13835,7 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n  \"currency\": \"string\",\n  \"data\": [\n    {\n      \"id\": \"e4c41a20-46a0-0673-385c-5eca998d3cbc\",\n      \"invoiceNumber\": \"string\",\n      \"issuedDate\": \"2010-07-07\",\n      \"dueDate\": \"1973-09-06\",\n      \"status\": \"string\",\n      \"currency\": \"string\",\n      \"total\": 624.4847732053161,\n      \"amountPaid\": 2932.345554420892,\n      \"balanceDue\": 1545.5303632869288,\n      \"contactId\": \"eac96c59-3a1f-44d6-9af9-e09a88ac94ec\",\n      \"customer\": {\n        \"id\": \"3a23949a-55fd-ceee-6661-83782a0fadbd\",\n        \"firstName\": \"string\",\n        \"lastName\": \"string\",\n        \"companyName\": \"string\"\n      }\n    },\n    {\n      \"id\": \"644a4d67-025a-efc9-8202-414891afd8f3\",\n      \"invoiceNumber\": \"string\",\n      \"issuedDate\": \"1976-09-14\",\n      \"dueDate\": \"2010-07-11\",\n      \"status\": \"string\",\n      \"currency\": \"string\",\n      \"total\": 5379.3351545427395,\n      \"amountPaid\": 7231.48048629475,\n      \"balanceDue\": 9752.335062153941,\n      \"contactId\": \"9815bac6-a1ca-76a3-e05f-257afec264ca\",\n      \"customer\": {\n        \"id\": \"89383e8a-cd3e-65ef-4b25-2fdc3ec1f2ab\",\n        \"firstName\": \"string\",\n        \"lastName\": \"string\",\n        \"companyName\": \"string\"\n      }\n    }\n  ],\n  \"total\": 7646.360027933554,\n  \"page\": 1233.0775342007082,\n  \"limit\": 8256.565571487765,\n  \"totalPages\": 4246.231080980152,\n  \"hasNextPage\": false,\n  \"hasPrevPage\": true\n}"
+                      "body": "{\n  \"currency\": \"string\",\n  \"data\": [\n    {\n      \"id\": \"53bce7c9-272a-d3cf-95a4-4d41eac86f88\",\n      \"invoiceNumber\": \"string\",\n      \"issuedDate\": \"2017-09-07\",\n      \"dueDate\": \"2016-03-28\",\n      \"status\": \"string\",\n      \"currency\": \"string\",\n      \"total\": 8381.278813052015,\n      \"amountPaid\": 5551.579548110491,\n      \"balanceDue\": 3144.549980069471,\n      \"contactId\": \"92f541bb-dcd1-8977-7786-ceded2521be8\",\n      \"customer\": {\n        \"id\": \"9b83830e-a4cc-ceb1-4efd-47aa5ae1188d\",\n        \"firstName\": \"string\",\n        \"lastName\": \"string\",\n        \"companyName\": \"string\"\n      }\n    },\n    {\n      \"id\": \"97315320-3f3e-1b8e-43a4-2ff10ce02f56\",\n      \"invoiceNumber\": \"string\",\n      \"issuedDate\": \"1997-07-02\",\n      \"dueDate\": \"1973-02-12\",\n      \"status\": \"string\",\n      \"currency\": \"string\",\n      \"total\": 7591.740841004038,\n      \"amountPaid\": 6364.584167976006,\n      \"balanceDue\": 7408.324108721685,\n      \"contactId\": \"4e77e982-3aed-0796-f821-ee6a836e743f\",\n      \"customer\": {\n        \"id\": \"31fa76c4-5eab-68af-4d05-950a0299cc6e\",\n        \"firstName\": \"string\",\n        \"lastName\": \"string\",\n        \"companyName\": \"string\"\n      }\n    }\n  ],\n  \"total\": 1793.0125487023308,\n  \"page\": 4049.614232425849,\n  \"limit\": 7092.6055960086205,\n  \"totalPages\": 9942.655961252429,\n  \"hasNextPage\": true,\n  \"hasPrevPage\": true\n}"
                     }
                   ]
                 }
@@ -13983,7 +14192,7 @@
                     "method": "GET",
                     "header": [],
                     "url": {
-                      "raw": "{{baseUrl}}/v1/reports/revenue-trend?year=2657.0056544389954&currency=NGN",
+                      "raw": "{{baseUrl}}/v1/reports/revenue-trend?year=6134.231606311661&currency=NGN",
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -13995,7 +14204,7 @@
                       "query": [
                         {
                           "key": "year",
-                          "value": "2657.0056544389954"
+                          "value": "6134.231606311661"
                         },
                         {
                           "key": "currency",
@@ -14017,7 +14226,7 @@
                           }
                         ],
                         "url": {
-                          "raw": "{{baseUrl}}/v1/reports/revenue-trend?year=2657.0056544389954&currency=NGN",
+                          "raw": "{{baseUrl}}/v1/reports/revenue-trend?year=6134.231606311661&currency=NGN",
                           "host": [
                             "{{baseUrl}}"
                           ],
@@ -14029,7 +14238,7 @@
                           "query": [
                             {
                               "key": "year",
-                              "value": "2657.0056544389954"
+                              "value": "6134.231606311661"
                             },
                             {
                               "key": "currency",
@@ -14525,7 +14734,7 @@
                     ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"title\": \"Call Acme about renewal\",\n  \"description\": \"Confirm seats and billing contact\",\n  \"type\": \"follow_up\",\n  \"priority\": \"medium\",\n  \"dueAt\": \"2026-09-30T10:00:00.000Z\",\n  \"startAt\": \"2026-09-30T10:00:00.000Z\",\n  \"endAt\": \"2026-09-30T10:30:00.000Z\",\n  \"relatedType\": \"deal\",\n  \"relatedId\": \"664f1b2c-9d3e-4a5b-8c7d-8e9f0a1b2c3d\",\n  \"assignedTo\": \"664f1b2c-9d3e-4a5b-8c7d-8e9f0a1b2c3d\"\n}",
+                      "raw": "{\n  \"title\": \"Call Acme about renewal\",\n  \"description\": \"Confirm seats and billing contact\",\n  \"type\": \"call\",\n  \"priority\": \"low\",\n  \"dueAt\": \"2026-09-30T10:00:00.000Z\",\n  \"startAt\": \"2026-09-30T10:00:00.000Z\",\n  \"endAt\": \"2026-09-30T10:30:00.000Z\",\n  \"relatedType\": \"deal\",\n  \"relatedId\": \"664f1b2c-9d3e-4a5b-8c7d-8e9f0a1b2c3d\",\n  \"assignedTo\": \"664f1b2c-9d3e-4a5b-8c7d-8e9f0a1b2c3d\"\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -14564,7 +14773,7 @@
                         ],
                         "body": {
                           "mode": "raw",
-                          "raw": "{\n  \"title\": \"Call Acme about renewal\",\n  \"description\": \"Confirm seats and billing contact\",\n  \"type\": \"follow_up\",\n  \"priority\": \"medium\",\n  \"dueAt\": \"2026-09-30T10:00:00.000Z\",\n  \"startAt\": \"2026-09-30T10:00:00.000Z\",\n  \"endAt\": \"2026-09-30T10:30:00.000Z\",\n  \"relatedType\": \"deal\",\n  \"relatedId\": \"664f1b2c-9d3e-4a5b-8c7d-8e9f0a1b2c3d\",\n  \"assignedTo\": \"664f1b2c-9d3e-4a5b-8c7d-8e9f0a1b2c3d\"\n}",
+                          "raw": "{\n  \"title\": \"Call Acme about renewal\",\n  \"description\": \"Confirm seats and billing contact\",\n  \"type\": \"call\",\n  \"priority\": \"low\",\n  \"dueAt\": \"2026-09-30T10:00:00.000Z\",\n  \"startAt\": \"2026-09-30T10:00:00.000Z\",\n  \"endAt\": \"2026-09-30T10:30:00.000Z\",\n  \"relatedType\": \"deal\",\n  \"relatedId\": \"664f1b2c-9d3e-4a5b-8c7d-8e9f0a1b2c3d\",\n  \"assignedTo\": \"664f1b2c-9d3e-4a5b-8c7d-8e9f0a1b2c3d\"\n}",
                           "options": {
                             "raw": {
                               "headerFamily": "json",
@@ -14735,7 +14944,7 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/v1/tasks?search=string&status=in_progress&type=task&priority=urgent&assignedTo=string&relatedType=string&relatedId=string&dueFrom=string&dueTo=string&overdue=false",
+                  "raw": "{{baseUrl}}/v1/tasks?search=string&status=cancelled&type=call&priority=urgent&assignedTo=string&relatedType=string&relatedId=string&dueFrom=string&dueTo=string&overdue=true",
                   "host": [
                     "{{baseUrl}}"
                   ],
@@ -14750,11 +14959,11 @@
                     },
                     {
                       "key": "status",
-                      "value": "in_progress"
+                      "value": "cancelled"
                     },
                     {
                       "key": "type",
-                      "value": "task"
+                      "value": "call"
                     },
                     {
                       "key": "priority",
@@ -14782,7 +14991,7 @@
                     },
                     {
                       "key": "overdue",
-                      "value": "false"
+                      "value": "true"
                     }
                   ]
                 }
@@ -14794,7 +15003,7 @@
                     "method": "GET",
                     "header": [],
                     "url": {
-                      "raw": "{{baseUrl}}/v1/tasks?search=string&status=in_progress&type=task&priority=urgent&assignedTo=string&relatedType=string&relatedId=string&dueFrom=string&dueTo=string&overdue=false",
+                      "raw": "{{baseUrl}}/v1/tasks?search=string&status=cancelled&type=call&priority=urgent&assignedTo=string&relatedType=string&relatedId=string&dueFrom=string&dueTo=string&overdue=true",
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -14809,11 +15018,11 @@
                         },
                         {
                           "key": "status",
-                          "value": "in_progress"
+                          "value": "cancelled"
                         },
                         {
                           "key": "type",
-                          "value": "task"
+                          "value": "call"
                         },
                         {
                           "key": "priority",
@@ -14841,7 +15050,7 @@
                         },
                         {
                           "key": "overdue",
-                          "value": "false"
+                          "value": "true"
                         }
                       ]
                     }
@@ -15542,7 +15751,7 @@
                     ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"roleId\": \"string\",\n  \"isActive\": true,\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"phoneNumber\": \"string\"\n}",
+                      "raw": "{\n  \"roleId\": \"string\",\n  \"isActive\": false,\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"phoneNumber\": \"string\"\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -15581,7 +15790,7 @@
                         ],
                         "body": {
                           "mode": "raw",
-                          "raw": "{\n  \"roleId\": \"string\",\n  \"isActive\": true,\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"phoneNumber\": \"string\"\n}",
+                          "raw": "{\n  \"roleId\": \"string\",\n  \"isActive\": false,\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"phoneNumber\": \"string\"\n}",
                           "options": {
                             "raw": {
                               "headerFamily": "json",
@@ -15705,7 +15914,7 @@
                             ],
                             "body": {
                               "mode": "raw",
-                              "raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"sortOrder\": 7089.101590247997\n}",
+                              "raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"sortOrder\": 851.1899638349862\n}",
                               "options": {
                                 "raw": {
                                   "headerFamily": "json",
@@ -15751,7 +15960,7 @@
                                 ],
                                 "body": {
                                   "mode": "raw",
-                                  "raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"sortOrder\": 7089.101590247997\n}",
+                                  "raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"sortOrder\": 851.1899638349862\n}",
                                   "options": {
                                     "raw": {
                                       "headerFamily": "json",
@@ -15950,7 +16159,7 @@
                         ],
                         "body": {
                           "mode": "raw",
-                          "raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"sortOrder\": 7089.101590247997\n}",
+                          "raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"sortOrder\": 851.1899638349862\n}",
                           "options": {
                             "raw": {
                               "headerFamily": "json",
@@ -15989,7 +16198,7 @@
                             ],
                             "body": {
                               "mode": "raw",
-                              "raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"sortOrder\": 7089.101590247997\n}",
+                              "raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"sortOrder\": 851.1899638349862\n}",
                               "options": {
                                 "raw": {
                                   "headerFamily": "json",
@@ -16291,7 +16500,7 @@
                             ],
                             "body": {
                               "mode": "raw",
-                              "raw": "{\n  \"title\": \"string\",\n  \"bodyMarkdown\": \"string\",\n  \"slug\": \"string\",\n  \"summary\": \"string\",\n  \"categoryId\": \"string\",\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"status\": \"archived\",\n  \"sortOrder\": 2444.747610231466,\n  \"isFeatured\": true\n}",
+                              "raw": "{\n  \"title\": \"string\",\n  \"bodyMarkdown\": \"string\",\n  \"slug\": \"string\",\n  \"summary\": \"string\",\n  \"categoryId\": \"string\",\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"status\": \"draft\",\n  \"sortOrder\": 63.94918822738571,\n  \"isFeatured\": true\n}",
                               "options": {
                                 "raw": {
                                   "headerFamily": "json",
@@ -16337,7 +16546,7 @@
                                 ],
                                 "body": {
                                   "mode": "raw",
-                                  "raw": "{\n  \"title\": \"string\",\n  \"bodyMarkdown\": \"string\",\n  \"slug\": \"string\",\n  \"summary\": \"string\",\n  \"categoryId\": \"string\",\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"status\": \"archived\",\n  \"sortOrder\": 2444.747610231466,\n  \"isFeatured\": true\n}",
+                                  "raw": "{\n  \"title\": \"string\",\n  \"bodyMarkdown\": \"string\",\n  \"slug\": \"string\",\n  \"summary\": \"string\",\n  \"categoryId\": \"string\",\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"status\": \"draft\",\n  \"sortOrder\": 63.94918822738571,\n  \"isFeatured\": true\n}",
                                   "options": {
                                     "raw": {
                                       "headerFamily": "json",
@@ -16536,7 +16745,7 @@
                         ],
                         "body": {
                           "mode": "raw",
-                          "raw": "{\n  \"title\": \"string\",\n  \"bodyMarkdown\": \"string\",\n  \"slug\": \"string\",\n  \"summary\": \"string\",\n  \"categoryId\": \"string\",\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"status\": \"archived\",\n  \"sortOrder\": 2444.747610231466,\n  \"isFeatured\": true\n}",
+                          "raw": "{\n  \"title\": \"string\",\n  \"bodyMarkdown\": \"string\",\n  \"slug\": \"string\",\n  \"summary\": \"string\",\n  \"categoryId\": \"string\",\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"status\": \"draft\",\n  \"sortOrder\": 63.94918822738571,\n  \"isFeatured\": true\n}",
                           "options": {
                             "raw": {
                               "headerFamily": "json",
@@ -16575,7 +16784,7 @@
                             ],
                             "body": {
                               "mode": "raw",
-                              "raw": "{\n  \"title\": \"string\",\n  \"bodyMarkdown\": \"string\",\n  \"slug\": \"string\",\n  \"summary\": \"string\",\n  \"categoryId\": \"string\",\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"status\": \"archived\",\n  \"sortOrder\": 2444.747610231466,\n  \"isFeatured\": true\n}",
+                              "raw": "{\n  \"title\": \"string\",\n  \"bodyMarkdown\": \"string\",\n  \"slug\": \"string\",\n  \"summary\": \"string\",\n  \"categoryId\": \"string\",\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"status\": \"draft\",\n  \"sortOrder\": 63.94918822738571,\n  \"isFeatured\": true\n}",
                               "options": {
                                 "raw": {
                                   "headerFamily": "json",
@@ -16861,7 +17070,7 @@
                             ],
                             "body": {
                               "mode": "raw",
-                              "raw": "{\n  \"helpful\": true,\n  \"voterKey\": \"string\"\n}",
+                              "raw": "{\n  \"helpful\": false,\n  \"voterKey\": \"string\"\n}",
                               "options": {
                                 "raw": {
                                   "headerFamily": "json",
@@ -16902,7 +17111,7 @@
                                 ],
                                 "body": {
                                   "mode": "raw",
-                                  "raw": "{\n  \"helpful\": true,\n  \"voterKey\": \"string\"\n}",
+                                  "raw": "{\n  \"helpful\": false,\n  \"voterKey\": \"string\"\n}",
                                   "options": {
                                     "raw": {
                                       "headerFamily": "json",

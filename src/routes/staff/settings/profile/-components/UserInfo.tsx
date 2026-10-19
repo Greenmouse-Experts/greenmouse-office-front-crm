@@ -1,24 +1,32 @@
-import { PenSquare } from "lucide-react";
+import { Pencil } from "lucide-react";
+import type { StaffProfile } from "@/api/tenantApi";
 
-export default function UserInfo() {
+interface UserInfoProps {
+  profile: StaffProfile;
+  onEdit: () => void;
+}
+
+export default function UserInfo({ profile, onEdit }: UserInfoProps) {
+  const name = `${profile.firstName || ""} ${profile.lastName || ""}`.trim();
+  const initials = `${profile.firstName?.[0] || ""}${profile.lastName?.[0] || ""}`.toUpperCase();
+
   return (
-    <div className="flex items-center ">
-      <div className="flex-1 flex gap-4 items-center">
-        <div className="avatar placeholder">
-          <div className="bg-neutral-focus text-neutral-content rounded-full w-20">
-            <img src="https://github.com/shadcn.png" alt="" />
-          </div>
-        </div>
-        <div className="space-y-1">
-          <h2 className="text-xl font-semibold">Rafiqur Rahman</h2>
-          <span className="text-base-content/70">Team Manager</span>
-          <p className="text-sm text-base-content/50">Leeds, United Kingdom</p>
-        </div>
+    <section className="flex flex-wrap items-center gap-4 rounded-xl bg-base-100 p-5 sm:p-6">
+      <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary/10 text-xl font-semibold text-primary">
+        {profile.profilePic ? (
+          <img src={profile.profilePic} alt={`${name || "User"} profile`} className="size-full object-cover" />
+        ) : (
+          <span aria-hidden="true">{initials || "U"}</span>
+        )}
       </div>
-      <button className="btn btn-ghost btn-sm">
-        Edit
-        <PenSquare className="w-4 h-4" />
+      <div className="min-w-0 flex-1">
+        <h2 className="truncate text-xl font-semibold">{name || "Staff member"}</h2>
+        <p className="truncate text-sm text-base-content/70">{profile.email}</p>
+        {profile.role?.name && <p className="mt-1 text-sm text-base-content/70">{profile.role.name}</p>}
+      </div>
+      <button type="button" className="btn btn-outline btn-sm" onClick={onEdit}>
+        <Pencil className="size-4" /> Edit profile
       </button>
-    </div>
+    </section>
   );
 }

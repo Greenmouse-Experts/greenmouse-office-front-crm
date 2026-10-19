@@ -10,6 +10,7 @@ interface UserData {
   firstName?: string;
   lastName?: string;
   phoneNumber?: string;
+  profilePic?: string | null;
   companyId?: string;
   permissions?: string[];
 }

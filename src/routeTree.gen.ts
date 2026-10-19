@@ -71,7 +71,9 @@ import { Route as StaffAccountsInvoicesAddIndexRouteImport } from './routes/staf
 import { Route as StaffAccountsInvoicesIdIndexRouteImport } from './routes/staff/accounts/Invoices/$id/index'
 import { Route as AdminUsersDetailsIdIndexRouteImport } from './routes/admin/users/details/$id/index'
 import { Route as StaffAccountsInvoicesIdEditRouteImport } from './routes/staff/accounts/Invoices/$id/edit'
+import { Route as StaffContactsCustomersDetailsIdIndexRouteImport } from './routes/staff/contacts/customers/details/$id/index'
 import { Route as StaffContactsCompaniesDetailsIdIndexRouteImport } from './routes/staff/contacts/companies/details/$id/index'
+import { Route as StaffContactsCustomersDetailsIdEditRouteImport } from './routes/staff/contacts/customers/details/$id/edit'
 
 const StaffRouteRoute = StaffRouteRouteImport.update({
   id: '/staff',
@@ -410,10 +412,22 @@ const StaffAccountsInvoicesIdEditRoute =
     path: '/accounts/Invoices/$id/edit',
     getParentRoute: () => StaffRouteRoute,
   } as any)
+const StaffContactsCustomersDetailsIdIndexRoute =
+  StaffContactsCustomersDetailsIdIndexRouteImport.update({
+    id: '/contacts/customers/details/$id/',
+    path: '/contacts/customers/details/$id/',
+    getParentRoute: () => StaffRouteRoute,
+  } as any)
 const StaffContactsCompaniesDetailsIdIndexRoute =
   StaffContactsCompaniesDetailsIdIndexRouteImport.update({
     id: '/contacts/companies/details/$id/',
     path: '/contacts/companies/details/$id/',
+    getParentRoute: () => StaffRouteRoute,
+  } as any)
+const StaffContactsCustomersDetailsIdEditRoute =
+  StaffContactsCustomersDetailsIdEditRouteImport.update({
+    id: '/contacts/customers/details/$id/edit',
+    path: '/contacts/customers/details/$id/edit',
     getParentRoute: () => StaffRouteRoute,
   } as any)
 
@@ -480,7 +494,9 @@ export interface FileRoutesByFullPath {
   '/staff/contacts/customers/add': typeof StaffContactsCustomersAddIndexRoute
   '/staff/products/service/add': typeof StaffProductsServiceAddIndexRoute
   '/staff/users/details/$id': typeof StaffUsersDetailsIdIndexRoute
+  '/staff/contacts/customers/details/$id/edit': typeof StaffContactsCustomersDetailsIdEditRoute
   '/staff/contacts/companies/details/$id': typeof StaffContactsCompaniesDetailsIdIndexRoute
+  '/staff/contacts/customers/details/$id': typeof StaffContactsCustomersDetailsIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -539,7 +555,9 @@ export interface FileRoutesByTo {
   '/staff/contacts/customers/add': typeof StaffContactsCustomersAddIndexRoute
   '/staff/products/service/add': typeof StaffProductsServiceAddIndexRoute
   '/staff/users/details/$id': typeof StaffUsersDetailsIdIndexRoute
+  '/staff/contacts/customers/details/$id/edit': typeof StaffContactsCustomersDetailsIdEditRoute
   '/staff/contacts/companies/details/$id': typeof StaffContactsCompaniesDetailsIdIndexRoute
+  '/staff/contacts/customers/details/$id': typeof StaffContactsCustomersDetailsIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -605,7 +623,9 @@ export interface FileRoutesById {
   '/staff/contacts/customers/add/': typeof StaffContactsCustomersAddIndexRoute
   '/staff/products/service/add/': typeof StaffProductsServiceAddIndexRoute
   '/staff/users/details/$id/': typeof StaffUsersDetailsIdIndexRoute
+  '/staff/contacts/customers/details/$id/edit': typeof StaffContactsCustomersDetailsIdEditRoute
   '/staff/contacts/companies/details/$id/': typeof StaffContactsCompaniesDetailsIdIndexRoute
+  '/staff/contacts/customers/details/$id/': typeof StaffContactsCustomersDetailsIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -672,7 +692,9 @@ export interface FileRouteTypes {
     | '/staff/contacts/customers/add'
     | '/staff/products/service/add'
     | '/staff/users/details/$id'
+    | '/staff/contacts/customers/details/$id/edit'
     | '/staff/contacts/companies/details/$id'
+    | '/staff/contacts/customers/details/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -731,7 +753,9 @@ export interface FileRouteTypes {
     | '/staff/contacts/customers/add'
     | '/staff/products/service/add'
     | '/staff/users/details/$id'
+    | '/staff/contacts/customers/details/$id/edit'
     | '/staff/contacts/companies/details/$id'
+    | '/staff/contacts/customers/details/$id'
   id:
     | '__root__'
     | '/'
@@ -796,7 +820,9 @@ export interface FileRouteTypes {
     | '/staff/contacts/customers/add/'
     | '/staff/products/service/add/'
     | '/staff/users/details/$id/'
+    | '/staff/contacts/customers/details/$id/edit'
     | '/staff/contacts/companies/details/$id/'
+    | '/staff/contacts/customers/details/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1248,11 +1274,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StaffAccountsInvoicesIdEditRouteImport
       parentRoute: typeof StaffRouteRoute
     }
+    '/staff/contacts/customers/details/$id/': {
+      id: '/staff/contacts/customers/details/$id/'
+      path: '/contacts/customers/details/$id'
+      fullPath: '/staff/contacts/customers/details/$id'
+      preLoaderRoute: typeof StaffContactsCustomersDetailsIdIndexRouteImport
+      parentRoute: typeof StaffRouteRoute
+    }
     '/staff/contacts/companies/details/$id/': {
       id: '/staff/contacts/companies/details/$id/'
       path: '/contacts/companies/details/$id'
       fullPath: '/staff/contacts/companies/details/$id'
       preLoaderRoute: typeof StaffContactsCompaniesDetailsIdIndexRouteImport
+      parentRoute: typeof StaffRouteRoute
+    }
+    '/staff/contacts/customers/details/$id/edit': {
+      id: '/staff/contacts/customers/details/$id/edit'
+      path: '/contacts/customers/details/$id/edit'
+      fullPath: '/staff/contacts/customers/details/$id/edit'
+      preLoaderRoute: typeof StaffContactsCustomersDetailsIdEditRouteImport
       parentRoute: typeof StaffRouteRoute
     }
   }
@@ -1352,7 +1392,9 @@ interface StaffRouteRouteChildren {
   StaffContactsCustomersAddIndexRoute: typeof StaffContactsCustomersAddIndexRoute
   StaffProductsServiceAddIndexRoute: typeof StaffProductsServiceAddIndexRoute
   StaffUsersDetailsIdIndexRoute: typeof StaffUsersDetailsIdIndexRoute
+  StaffContactsCustomersDetailsIdEditRoute: typeof StaffContactsCustomersDetailsIdEditRoute
   StaffContactsCompaniesDetailsIdIndexRoute: typeof StaffContactsCompaniesDetailsIdIndexRoute
+  StaffContactsCustomersDetailsIdIndexRoute: typeof StaffContactsCustomersDetailsIdIndexRoute
 }
 
 const StaffRouteRouteChildren: StaffRouteRouteChildren = {
@@ -1390,8 +1432,12 @@ const StaffRouteRouteChildren: StaffRouteRouteChildren = {
   StaffContactsCustomersAddIndexRoute: StaffContactsCustomersAddIndexRoute,
   StaffProductsServiceAddIndexRoute: StaffProductsServiceAddIndexRoute,
   StaffUsersDetailsIdIndexRoute: StaffUsersDetailsIdIndexRoute,
+  StaffContactsCustomersDetailsIdEditRoute:
+    StaffContactsCustomersDetailsIdEditRoute,
   StaffContactsCompaniesDetailsIdIndexRoute:
     StaffContactsCompaniesDetailsIdIndexRoute,
+  StaffContactsCustomersDetailsIdIndexRoute:
+    StaffContactsCustomersDetailsIdIndexRoute,
 }
 
 const StaffRouteRouteWithChildren = StaffRouteRoute._addFileChildren(
