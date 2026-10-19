@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm, FormProvider } from "react-hook-form";
 import SimpleInput from "@/components/inputs/SimpleInput";
@@ -10,17 +10,30 @@ import LocalSelect from "@/components/inputs/LocalSelect";
 import { useCreateInvoice, type InvoiceItem } from "@/api/financeApi";
 import { useContacts } from "@/api/crmApi";
 import { toast } from "sonner";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Search, Trash2, X } from "lucide-react";
 import SimpleTextArea from "@/components/inputs/SimpleTextArea";
+import Modal, { type ModalHandle } from "@/components/DialogModal";
+import PageLoader from "@/components/layout/PageLoader";
+import { useOrders, useQuotes } from "@/api/salesApi";
 
 export const Route = createFileRoute("/staff/accounts/Invoices/add/")({
   component: RouteComponent,
 });
 
+type ReferenceKind = "orderId" | "quoteId" | "contactId";
+
+const referenceLabels: Record<ReferenceKind, string> = {
+  orderId: "Order",
+  quoteId: "Quote",
+  contactId: "Customer / Contact",
+};
+
 interface FormValues {
   issuedDate: string;
   dueDate: string;
   contactId: string;
+  orderId: string;
+  quoteId: string;
   billingAddress: string;
   currency: string;
   tax: number;
@@ -30,13 +43,18 @@ interface FormValues {
 function RouteComponent() {
   const navigate = useNavigate();
   const createInvoice = useCreateInvoice();
-  const { data: contacts = [] } = useContacts();
+  const contactsQuery = useContacts();
+  const ordersQuery = useOrders();
+  const quotesQuery = useQuotes();
+  const pickerRef = useRef<ModalHandle>(null);
+  const [pickerKind, setPickerKind] = useState<ReferenceKind>("contactId");
+  const [pickerSearch, setPickerSearch] = useState("");
 
   const [items, setItems] = useState<InvoiceItem[]>([
     {
-      description: "Standard Consultation & Service",
+      description: "",
       qty: 1,
-      unitPrice: 15000,
+      unitPrice: 0,
     },
   ]);
 
@@ -45,6 +63,8 @@ function RouteComponent() {
       issuedDate: new Date().toISOString().split("T")[0],
       dueDate: new Date(Date.now() + 14 * 86400000).toISOString().split("T")[0],
       contactId: "",
+      orderId: "",
+      quoteId: "",
       billingAddress: "",
       currency: "NGN",
       tax: 0,
@@ -54,6 +74,100 @@ function RouteComponent() {
 
   const handleAddItem = () => {
     setItems((prev) => [...prev, { description: "", qty: 1, unitPrice: 0 }]);
+  };
+
+  const openPicker = (kind: ReferenceKind) => {
+    setPickerKind(kind);
+    setPickerSearch("");
+    pickerRef.current?.open();
+  };
+
+  const selectReference = (id: string) => {
+    methods.setValue(pickerKind, id, { shouldDirty: true });
+    pickerRef.current?.close();
+  };
+
+  const orderId = methods.watch("orderId");
+  const quoteId = methods.watch("quoteId");
+  const contactId = methods.watch("contactId");
+  const selectedOrder = ordersQuery.data?.find((order) => order.id === orderId);
+  const selectedQuote = quotesQuery.data?.find((quote) => quote.id === quoteId);
+  const selectedContact = contactsQuery.data?.find(
+    (contact) => contact.id === contactId,
+  );
+
+  const referenceFields = [
+    {
+      kind: "orderId" as const,
+      value: orderId,
+      selected: selectedOrder
+        ? `Order ${selectedOrder.orderNumber || `#${selectedOrder.id.slice(0, 8)}`}`
+        : orderId,
+    },
+    {
+      kind: "quoteId" as const,
+      value: quoteId,
+      selected: selectedQuote
+        ? `${selectedQuote.clientName || "Quote"} · #${selectedQuote.id.slice(0, 8)}`
+        : quoteId,
+    },
+    {
+      kind: "contactId" as const,
+      value: contactId,
+      selected: selectedContact
+        ? `${selectedContact.firstName} ${selectedContact.lastName}`.trim() ||
+          selectedContact.email
+        : contactId,
+    },
+  ];
+
+  const renderPickerOptions = (
+    options: { id: string; title: string; detail: string }[],
+  ) => {
+    const search = pickerSearch.trim().toLowerCase();
+    const filtered = search
+      ? options.filter((option) =>
+          `${option.title} ${option.detail} ${option.id}`
+            .toLowerCase()
+            .includes(search),
+        )
+      : options;
+
+    if (!filtered.length) {
+      return (
+        <p className="py-8 text-center text-sm text-base-content/60">
+          {options.length
+            ? "No matches found."
+            : `No ${referenceLabels[pickerKind].toLowerCase()} records available.`}
+        </p>
+      );
+    }
+
+    return (
+      <ul className="max-h-80 divide-y divide-base-200 overflow-y-auto rounded-lg border border-base-200">
+        {filtered.map((option) => (
+          <li key={option.id}>
+            <button
+              type="button"
+              className="flex w-full items-center justify-between gap-4 px-4 py-3 text-left hover:bg-base-200 focus-visible:bg-base-200"
+              onClick={() => selectReference(option.id)}
+            >
+              <span className="min-w-0">
+                <span className="block truncate font-medium">
+                  {option.title}
+                </span>
+                <span className="block truncate text-xs text-base-content/60">
+                  {option.detail}
+                </span>
+              </span>
+              {methods.getValues(pickerKind) === option.id && (
+                <span className="badge badge-primary badge-sm">Selected</span>
+              )}
+            </button>
+          </li>
+        ))}
+      </ul>
+    );
   };
 
   const handleRemoveItem = (index: number) => {
@@ -104,6 +218,8 @@ function RouteComponent() {
         issuedDate: data.issuedDate,
         dueDate: data.dueDate,
         contactId: data.contactId || undefined,
+        orderId: data.orderId || undefined,
+        quoteId: data.quoteId || undefined,
         billingAddress: data.billingAddress,
         currency: data.currency,
         items,
@@ -160,17 +276,44 @@ function RouteComponent() {
               </FormWrapper>
 
               <FormWrapper title="Customer & Billing Details">
-                <LocalSelect
-                  label="Select Customer / Contact"
-                  {...methods.register("contactId")}
-                >
-                  <option value="">General Client / Unassigned</option>
-                  {contacts.map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.firstName} {c.lastName} ({c.email})
-                    </option>
-                  ))}
-                </LocalSelect>
+                {referenceFields.map(({ kind, value, selected }) => (
+                  <div key={kind} className="space-y-2">
+                    <span className="text-sm font-semibold">
+                      {referenceLabels[kind]}
+                    </span>
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        className="btn btn-outline min-w-0 flex-1 justify-between font-normal"
+                        onClick={() => openPicker(kind)}
+                      >
+                        <span className="truncate">
+                          {selected ||
+                            `Select ${referenceLabels[kind].toLowerCase()}`}
+                        </span>
+                        <Search
+                          className="size-4 shrink-0"
+                          aria-hidden="true"
+                        />
+                      </button>
+                      {value && (
+                        <button
+                          type="button"
+                          className="btn btn-ghost btn-square"
+                          aria-label={`Clear ${referenceLabels[kind]}`}
+                          onClick={() =>
+                            methods.setValue(kind, "", { shouldDirty: true })
+                          }
+                        >
+                          <X className="size-4" aria-hidden="true" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                <p className="text-xs text-base-content/60">
+                  Linked records do not change the invoice line items below.
+                </p>
                 <SimpleInput
                   label="Billing Address"
                   placeholder="Street, City, State, Country"
@@ -335,6 +478,85 @@ function RouteComponent() {
           </form>
         </FormProvider>
       </section>
+      <Modal ref={pickerRef} title={`Select ${referenceLabels[pickerKind]}`}>
+        <div className="space-y-4">
+          <SimpleInput
+            label={`Search ${referenceLabels[pickerKind].toLowerCase()}`}
+            value={pickerSearch}
+            onChange={(event) => setPickerSearch(event.target.value)}
+            placeholder="Search by name or ID"
+          />
+          {pickerKind === "orderId" && (
+            <PageLoader
+              query={ordersQuery}
+              customLoading={
+                <div className="py-8 text-center">
+                  <span className="loading loading-spinner loading-md" />
+                </div>
+              }
+            >
+              {(orders) =>
+                renderPickerOptions(
+                  orders.map((order) => ({
+                    id: order.id,
+                    title: `Order ${order.orderNumber || `#${order.id.slice(0, 8)}`}`,
+                    detail: [
+                      `${order.contact?.firstName || ""} ${order.contact?.lastName || ""}`.trim(),
+                      order.status,
+                    ]
+                      .filter(Boolean)
+                      .join(" · "),
+                  })),
+                )
+              }
+            </PageLoader>
+          )}
+          {pickerKind === "quoteId" && (
+            <PageLoader
+              query={quotesQuery}
+              customLoading={
+                <div className="py-8 text-center">
+                  <span className="loading loading-spinner loading-md" />
+                </div>
+              }
+            >
+              {(quotes) =>
+                renderPickerOptions(
+                  quotes.map((quote) => ({
+                    id: quote.id,
+                    title: `${quote.clientName || "Quote"} · #${quote.id.slice(0, 8)}`,
+                    detail: [quote.status, quote.date?.slice(0, 10)]
+                      .filter(Boolean)
+                      .join(" · "),
+                  })),
+                )
+              }
+            </PageLoader>
+          )}
+          {pickerKind === "contactId" && (
+            <PageLoader
+              query={contactsQuery}
+              customLoading={
+                <div className="py-8 text-center">
+                  <span className="loading loading-spinner loading-md" />
+                </div>
+              }
+            >
+              {(contacts) =>
+                renderPickerOptions(
+                  contacts.map((contact) => ({
+                    id: contact.id,
+                    title:
+                      `${contact.firstName} ${contact.lastName}`.trim() ||
+                      contact.email,
+                    detail: contact.email,
+                  })),
+                )
+              }
+            </PageLoader>
+          )}
+        </div>
+      </Modal>
     </div>
   );
 }
