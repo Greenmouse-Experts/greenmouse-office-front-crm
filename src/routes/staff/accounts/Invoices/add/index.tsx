@@ -11,7 +11,7 @@ import { useCreateInvoice, type InvoiceItem } from "@/api/financeApi";
 import { useContacts } from "@/api/crmApi";
 import { toast } from "sonner";
 import { Plus, Search, Trash2, X } from "lucide-react";
-import SimpleTextArea from "@/components/inputs/SimpleTextArea";
+import MarkdownTextArea from "@/components/inputs/MarkdownTextArea";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
 import PageLoader from "@/components/layout/PageLoader";
 import { useOrders, useQuotes } from "@/api/salesApi";
@@ -341,21 +341,15 @@ function RouteComponent() {
                       return (
                         <tr key={idx}>
                           <td>
-                            <>
-                              <SimpleTextArea
-                                value={item.description}
-                                onChange={(e) =>
-                                  handleItemChange(
-                                    idx,
-                                    "description",
-                                    e.target.value,
-                                  )
-                                }
-                                placeholder="Service or product name..."
-                                className="input input-bordered input-sm w-full"
-                                required
-                              />
-                            </>
+                            <MarkdownTextArea
+                              label={`Item ${idx + 1} description`}
+                              value={item.description}
+                              onChange={(value) =>
+                                handleItemChange(idx, "description", value)
+                              }
+                              placeholder="Describe the service or product..."
+                              required
+                            />
                           </td>
                           <td>
                             <input
@@ -377,12 +371,9 @@ function RouteComponent() {
                               size="sm"
                               currency={null}
                               value={item.unitPrice}
-                              onChange={(e) =>
-                                handleItemChange(
-                                  idx,
-                                  "unitPrice",
-                                  parseFloat(e.target.value) || 0,
-                                )
+                              onValueChange={(values, sourceInfo) =>
+                                sourceInfo.source === "event" &&
+                                handleItemChange(idx, "unitPrice", values.floatValue ?? 0)
                               }
                               className="text-right"
                               wrapperClassName="w-32 ml-auto"

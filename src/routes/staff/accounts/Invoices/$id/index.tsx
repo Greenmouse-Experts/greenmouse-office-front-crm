@@ -7,6 +7,7 @@ import {
   useMarkInvoicePaid,
 } from "@/api/financeApi";
 import PageLoader from "@/components/layout/PageLoader";
+import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
 import {
   Send,
@@ -190,7 +191,17 @@ function RouteComponent() {
                         invoice.items.map((item, idx) => (
                           <tr key={idx}>
                             <td className="font-medium text-base-content">
-                              {item.description}
+                              <div className="max-w-md space-y-1 break-words text-sm leading-5">
+                                <ReactMarkdown
+                                  components={{
+                                    p: ({ children }) => <p>{children}</p>,
+                                    ul: ({ children }) => <ul className="list-disc pl-5">{children}</ul>,
+                                    a: ({ children, href }) => <a href={href} target="_blank" rel="noopener noreferrer" className="link link-primary">{children}</a>,
+                                  }}
+                                >
+                                  {item.description}
+                                </ReactMarkdown>
+                              </div>
                             </td>
                             <td className="text-center">{item.qty}</td>
                             <td className="text-right">

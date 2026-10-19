@@ -3,6 +3,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm, FormProvider } from "react-hook-form";
 import SimpleInput from "@/components/inputs/SimpleInput";
 import PriceInput from "@/components/inputs/PriceInput";
+import MarkdownTextArea from "@/components/inputs/MarkdownTextArea";
 import ActionButton from "@/components/buttons/ActionButton";
 import SimpleTitle from "@/components/SimpleTitle";
 import FormWrapper from "@/components/forms/FormWrapper";
@@ -251,18 +252,13 @@ function RouteComponent() {
                           return (
                             <tr key={idx}>
                               <td>
-                                <input
-                                  type="text"
+                                <MarkdownTextArea
+                                  label={`Item ${idx + 1} description`}
                                   value={item.description}
-                                  onChange={(e) =>
-                                    handleItemChange(
-                                      idx,
-                                      "description",
-                                      e.target.value,
-                                    )
+                                  onChange={(value) =>
+                                    handleItemChange(idx, "description", value)
                                   }
-                                  placeholder="Service or product name..."
-                                  className="input input-bordered input-sm w-full"
+                                  placeholder="Describe the service or product..."
                                   required
                                 />
                               </td>
@@ -286,12 +282,9 @@ function RouteComponent() {
                                   size="sm"
                                   currency={null}
                                   value={item.unitPrice}
-                                  onChange={(e) =>
-                                    handleItemChange(
-                                      idx,
-                                      "unitPrice",
-                                      parseFloat(e.target.value) || 0,
-                                    )
+                                  onValueChange={(values, sourceInfo) =>
+                                    sourceInfo.source === "event" &&
+                                    handleItemChange(idx, "unitPrice", values.floatValue ?? 0)
                                   }
                                   className="text-right"
                                   wrapperClassName="w-32 ml-auto"
