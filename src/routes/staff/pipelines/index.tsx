@@ -1,9 +1,11 @@
 import { useMemo, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { ArrowDown, ArrowUp, Plus, Pencil, Trash2 } from "lucide-react";
 import PageHeader from "@/components/Headers/PageHeader";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
+import SimpleInput from "@/components/inputs/SimpleInput";
+import SimpleTextArea from "@/components/inputs/SimpleTextArea";
 import {
   usePipelines,
   usePipeline,
@@ -398,109 +400,102 @@ function PipelinesPage() {
         ref={pipelineModal}
         title={editingPipeline ? "Edit pipeline" : "New pipeline"}
       >
-        <form onSubmit={pipelineForm.handleSubmit(savePipeline)} className="space-y-4">
-          <label className="form-control">
-            Name
-            <input
-              className="input input-bordered w-full"
+        <FormProvider {...pipelineForm}>
+          <form
+            onSubmit={pipelineForm.handleSubmit(savePipeline)}
+            className="space-y-4"
+          >
+            <SimpleInput
+              label="Name"
+              required
               {...pipelineForm.register("name", { required: "Name is required" })}
             />
-          </label>
-          {pipelineForm.formState.errors.name && (
-            <p role="alert" className="text-error text-sm">
-              {pipelineForm.formState.errors.name.message}
-            </p>
-          )}
-          <label className="form-control">
-            Description
-            <textarea
-              className="textarea textarea-bordered w-full"
+            <SimpleTextArea
+              label="Description"
               {...pipelineForm.register("description")}
             />
-          </label>
 
-          <div className="flex justify-end gap-2">
-            <button
-              type="button"
-              className="btn btn-ghost"
-              onClick={() => pipelineModal.current?.close()}
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={createPipeline.isPending || updatePipeline.isPending}
-            >
-              Save pipeline
-            </button>
-          </div>
-        </form>
+            <div className="flex justify-end gap-2">
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={() => pipelineModal.current?.close()}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={createPipeline.isPending || updatePipeline.isPending}
+              >
+                Save pipeline
+              </button>
+            </div>
+          </form>
+        </FormProvider>
       </Modal>
 
       <Modal ref={stageModal} title={editingStage ? "Edit stage" : "Add stage"}>
-        <form onSubmit={stageForm.handleSubmit(saveStage)} className="space-y-4">
-          <label className="form-control">
-            Name
-            <input
-              className="input input-bordered w-full"
+        <FormProvider {...stageForm}>
+          <form
+            onSubmit={stageForm.handleSubmit(saveStage)}
+            className="space-y-4"
+          >
+            <SimpleInput
+              label="Name"
+              required
               {...stageForm.register("name", { required: "Name is required" })}
             />
-          </label>
-          {stageForm.formState.errors.name && (
-            <p role="alert" className="text-error text-sm">
-              {stageForm.formState.errors.name.message}
-            </p>
-          )}
-          <label className="form-control">
-            Color
-            <input
-              type="color"
-              className="input input-bordered w-20 p-1"
-              {...stageForm.register("color")}
-            />
-          </label>
-          <label className="label cursor-pointer justify-start gap-3">
-            <input
-              type="checkbox"
-              className="checkbox checkbox-primary"
-              {...stageForm.register("isWon", {
-                onChange: (event) => {
-                  if (event.target.checked) stageForm.setValue("isLost", false);
-                },
-              })}
-            />{" "}
-            Won stage
-          </label>
-          <label className="label cursor-pointer justify-start gap-3">
-            <input
-              type="checkbox"
-              className="checkbox checkbox-primary"
-              {...stageForm.register("isLost", {
-                onChange: (event) => {
-                  if (event.target.checked) stageForm.setValue("isWon", false);
-                },
-              })}
-            />{" "}
-            Lost stage
-          </label>
-          <div className="flex justify-end gap-2">
-            <button
-              type="button"
-              className="btn btn-ghost"
-              onClick={() => stageModal.current?.close()}
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={createStage.isPending || updateStage.isPending}
-            >
-              Save stage
-            </button>
-          </div>
-        </form>
+            <label className="form-control">
+              Color
+              <input
+                type="color"
+                className="input input-bordered w-20 p-1"
+                {...stageForm.register("color")}
+              />
+            </label>
+            <label className="label cursor-pointer justify-start gap-3">
+              <input
+                type="checkbox"
+                className="checkbox checkbox-primary"
+                {...stageForm.register("isWon", {
+                  onChange: (event) => {
+                    if (event.target.checked) stageForm.setValue("isLost", false);
+                  },
+                })}
+              />{" "}
+              Won stage
+            </label>
+            <label className="label cursor-pointer justify-start gap-3">
+              <input
+                type="checkbox"
+                className="checkbox checkbox-primary"
+                {...stageForm.register("isLost", {
+                  onChange: (event) => {
+                    if (event.target.checked) stageForm.setValue("isWon", false);
+                  },
+                })}
+              />{" "}
+              Lost stage
+            </label>
+            <div className="flex justify-end gap-2">
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={() => stageModal.current?.close()}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={createStage.isPending || updateStage.isPending}
+              >
+                Save stage
+              </button>
+            </div>
+          </form>
+        </FormProvider>
       </Modal>
     </div>
   );
