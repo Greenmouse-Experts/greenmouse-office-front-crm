@@ -65,6 +65,7 @@ import { Route as StaffUsersDetailsIdIndexRouteImport } from './routes/staff/use
 import { Route as StaffProductsServiceAddIndexRouteImport } from './routes/staff/products/service/add/index'
 import { Route as StaffContactsCustomersAddIndexRouteImport } from './routes/staff/contacts/customers/add/index'
 import { Route as StaffContactsCompaniesAddIndexRouteImport } from './routes/staff/contacts/companies/add/index'
+import { Route as StaffAccountsQuotesAddIndexRouteImport } from './routes/staff/accounts/quotes/add/index'
 import { Route as StaffAccountsIncomeExpensesCategoriesIndexRouteImport } from './routes/staff/accounts/income-expenses/categories/index'
 import { Route as StaffAccountsInvoicesAddIndexRouteImport } from './routes/staff/accounts/Invoices/add/index'
 import { Route as StaffAccountsInvoicesIdIndexRouteImport } from './routes/staff/accounts/Invoices/$id/index'
@@ -373,6 +374,12 @@ const StaffContactsCompaniesAddIndexRoute =
     path: '/contacts/companies/add/',
     getParentRoute: () => StaffRouteRoute,
   } as any)
+const StaffAccountsQuotesAddIndexRoute =
+  StaffAccountsQuotesAddIndexRouteImport.update({
+    id: '/accounts/quotes/add/',
+    path: '/accounts/quotes/add/',
+    getParentRoute: () => StaffRouteRoute,
+  } as any)
 const StaffAccountsIncomeExpensesCategoriesIndexRoute =
   StaffAccountsIncomeExpensesCategoriesIndexRouteImport.update({
     id: '/accounts/income-expenses/categories/',
@@ -468,6 +475,7 @@ export interface FileRoutesByFullPath {
   '/staff/accounts/Invoices/$id': typeof StaffAccountsInvoicesIdIndexRoute
   '/staff/accounts/Invoices/add': typeof StaffAccountsInvoicesAddIndexRoute
   '/staff/accounts/income-expenses/categories': typeof StaffAccountsIncomeExpensesCategoriesIndexRoute
+  '/staff/accounts/quotes/add': typeof StaffAccountsQuotesAddIndexRoute
   '/staff/contacts/companies/add': typeof StaffContactsCompaniesAddIndexRoute
   '/staff/contacts/customers/add': typeof StaffContactsCustomersAddIndexRoute
   '/staff/products/service/add': typeof StaffProductsServiceAddIndexRoute
@@ -526,6 +534,7 @@ export interface FileRoutesByTo {
   '/staff/accounts/Invoices/$id': typeof StaffAccountsInvoicesIdIndexRoute
   '/staff/accounts/Invoices/add': typeof StaffAccountsInvoicesAddIndexRoute
   '/staff/accounts/income-expenses/categories': typeof StaffAccountsIncomeExpensesCategoriesIndexRoute
+  '/staff/accounts/quotes/add': typeof StaffAccountsQuotesAddIndexRoute
   '/staff/contacts/companies/add': typeof StaffContactsCompaniesAddIndexRoute
   '/staff/contacts/customers/add': typeof StaffContactsCustomersAddIndexRoute
   '/staff/products/service/add': typeof StaffProductsServiceAddIndexRoute
@@ -591,6 +600,7 @@ export interface FileRoutesById {
   '/staff/accounts/Invoices/$id/': typeof StaffAccountsInvoicesIdIndexRoute
   '/staff/accounts/Invoices/add/': typeof StaffAccountsInvoicesAddIndexRoute
   '/staff/accounts/income-expenses/categories/': typeof StaffAccountsIncomeExpensesCategoriesIndexRoute
+  '/staff/accounts/quotes/add/': typeof StaffAccountsQuotesAddIndexRoute
   '/staff/contacts/companies/add/': typeof StaffContactsCompaniesAddIndexRoute
   '/staff/contacts/customers/add/': typeof StaffContactsCustomersAddIndexRoute
   '/staff/products/service/add/': typeof StaffProductsServiceAddIndexRoute
@@ -657,6 +667,7 @@ export interface FileRouteTypes {
     | '/staff/accounts/Invoices/$id'
     | '/staff/accounts/Invoices/add'
     | '/staff/accounts/income-expenses/categories'
+    | '/staff/accounts/quotes/add'
     | '/staff/contacts/companies/add'
     | '/staff/contacts/customers/add'
     | '/staff/products/service/add'
@@ -715,6 +726,7 @@ export interface FileRouteTypes {
     | '/staff/accounts/Invoices/$id'
     | '/staff/accounts/Invoices/add'
     | '/staff/accounts/income-expenses/categories'
+    | '/staff/accounts/quotes/add'
     | '/staff/contacts/companies/add'
     | '/staff/contacts/customers/add'
     | '/staff/products/service/add'
@@ -779,6 +791,7 @@ export interface FileRouteTypes {
     | '/staff/accounts/Invoices/$id/'
     | '/staff/accounts/Invoices/add/'
     | '/staff/accounts/income-expenses/categories/'
+    | '/staff/accounts/quotes/add/'
     | '/staff/contacts/companies/add/'
     | '/staff/contacts/customers/add/'
     | '/staff/products/service/add/'
@@ -1193,6 +1206,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StaffContactsCompaniesAddIndexRouteImport
       parentRoute: typeof StaffRouteRoute
     }
+    '/staff/accounts/quotes/add/': {
+      id: '/staff/accounts/quotes/add/'
+      path: '/accounts/quotes/add'
+      fullPath: '/staff/accounts/quotes/add'
+      preLoaderRoute: typeof StaffAccountsQuotesAddIndexRouteImport
+      parentRoute: typeof StaffRouteRoute
+    }
     '/staff/accounts/income-expenses/categories/': {
       id: '/staff/accounts/income-expenses/categories/'
       path: '/accounts/income-expenses/categories'
@@ -1327,6 +1347,7 @@ interface StaffRouteRouteChildren {
   StaffAccountsInvoicesIdIndexRoute: typeof StaffAccountsInvoicesIdIndexRoute
   StaffAccountsInvoicesAddIndexRoute: typeof StaffAccountsInvoicesAddIndexRoute
   StaffAccountsIncomeExpensesCategoriesIndexRoute: typeof StaffAccountsIncomeExpensesCategoriesIndexRoute
+  StaffAccountsQuotesAddIndexRoute: typeof StaffAccountsQuotesAddIndexRoute
   StaffContactsCompaniesAddIndexRoute: typeof StaffContactsCompaniesAddIndexRoute
   StaffContactsCustomersAddIndexRoute: typeof StaffContactsCustomersAddIndexRoute
   StaffProductsServiceAddIndexRoute: typeof StaffProductsServiceAddIndexRoute
@@ -1364,6 +1385,7 @@ const StaffRouteRouteChildren: StaffRouteRouteChildren = {
   StaffAccountsInvoicesAddIndexRoute: StaffAccountsInvoicesAddIndexRoute,
   StaffAccountsIncomeExpensesCategoriesIndexRoute:
     StaffAccountsIncomeExpensesCategoriesIndexRoute,
+  StaffAccountsQuotesAddIndexRoute: StaffAccountsQuotesAddIndexRoute,
   StaffContactsCompaniesAddIndexRoute: StaffContactsCompaniesAddIndexRoute,
   StaffContactsCustomersAddIndexRoute: StaffContactsCustomersAddIndexRoute,
   StaffProductsServiceAddIndexRoute: StaffProductsServiceAddIndexRoute,

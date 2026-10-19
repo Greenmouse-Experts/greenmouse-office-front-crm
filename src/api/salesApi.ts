@@ -12,6 +12,9 @@ export interface Quote {
   status: "pending" | "accepted" | "rejected" | "expired" | string;
   contactId?: string;
   companyId?: string;
+  companyRecordId?: string;
+  expiresAt?: string;
+  notes?: string;
   contact?: any;
   company?: any;
   createdAt?: string;
