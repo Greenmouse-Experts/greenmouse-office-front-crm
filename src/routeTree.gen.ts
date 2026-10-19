@@ -74,6 +74,7 @@ import { Route as StaffAccountsInvoicesIdEditRouteImport } from './routes/staff/
 import { Route as StaffContactsCustomersDetailsIdIndexRouteImport } from './routes/staff/contacts/customers/details/$id/index'
 import { Route as StaffContactsCompaniesDetailsIdIndexRouteImport } from './routes/staff/contacts/companies/details/$id/index'
 import { Route as StaffContactsCustomersDetailsIdEditRouteImport } from './routes/staff/contacts/customers/details/$id/edit'
+import { Route as StaffContactsCompaniesDetailsIdEditRouteImport } from './routes/staff/contacts/companies/details/$id/edit'
 
 const StaffRouteRoute = StaffRouteRouteImport.update({
   id: '/staff',
@@ -430,6 +431,12 @@ const StaffContactsCustomersDetailsIdEditRoute =
     path: '/contacts/customers/details/$id/edit',
     getParentRoute: () => StaffRouteRoute,
   } as any)
+const StaffContactsCompaniesDetailsIdEditRoute =
+  StaffContactsCompaniesDetailsIdEditRouteImport.update({
+    id: '/contacts/companies/details/$id/edit',
+    path: '/contacts/companies/details/$id/edit',
+    getParentRoute: () => StaffRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -494,6 +501,7 @@ export interface FileRoutesByFullPath {
   '/staff/contacts/customers/add': typeof StaffContactsCustomersAddIndexRoute
   '/staff/products/service/add': typeof StaffProductsServiceAddIndexRoute
   '/staff/users/details/$id': typeof StaffUsersDetailsIdIndexRoute
+  '/staff/contacts/companies/details/$id/edit': typeof StaffContactsCompaniesDetailsIdEditRoute
   '/staff/contacts/customers/details/$id/edit': typeof StaffContactsCustomersDetailsIdEditRoute
   '/staff/contacts/companies/details/$id': typeof StaffContactsCompaniesDetailsIdIndexRoute
   '/staff/contacts/customers/details/$id': typeof StaffContactsCustomersDetailsIdIndexRoute
@@ -555,6 +563,7 @@ export interface FileRoutesByTo {
   '/staff/contacts/customers/add': typeof StaffContactsCustomersAddIndexRoute
   '/staff/products/service/add': typeof StaffProductsServiceAddIndexRoute
   '/staff/users/details/$id': typeof StaffUsersDetailsIdIndexRoute
+  '/staff/contacts/companies/details/$id/edit': typeof StaffContactsCompaniesDetailsIdEditRoute
   '/staff/contacts/customers/details/$id/edit': typeof StaffContactsCustomersDetailsIdEditRoute
   '/staff/contacts/companies/details/$id': typeof StaffContactsCompaniesDetailsIdIndexRoute
   '/staff/contacts/customers/details/$id': typeof StaffContactsCustomersDetailsIdIndexRoute
@@ -623,6 +632,7 @@ export interface FileRoutesById {
   '/staff/contacts/customers/add/': typeof StaffContactsCustomersAddIndexRoute
   '/staff/products/service/add/': typeof StaffProductsServiceAddIndexRoute
   '/staff/users/details/$id/': typeof StaffUsersDetailsIdIndexRoute
+  '/staff/contacts/companies/details/$id/edit': typeof StaffContactsCompaniesDetailsIdEditRoute
   '/staff/contacts/customers/details/$id/edit': typeof StaffContactsCustomersDetailsIdEditRoute
   '/staff/contacts/companies/details/$id/': typeof StaffContactsCompaniesDetailsIdIndexRoute
   '/staff/contacts/customers/details/$id/': typeof StaffContactsCustomersDetailsIdIndexRoute
@@ -692,6 +702,7 @@ export interface FileRouteTypes {
     | '/staff/contacts/customers/add'
     | '/staff/products/service/add'
     | '/staff/users/details/$id'
+    | '/staff/contacts/companies/details/$id/edit'
     | '/staff/contacts/customers/details/$id/edit'
     | '/staff/contacts/companies/details/$id'
     | '/staff/contacts/customers/details/$id'
@@ -753,6 +764,7 @@ export interface FileRouteTypes {
     | '/staff/contacts/customers/add'
     | '/staff/products/service/add'
     | '/staff/users/details/$id'
+    | '/staff/contacts/companies/details/$id/edit'
     | '/staff/contacts/customers/details/$id/edit'
     | '/staff/contacts/companies/details/$id'
     | '/staff/contacts/customers/details/$id'
@@ -820,6 +832,7 @@ export interface FileRouteTypes {
     | '/staff/contacts/customers/add/'
     | '/staff/products/service/add/'
     | '/staff/users/details/$id/'
+    | '/staff/contacts/companies/details/$id/edit'
     | '/staff/contacts/customers/details/$id/edit'
     | '/staff/contacts/companies/details/$id/'
     | '/staff/contacts/customers/details/$id/'
@@ -1295,6 +1308,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StaffContactsCustomersDetailsIdEditRouteImport
       parentRoute: typeof StaffRouteRoute
     }
+    '/staff/contacts/companies/details/$id/edit': {
+      id: '/staff/contacts/companies/details/$id/edit'
+      path: '/contacts/companies/details/$id/edit'
+      fullPath: '/staff/contacts/companies/details/$id/edit'
+      preLoaderRoute: typeof StaffContactsCompaniesDetailsIdEditRouteImport
+      parentRoute: typeof StaffRouteRoute
+    }
   }
 }
 
@@ -1392,6 +1412,7 @@ interface StaffRouteRouteChildren {
   StaffContactsCustomersAddIndexRoute: typeof StaffContactsCustomersAddIndexRoute
   StaffProductsServiceAddIndexRoute: typeof StaffProductsServiceAddIndexRoute
   StaffUsersDetailsIdIndexRoute: typeof StaffUsersDetailsIdIndexRoute
+  StaffContactsCompaniesDetailsIdEditRoute: typeof StaffContactsCompaniesDetailsIdEditRoute
   StaffContactsCustomersDetailsIdEditRoute: typeof StaffContactsCustomersDetailsIdEditRoute
   StaffContactsCompaniesDetailsIdIndexRoute: typeof StaffContactsCompaniesDetailsIdIndexRoute
   StaffContactsCustomersDetailsIdIndexRoute: typeof StaffContactsCustomersDetailsIdIndexRoute
@@ -1432,6 +1453,8 @@ const StaffRouteRouteChildren: StaffRouteRouteChildren = {
   StaffContactsCustomersAddIndexRoute: StaffContactsCustomersAddIndexRoute,
   StaffProductsServiceAddIndexRoute: StaffProductsServiceAddIndexRoute,
   StaffUsersDetailsIdIndexRoute: StaffUsersDetailsIdIndexRoute,
+  StaffContactsCompaniesDetailsIdEditRoute:
+    StaffContactsCompaniesDetailsIdEditRoute,
   StaffContactsCustomersDetailsIdEditRoute:
     StaffContactsCustomersDetailsIdEditRoute,
   StaffContactsCompaniesDetailsIdIndexRoute:

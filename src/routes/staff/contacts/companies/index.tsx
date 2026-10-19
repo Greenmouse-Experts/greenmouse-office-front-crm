@@ -1,5 +1,5 @@
 import { useState, useRef, useMemo } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import SimpleContainer from "@/components/SimpleContainer";
 import ContainerRow from "@/components/ContainerRow";
@@ -23,8 +23,9 @@ import {
   Globe,
   MapPin,
   Eye,
+  Pencil,
   Trash2,
-  LifeBuoy,
+  TicketPlus,
 } from "lucide-react";
 
 export const Route = createFileRoute("/staff/contacts/companies/")({
@@ -32,6 +33,7 @@ export const Route = createFileRoute("/staff/contacts/companies/")({
 });
 
 function RouteComponent() {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const query = useCompanies();
   const deleteCompany = useDeleteCompany();
@@ -148,7 +150,7 @@ function RouteComponent() {
       label: "Create Ticket",
       render: () => (
         <span className="flex items-center gap-2">
-          <LifeBuoy className="size-4" /> Create Ticket
+          <TicketPlus className="size-4" /> Create Ticket
         </span>
       ),
       action: (item: Company) =>
@@ -169,6 +171,20 @@ function RouteComponent() {
         setSelectedCompany(item);
         detailsModalRef.current?.open();
       },
+    },
+    {
+      key: "edit",
+      label: "Edit Company",
+      render: () => (
+        <span className="flex items-center gap-2">
+          <Pencil className="size-4" /> Edit Company
+        </span>
+      ),
+      action: (item: Company) =>
+        navigate({
+          to: "/staff/contacts/companies/details/$id/edit",
+          params: { id: item.id },
+        }),
     },
     {
       key: "delete",
@@ -327,6 +343,13 @@ function RouteComponent() {
             )}
 
             <div className="modal-action">
+              <Link
+                to="/staff/contacts/companies/details/$id/edit"
+                params={{ id: selectedCompany.id }}
+                className="btn btn-primary"
+              >
+                <Pencil className="size-4" /> Edit Company
+              </Link>
               <button
                 type="button"
                 className="btn btn-ghost"
