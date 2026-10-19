@@ -11,6 +11,7 @@ describe("Office CRM endpoint matching", () => {
 
   it("rejects removed paths and unsupported methods", () => {
     expect(isSupportedApiEndpoint("GET", "/customers")).toBe(false);
+    expect(isSupportedApiEndpoint("GET", "/deals/kanban/list")).toBe(false);
     expect(isSupportedApiEndpoint("POST", "/tenant/subscription/upgrade")).toBe(false);
     expect(isSupportedApiEndpoint("DELETE", "/invoices/one/status")).toBe(false);
   });

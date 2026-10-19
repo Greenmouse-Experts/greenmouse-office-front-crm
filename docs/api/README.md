@@ -203,7 +203,6 @@ Generated from [Greenmouse Office CRM.postman_collection.json](../../Greenmouse%
 | `DELETE` | `/v1/pipelines/:id` | Delete a pipeline | [`sales.md`](./sales.md#delete-a-pipeline) |
 | `POST` | `/v1/pipelines` | Create a new pipeline | [`sales.md`](./sales.md#create-a-new-pipeline) |
 | `GET` | `/v1/pipelines` | List all pipelines | [`sales.md`](./sales.md#list-all-pipelines) |
-| `GET` | `/v1/deals/kanban/list` | Get kanban view for a pipeline | [`sales.md`](./sales.md#get-kanban-view-for-a-pipeline) |
 | `PATCH` | `/v1/deals/:id/stage` | Move deal to a different stage (kanban drag-drop) | [`sales.md`](./sales.md#move-deal-to-a-different-stage-kanban-drag-drop-) |
 | `POST` | `/v1/deals/:id/mark-won` | Mark deal as won | [`sales.md`](./sales.md#mark-deal-as-won) |
 | `POST` | `/v1/deals/:id/mark-lost` | Mark deal as lost | [`sales.md`](./sales.md#mark-deal-as-lost) |

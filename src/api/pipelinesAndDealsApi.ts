@@ -303,14 +303,40 @@ export const useDealsKanban = (pipelineId?: string) => {
   return useQuery<KanbanStageColumn[]>({
     queryKey: ["deals", "kanban", pipelineId],
     queryFn: async () => {
-      const { data } = await apiClient.get<any>("/deals/kanban/list", {
-        params: { pipelineId },
+      if (!pipelineId) throw new Error("Pipeline ID required");
+
+      const [dealsResponse, pipelineResponse] = await Promise.all([
+        apiClient.get<any>("/deals", { params: { pipelineId } }),
+        apiClient.get<any>(`/pipelines/${pipelineId}`),
+      ]);
+      const dealsPayload = dealsResponse.data;
+      const deals: Deal[] = Array.isArray(dealsPayload)
+        ? dealsPayload
+        : Array.isArray(dealsPayload?.data)
+          ? dealsPayload.data
+          : Array.isArray(dealsPayload?.data?.data)
+            ? dealsPayload.data.data
+            : Array.isArray(dealsPayload?.data?.deals)
+              ? dealsPayload.data.deals
+              : Array.isArray(dealsPayload?.deals)
+                ? dealsPayload.deals
+                : [];
+      const pipeline: Pipeline = pipelineResponse.data?.data || pipelineResponse.data;
+      const stages = [...(pipeline?.stages || [])].sort(
+        (a, b) => (a.order ?? 0) - (b.order ?? 0),
+      );
+
+      return stages.map((stage) => {
+        const stageDeals = deals.filter((deal) => deal.stageId === stage.id);
+        return {
+          stage,
+          deals: stageDeals,
+          count: stageDeals.length,
+          totalValue: stageDeals.reduce((sum, deal) => sum + (Number(deal.value) || 0), 0),
+        };
       });
-      if (Array.isArray(data)) return data;
-      if (Array.isArray(data?.data)) return data.data;
-      if (Array.isArray(data?.stages)) return data.stages;
-      return [];
     },
+    enabled: !!pipelineId,
   });
 };
 

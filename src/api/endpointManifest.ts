@@ -52,7 +52,6 @@ export const documentedEndpoints = [
   "GET /v1/dashboard/user-analytics",
   "GET /v1/deals",
   "GET /v1/deals/:id",
-  "GET /v1/deals/kanban/list",
   "GET /v1/expenses",
   "GET /v1/expenses/:id",
   "GET /v1/financial-categories",

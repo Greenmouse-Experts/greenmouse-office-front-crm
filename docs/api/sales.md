@@ -39,7 +39,6 @@ Lead capture and qualification, visual Kanban deal pipelines, stage reordering, 
 | `DELETE` | [`/v1/pipelines/:id`](#delete-a-pipeline) | Delete a pipeline |
 | `POST` | [`/v1/pipelines`](#create-a-new-pipeline) | Create a new pipeline |
 | `GET` | [`/v1/pipelines`](#list-all-pipelines) | List all pipelines |
-| `GET` | [`/v1/deals/kanban/list`](#get-kanban-view-for-a-pipeline) | Get kanban view for a pipeline |
 | `PATCH` | [`/v1/deals/:id/stage`](#move-deal-to-a-different-stage-kanban-drag-drop-) | Move deal to a different stage (kanban drag-drop) |
 | `POST` | [`/v1/deals/:id/mark-won`](#mark-deal-as-won) | Mark deal as won |
 | `POST` | [`/v1/deals/:id/mark-lost`](#mark-deal-as-lost) | Mark deal as lost |
@@ -898,23 +897,9 @@ Lead capture and qualification, visual Kanban deal pipelines, stage reordering, 
 
 ---
 
-### Get kanban view for a pipeline
-
-`GET /v1/deals/kanban/list?pipelineId=string`
-
-**Query Parameters**
-
-| Parameter | Type / Example | Description |
-| :--- | :--- | :--- |
-| `pipelineId` | `string` | Filter / pagination param |
-
-**Example responses from the collection**
-
-#### `200 OK`
-
----
-
 ### Move deal to a different stage (kanban drag-drop)
+
+The deals board uses `GET /v1/deals?pipelineId=...` and `GET /v1/pipelines/:id` to group deals by stage. There is no separate Kanban list endpoint.
 
 `PATCH /v1/deals/:id/stage`
 

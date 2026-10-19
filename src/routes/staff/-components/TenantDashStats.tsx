@@ -1,10 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import {
   ArrowRight,
-  Users,
   FileText,
   UsersRound,
-  ShoppingBag,
   Clock,
 } from "lucide-react";
 import { useDashboardStats } from "@/api/tenantApi";
