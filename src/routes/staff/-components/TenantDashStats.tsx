@@ -21,15 +21,15 @@ export default function TenantDashStats() {
       to: "/staff/contacts/customers",
       color: "from-blue-500/20 to-blue-500/5 text-blue-600 dark:text-blue-400",
     },
-    {
-      title: "Products & Services",
-      value: isLoading ? "..." : (stats?.totalProducts ?? 0),
-      linkLabel: "View products",
-      icon: ShoppingBag,
-      to: "/staff/products",
-      color:
-        "from-purple-500/20 to-purple-500/5 text-purple-600 dark:text-purple-400",
-    },
+    // {
+    //   title: "Products & Services",
+    //   value: isLoading ? "..." : (stats?.totalProducts ?? 0),
+    //   linkLabel: "View products",
+    //   icon: ShoppingBag,
+    //   to: "/staff/products",
+    //   color:
+    //     "from-purple-500/20 to-purple-500/5 text-purple-600 dark:text-purple-400",
+    // },
     {
       title: "Pending Orders",
       value: isLoading ? "..." : (stats?.pendingOrders ?? 0),
@@ -48,14 +48,15 @@ export default function TenantDashStats() {
       color:
         "from-emerald-500/20 to-emerald-500/5 text-emerald-600 dark:text-emerald-400",
     },
-    {
-      title: "Team Members",
-      value: isLoading ? "..." : (stats?.totalStaffs ?? 0),
-      linkLabel: "View team",
-      icon: Users,
-      to: "/staff/users",
-      color: "from-teal-500/20 to-teal-500/5 text-teal-600 dark:text-teal-400",
-    },
+
+    // {
+    //   title: "Team Members",
+    //   value: isLoading ? "..." : (stats?.totalStaffs ?? 0),
+    //   linkLabel: "View team",
+    //   icon: Users,
+    //   to: "/staff/users",
+    //   color: "from-teal-500/20 to-teal-500/5 text-teal-600 dark:text-teal-400",
+    // },
   ];
 
   return (
