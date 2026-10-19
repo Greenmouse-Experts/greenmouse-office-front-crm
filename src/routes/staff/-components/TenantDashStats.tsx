@@ -1,5 +1,12 @@
 import { Link } from "@tanstack/react-router";
-import { Users, FileText, UsersRound, ShoppingBag, Clock } from "lucide-react";
+import {
+  ArrowRight,
+  Users,
+  FileText,
+  UsersRound,
+  ShoppingBag,
+  Clock,
+} from "lucide-react";
 import { useDashboardStats } from "@/api/tenantApi";
 
 export default function TenantDashStats() {
@@ -9,7 +16,7 @@ export default function TenantDashStats() {
     {
       title: "Total Customers",
       value: isLoading ? "..." : (stats?.totalCustomers ?? 0),
-      subtitle: "Active CRM contacts",
+      linkLabel: "View customers",
       icon: UsersRound,
       to: "/staff/contacts/customers",
       color: "from-blue-500/20 to-blue-500/5 text-blue-600 dark:text-blue-400",
@@ -17,7 +24,7 @@ export default function TenantDashStats() {
     {
       title: "Products & Services",
       value: isLoading ? "..." : (stats?.totalProducts ?? 0),
-      subtitle: "Catalog items available",
+      linkLabel: "View products",
       icon: ShoppingBag,
       to: "/staff/products",
       color:
@@ -26,7 +33,7 @@ export default function TenantDashStats() {
     {
       title: "Pending Orders",
       value: isLoading ? "..." : (stats?.pendingOrders ?? 0),
-      subtitle: "Awaiting fulfillment",
+      linkLabel: "View orders",
       icon: Clock,
       to: "/staff/orders",
       color:
@@ -35,7 +42,7 @@ export default function TenantDashStats() {
     {
       title: "Total Invoices",
       value: isLoading ? "..." : (stats?.totalInvoices ?? 0),
-      subtitle: "Generated billings",
+      linkLabel: "View invoices",
       icon: FileText,
       to: "/staff/accounts/Invoices",
       color:
@@ -44,7 +51,7 @@ export default function TenantDashStats() {
     {
       title: "Team Members",
       value: isLoading ? "..." : (stats?.totalStaffs ?? 0),
-      subtitle: "Active workspace staff",
+      linkLabel: "View team",
       icon: Users,
       to: "/staff/users",
       color: "from-teal-500/20 to-teal-500/5 text-teal-600 dark:text-teal-400",
@@ -72,12 +79,13 @@ export default function TenantDashStats() {
                   <p className="text-2xl font-semibold text-base-content">
                     {card.value}
                   </p>
-                  <span className=" font-semibold text-sm  text-base-content/80 uppercase tracking-wider">
+                  <span className=" font-semibold text-xs  text-base-content/70  tracking-wider">
                     {card.title}
                   </span>
-                  {/*<p className="text-xs text-base-content/60 font-medium">
-                    {card.subtitle}
-                  </p>*/}
+                  <span className="inline-flex items-center gap-1 pt-1 text-xs font-medium text-primary">
+                    {card.linkLabel}
+                    <ArrowRight className="size-3" aria-hidden="true" />
+                  </span>
                 </div>
               </div>
             </div>
