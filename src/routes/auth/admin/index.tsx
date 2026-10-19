@@ -134,17 +134,21 @@ function RouteComponent() {
               "Login"
             )}
           </button>
-          <button
-            className="btn btn-soft ring btn-block"
-            onClick={() => {
-              form.setValues({
-                email: "admin@example.com",
-                password: "ChangeMeImmediately!",
-              });
-            }}
-          >
-            Prefill
-          </button>
+          {import.meta.env.DEV && (
+            <>
+              <button
+                className="btn btn-soft ring btn-block"
+                onClick={() => {
+                  form.setValues({
+                    email: "admin@example.com",
+                    password: "ChangeMeImmediately!",
+                  });
+                }}
+              >
+                Prefill
+              </button>
+            </>
+          )}
           {/*<div className="">
             <section className="ring ring-current/10 bg-base-200 rounded-box p-4 text-xs text-base-content/80 space-y-2">
               <p className="font-semibold ">Demo Credientials</p>

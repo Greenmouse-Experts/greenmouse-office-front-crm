@@ -139,6 +139,21 @@ function RouteComponent() {
               Register your business
             </Link>
           </p>
+          {import.meta.env.DEV && (
+            <>
+              <button
+                className="btn btn-soft ring btn-block"
+                onClick={() => {
+                  form.reset({
+                    email: "owner@example.com",
+                    password: "ChangeMeImmediately!",
+                  });
+                }}
+              >
+                Prefill
+              </button>
+            </>
+          )}
         </form>
       </div>
     </div>
