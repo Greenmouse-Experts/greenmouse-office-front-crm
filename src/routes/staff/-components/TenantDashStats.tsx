@@ -8,6 +8,7 @@ import {
   Ban,
 } from "lucide-react";
 import { useDashboardStats } from "@/api/tenantApi";
+import { Naira } from "@/components/icons";
 
 export default function TenantDashStats() {
   const { data: stats, isLoading } = useDashboardStats();
@@ -18,15 +19,16 @@ export default function TenantDashStats() {
       value: isLoading ? "..." : (stats?.totalIncome ?? 0),
       linkLabel: "View income",
       icon: UsersRound,
+      valueIcon: Naira,
       to: "/staff/accounts/income",
       color: "from-blue-500/20 to-blue-500/5 text-blue-600 dark:text-blue-400",
     },
-
     {
       title: "Total Expenses",
       value: isLoading ? "..." : (stats?.totalExpenses ?? 0),
       linkLabel: "View expenses",
       icon: Clock,
+      valueIcon: Naira,
       to: "/staff/accounts/expenses",
       color:
         "from-amber-500/20 to-amber-500/5 text-amber-600 dark:text-amber-400",
@@ -46,6 +48,7 @@ export default function TenantDashStats() {
       value: isLoading ? "..." : (stats?.totalDebts ?? 0),
       linkLabel: "View debts  ",
       icon: Banknote,
+      valueIcon: Naira,
       to: "/staff/users",
       color: "from-teal-500/20 to-teal-500/5 text-teal-600 dark:text-teal-400",
     },
@@ -79,13 +82,18 @@ export default function TenantDashStats() {
               <div className="flex items-start justify-between">
                 <div className="space-y-1">
                   <p className="text-2xl font-semibold text-base-content">
+                    {card.valueIcon && (
+                      <card.valueIcon className="size-5 inline-block" />
+                    )}{" "}
                     {card.value}
                   </p>
                   <div className="flex flex-col gap-1 pt-1 text-xs font-medium text-primary">
                     <span className=" font-semibold text-xs  text-base-content/70  tracking-wider">
                       {card.title}
                     </span>
-                    <div className="inline-flex items-center gap-1 pt-1 text-xs font-medium text-primary">
+                    <div
+                      className={`inline-flex items-center gap-1 pt-1 text-xs font-medium text-primary ${card.color}`}
+                    >
                       {card.linkLabel}
                       <ArrowRight className="size-3" aria-hidden="true" />
                     </div>{" "}
