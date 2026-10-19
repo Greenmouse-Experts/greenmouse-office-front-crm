@@ -154,6 +154,16 @@ export interface DashboardStats {
   pendingOrders: number;
   totalCustomers: number;
   totalProducts: number;
+  totalServices: number;
+  totalCustomersChange: number;
+  totalProductsChange: number;
+  totalServicesChange: number;
+  pendingOrdersChange: number;
+  totalInvoicesChange: number;
+  totalIncome: number;
+  totalIncomeChange: number;
+  totalExpenses: number;
+  totalExpensesChange: number;
 }
 
 export interface DashboardBalance {

@@ -29,7 +29,7 @@ function RouteComponent() {
   const uploadImage = useUploadImage();
   const editModal = useModal();
   const methods = useForm<ProfileFormValues>();
-  const [image, setImage] = useState<File | null>(null);
+  const [image, setImage] = useState<File | null | undefined>(null);
   const [removeCurrentPhoto, setRemoveCurrentPhoto] = useState(false);
   const image_link = useMemo(() => image ? URL.createObjectURL(image) : undefined, [image]);
   const isSaving = updateProfile.isPending || uploadImage.isPending;

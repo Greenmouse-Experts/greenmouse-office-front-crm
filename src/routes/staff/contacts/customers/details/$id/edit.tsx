@@ -330,13 +330,12 @@ function RouteComponent() {
                   </button>
                   <ActionButton
                     type="submit"
-                    title={
-                      updateContact.isPending ? "Updating..." : "Update Customer"
-                    }
-                    icon={<UserCheck className="size-4" />}
                     className="btn btn-primary"
                     disabled={updateContact.isPending}
-                  />
+                  >
+                    <UserCheck className="size-4" />
+                    {updateContact.isPending ? "Updating..." : "Update Customer"}
+                  </ActionButton>
                 </div>
               </form>
             </FormProvider>

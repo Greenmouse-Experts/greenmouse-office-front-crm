@@ -211,7 +211,7 @@ Generated from [Greenmouse Office CRM.postman_collection.json](../../Greenmouse%
 | `DELETE` | `/v1/deals/:id` | Delete a deal | [`sales.md`](./sales.md#delete-a-deal) |
 | `POST` | `/v1/deals` | Create a new deal | [`sales.md`](./sales.md#create-a-new-deal) |
 | `GET` | `/v1/deals` | List all deals | [`sales.md`](./sales.md#list-all-deals) |
-| `GET` | `/v1/dashboard/stats` | Stat cards — total staffs, invoices, pending orders, customers, products | [`dashboard.md`](./dashboard.md#stat-cards-total-staffs-invoices-pending-orders-customers-products) |
+| `GET` | `/v1/dashboard/stats` | Staff, customers, catalog, orders, invoices, income, expenses, and percentage changes | [`dashboard.md`](./dashboard.md#dashboard-stat-cards) |
 | `GET` | `/v1/dashboard/income-expense` | Monthly income vs expense chart for a given year | [`dashboard.md`](./dashboard.md#monthly-income-vs-expense-chart-for-a-given-year) |
 | `GET` | `/v1/dashboard/balance` | Balance summary — total, today, this month | [`dashboard.md`](./dashboard.md#balance-summary-total-today-this-month) |
 | `GET` | `/v1/dashboard/profit` | Monthly profit chart (income − expense) for a given year | [`dashboard.md`](./dashboard.md#monthly-profit-chart-income-expense-for-a-given-year) |

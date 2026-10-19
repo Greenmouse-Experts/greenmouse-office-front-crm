@@ -1,109 +1,155 @@
 import { Link } from "@tanstack/react-router";
 import {
   ArrowRight,
-  FileText,
-  UsersRound,
   Clock,
-  Banknote,
-  Ban,
+  FileText,
+  Package,
+  ReceiptText,
+  ShoppingBag,
+  Users,
+  UsersRound,
+  Wallet,
 } from "lucide-react";
 import { useDashboardStats } from "@/api/tenantApi";
-import { Naira } from "@/components/icons";
+import QueryCompLayout from "@/components/layout/QueryCompLayout";
+
+const formatNumber = (value: number) => new Intl.NumberFormat().format(value);
+const formatMoney = (value: number) => `₦${formatNumber(value)}`;
+
+function Change({ value }: { value: number }) {
+  const label = `${value > 0 ? "+" : ""}${value}%`;
+  return (
+    <span
+      className={`rounded-full px-2 py-1 text-xs font-semibold tabular-nums ${
+        value > 0
+          ? "bg-success/10 text-success"
+          : value < 0
+            ? "bg-error/10 text-error"
+            : "bg-base-200 text-base-content/70"
+      }`}
+      aria-label={`${label} change`}
+    >
+      {label}
+    </span>
+  );
+}
 
 export default function TenantDashStats() {
-  const { data: stats, isLoading } = useDashboardStats();
-
-  const cards = [
-    {
-      title: "Total Income",
-      value: isLoading ? "..." : (stats?.totalIncome ?? 0),
-      linkLabel: "View income",
-      icon: UsersRound,
-      valueIcon: Naira,
-      to: "/staff/accounts/income",
-      color: "from-blue-500/20 to-blue-500/5 text-blue-600 dark:text-blue-400",
-    },
-    {
-      title: "Total Expenses",
-      value: isLoading ? "..." : (stats?.totalExpenses ?? 0),
-      linkLabel: "View expenses",
-      icon: Clock,
-      valueIcon: Naira,
-      to: "/staff/accounts/expenses",
-      color:
-        "from-amber-500/20 to-amber-500/5 text-amber-600 dark:text-amber-400",
-    },
-    {
-      title: "Total Customers",
-      value: isLoading ? "..." : (stats?.totalCustomers ?? 0),
-      linkLabel: "View customers",
-      icon: FileText,
-      to: "/staff/contacts/customers",
-      color:
-        "from-emerald-500/20 to-emerald-500/5 text-emerald-600 dark:text-emerald-400",
-    },
-
-    {
-      title: "Total Debts",
-      value: isLoading ? "..." : (stats?.totalDebts ?? 0),
-      linkLabel: "View debts  ",
-      icon: Banknote,
-      valueIcon: Naira,
-      to: "/staff/users",
-      color: "from-teal-500/20 to-teal-500/5 text-teal-600 dark:text-teal-400",
-    },
-    {
-      title: "Total Invoices",
-      value: isLoading ? "..." : (stats?.totalInvoices ?? 0),
-      linkLabel: "View invoices",
-      icon: FileText,
-      to: "/staff/accounts/invoices",
-      color:
-        "from-purple-500/20 to-purple-500/5 text-purple-600 dark:text-purple-400",
-    },
-  ];
+  const query = useDashboardStats();
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-      {cards.map((card, index) => {
-        const Icon = card.icon;
+    <QueryCompLayout query={query}>
+      {(stats) => {
+        const cards = [
+          {
+            title: "Total Income",
+            value: formatMoney(stats.totalIncome),
+            change: stats.totalIncomeChange,
+            linkLabel: "View income",
+            icon: Wallet,
+            to: "/staff/accounts/income-expenses",
+            accent: "bg-primary/10 text-primary",
+          },
+          {
+            title: "Total Expenses",
+            value: formatMoney(stats.totalExpenses),
+            change: stats.totalExpensesChange,
+            linkLabel: "View expenses",
+            icon: ReceiptText,
+            to: "/staff/accounts/income-expenses",
+            accent: "bg-warning/10 text-warning",
+          },
+          {
+            title: "Total Customers",
+            value: formatNumber(stats.totalCustomers),
+            change: stats.totalCustomersChange,
+            linkLabel: "View customers",
+            icon: UsersRound,
+            to: "/staff/contacts/customers",
+            accent: "bg-info/10 text-info",
+          },
+          {
+            title: "Products",
+            value: formatNumber(stats.totalProducts),
+            change: stats.totalProductsChange,
+            linkLabel: "View products",
+            icon: Package,
+            to: "/staff/products",
+            accent: "bg-primary/10 text-primary",
+          },
+          {
+            title: "Services",
+            value: formatNumber(stats.totalServices),
+            change: stats.totalServicesChange,
+            linkLabel: "View services",
+            icon: ShoppingBag,
+            to: "/staff/products/service",
+            accent: "bg-info/10 text-info",
+          },
+          {
+            title: "Pending Orders",
+            value: formatNumber(stats.pendingOrders),
+            change: stats.pendingOrdersChange,
+            linkLabel: "View orders",
+            icon: Clock,
+            to: "/staff/orders",
+            accent: "bg-warning/10 text-warning",
+          },
+          {
+            title: "Total Invoices",
+            value: formatNumber(stats.totalInvoices),
+            change: stats.totalInvoicesChange,
+            linkLabel: "View invoices",
+            icon: FileText,
+            to: "/staff/accounts/Invoices",
+            accent: "bg-primary/10 text-primary",
+          },
+          {
+            title: "Team Members",
+            value: formatNumber(stats.totalStaffs),
+            linkLabel: "View team",
+            icon: Users,
+            to: "/staff/users",
+            accent: "bg-info/10 text-info",
+          },
+        ];
+
         return (
-          <Link
-            key={index}
-            to={card.to}
-            className="card bg-base-100 shadow-sm hover:shadow-md border border-base-200 transition-all duration-200 hover:-translate-y-0.5"
-          >
-            <div className="card-body p-4">
-              <div
-                className={`p-2.5 w-fit rounded-xl bg-gradient-to-br ${card.color}`}
-              >
-                <Icon className="size-5" />
-              </div>
-              <div className="flex items-start justify-between">
-                <div className="space-y-1">
-                  <p className="text-2xl font-semibold text-base-content">
-                    {card.valueIcon && (
-                      <card.valueIcon className="size-5 inline-block" />
-                    )}{" "}
-                    {card.value}
-                  </p>
-                  <div className="flex flex-col gap-1 pt-1 text-xs font-medium text-primary">
-                    <span className=" font-semibold text-xs  text-base-content/70  tracking-wider">
-                      {card.title}
-                    </span>
-                    <div
-                      className={`inline-flex items-center gap-1 pt-1 text-xs font-medium text-primary ${card.color}`}
-                    >
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {cards.map((card) => {
+              const Icon = card.icon;
+              return (
+                <Link
+                  key={card.title}
+                  to={card.to}
+                  className="card border border-base-200 bg-base-100 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+                >
+                  <div className="card-body gap-3 p-4">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className={`rounded-xl p-2.5 ${card.accent}`}>
+                        <Icon className="size-5" aria-hidden="true" />
+                      </div>
+                      {card.change !== undefined && <Change value={card.change} />}
+                    </div>
+                    <div>
+                      <p className="text-2xl font-semibold tabular-nums text-base-content">
+                        {card.value}
+                      </p>
+                      <p className="text-xs font-semibold text-base-content/70">
+                        {card.title}
+                      </p>
+                    </div>
+                    <span className="inline-flex items-center gap-1 text-xs font-medium text-primary">
                       {card.linkLabel}
                       <ArrowRight className="size-3" aria-hidden="true" />
-                    </div>{" "}
+                    </span>
                   </div>
-                </div>
-              </div>
-            </div>
-          </Link>
+                </Link>
+              );
+            })}
+          </div>
         );
-      })}
-    </div>
+      }}
+    </QueryCompLayout>
   );
 }
