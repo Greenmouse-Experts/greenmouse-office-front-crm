@@ -15,6 +15,7 @@ import {
   List,
   Target,
   Kanban,
+  Layers,
   TrendingUp,
 } from "lucide-react";
 import AdminHeader from "./-components/AdminHeader";
@@ -48,8 +49,15 @@ const nav_links = [
   },
   {
     path: "/staff/deals",
-    label: "Deals & Pipeline",
+    label: "Deals",
     icon: <Kanban size={ICON_SIZE} />,
+    type: "menu",
+    children: null,
+  },
+  {
+    path: "/staff/pipelines",
+    label: "Pipelines",
+    icon: <Layers size={ICON_SIZE} />,
     type: "menu",
     children: null,
   },

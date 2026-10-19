@@ -24,6 +24,7 @@ import { Route as StaffSupportIndexRouteImport } from './routes/staff/support/in
 import { Route as StaffSettingsIndexRouteImport } from './routes/staff/settings/index'
 import { Route as StaffReportsIndexRouteImport } from './routes/staff/reports/index'
 import { Route as StaffProductsIndexRouteImport } from './routes/staff/products/index'
+import { Route as StaffPipelinesIndexRouteImport } from './routes/staff/pipelines/index'
 import { Route as StaffOrdersIndexRouteImport } from './routes/staff/orders/index'
 import { Route as StaffLeadsIndexRouteImport } from './routes/staff/leads/index'
 import { Route as StaffDealsIndexRouteImport } from './routes/staff/deals/index'
@@ -143,6 +144,11 @@ const StaffReportsIndexRoute = StaffReportsIndexRouteImport.update({
 const StaffProductsIndexRoute = StaffProductsIndexRouteImport.update({
   id: '/products/',
   path: '/products/',
+  getParentRoute: () => StaffRouteRoute,
+} as any)
+const StaffPipelinesIndexRoute = StaffPipelinesIndexRouteImport.update({
+  id: '/pipelines/',
+  path: '/pipelines/',
   getParentRoute: () => StaffRouteRoute,
 } as any)
 const StaffOrdersIndexRoute = StaffOrdersIndexRouteImport.update({
@@ -420,6 +426,7 @@ export interface FileRoutesByFullPath {
   '/staff/deals': typeof StaffDealsIndexRoute
   '/staff/leads': typeof StaffLeadsIndexRoute
   '/staff/orders': typeof StaffOrdersIndexRoute
+  '/staff/pipelines': typeof StaffPipelinesIndexRoute
   '/staff/products': typeof StaffProductsIndexRoute
   '/staff/reports': typeof StaffReportsIndexRoute
   '/staff/settings/': typeof StaffSettingsIndexRoute
@@ -476,6 +483,7 @@ export interface FileRoutesByTo {
   '/staff/deals': typeof StaffDealsIndexRoute
   '/staff/leads': typeof StaffLeadsIndexRoute
   '/staff/orders': typeof StaffOrdersIndexRoute
+  '/staff/pipelines': typeof StaffPipelinesIndexRoute
   '/staff/products': typeof StaffProductsIndexRoute
   '/staff/reports': typeof StaffReportsIndexRoute
   '/staff/settings': typeof StaffSettingsIndexRoute
@@ -539,6 +547,7 @@ export interface FileRoutesById {
   '/staff/deals/': typeof StaffDealsIndexRoute
   '/staff/leads/': typeof StaffLeadsIndexRoute
   '/staff/orders/': typeof StaffOrdersIndexRoute
+  '/staff/pipelines/': typeof StaffPipelinesIndexRoute
   '/staff/products/': typeof StaffProductsIndexRoute
   '/staff/reports/': typeof StaffReportsIndexRoute
   '/staff/settings/': typeof StaffSettingsIndexRoute
@@ -603,6 +612,7 @@ export interface FileRouteTypes {
     | '/staff/deals'
     | '/staff/leads'
     | '/staff/orders'
+    | '/staff/pipelines'
     | '/staff/products'
     | '/staff/reports'
     | '/staff/settings/'
@@ -659,6 +669,7 @@ export interface FileRouteTypes {
     | '/staff/deals'
     | '/staff/leads'
     | '/staff/orders'
+    | '/staff/pipelines'
     | '/staff/products'
     | '/staff/reports'
     | '/staff/settings'
@@ -721,6 +732,7 @@ export interface FileRouteTypes {
     | '/staff/deals/'
     | '/staff/leads/'
     | '/staff/orders/'
+    | '/staff/pipelines/'
     | '/staff/products/'
     | '/staff/reports/'
     | '/staff/settings/'
@@ -879,6 +891,13 @@ declare module '@tanstack/react-router' {
       path: '/products'
       fullPath: '/staff/products'
       preLoaderRoute: typeof StaffProductsIndexRouteImport
+      parentRoute: typeof StaffRouteRoute
+    }
+    '/staff/pipelines/': {
+      id: '/staff/pipelines/'
+      path: '/pipelines'
+      fullPath: '/staff/pipelines'
+      preLoaderRoute: typeof StaffPipelinesIndexRouteImport
       parentRoute: typeof StaffRouteRoute
     }
     '/staff/orders/': {
@@ -1263,6 +1282,7 @@ interface StaffRouteRouteChildren {
   StaffDealsIndexRoute: typeof StaffDealsIndexRoute
   StaffLeadsIndexRoute: typeof StaffLeadsIndexRoute
   StaffOrdersIndexRoute: typeof StaffOrdersIndexRoute
+  StaffPipelinesIndexRoute: typeof StaffPipelinesIndexRoute
   StaffProductsIndexRoute: typeof StaffProductsIndexRoute
   StaffReportsIndexRoute: typeof StaffReportsIndexRoute
   StaffSupportIndexRoute: typeof StaffSupportIndexRoute
@@ -1298,6 +1318,7 @@ const StaffRouteRouteChildren: StaffRouteRouteChildren = {
   StaffDealsIndexRoute: StaffDealsIndexRoute,
   StaffLeadsIndexRoute: StaffLeadsIndexRoute,
   StaffOrdersIndexRoute: StaffOrdersIndexRoute,
+  StaffPipelinesIndexRoute: StaffPipelinesIndexRoute,
   StaffProductsIndexRoute: StaffProductsIndexRoute,
   StaffReportsIndexRoute: StaffReportsIndexRoute,
   StaffSupportIndexRoute: StaffSupportIndexRoute,

@@ -1,5 +1,5 @@
 import { useState, useRef, useMemo } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import PageHeader from "@/components/Headers/PageHeader";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
 import SimpleInput from "@/components/inputs/SimpleInput";
@@ -16,8 +16,6 @@ import {
   useMoveDealStage,
   useMarkDealWon,
   useMarkDealLost,
-  useCreatePipeline,
-  useAddPipelineStage,
   type Deal,
 } from "@/api/pipelinesAndDealsApi";
 import {
@@ -28,16 +26,31 @@ import {
   XCircle,
   MoreVertical,
   Layers,
-  FolderPlus,
 } from "lucide-react";
-import { NairaIcon } from "@/components/icons";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/staff/deals/")({
   component: DealsPageComponent,
 });
 
+const formatCurrency = (value: number, currency = "NGN") =>
+  new Intl.NumberFormat(undefined, {
+    style: "currency",
+    currency,
+    maximumFractionDigits: 0,
+  }).format(value);
+
+const summarizeValues = (deals: Deal[]) => {
+  const totals = new Map<string, number>();
+  deals.forEach((deal) => {
+    const currency = deal.currency || "NGN";
+    totals.set(currency, (totals.get(currency) || 0) + deal.value);
+  });
+  return [...totals].map(([currency, value]) => formatCurrency(value, currency));
+};
+
 function DealsPageComponent() {
+  const navigate = useNavigate();
   const pipelinesQuery = usePipelines();
   const pipelines = pipelinesQuery.data || [];
 
@@ -56,6 +69,9 @@ function DealsPageComponent() {
   // Kanban Query
   const kanbanQuery = useDealsKanban(activePipelineId);
   const kanbanColumns = kanbanQuery.data || [];
+  const stagesList = kanbanColumns.length
+    ? kanbanColumns.map((column) => column.stage)
+    : activePipeline?.stages || [];
 
   // Mutations
   const createDealMutation = useCreateDeal();
@@ -64,13 +80,9 @@ function DealsPageComponent() {
   const moveDealStageMutation = useMoveDealStage();
   const markWonMutation = useMarkDealWon();
   const markLostMutation = useMarkDealLost();
-  const createPipelineMutation = useCreatePipeline();
-  const addStageMutation = useAddPipelineStage();
-
   // Modal Refs
   const dealModalRef = useRef<ModalHandle>(null);
-  const pipelineModalRef = useRef<ModalHandle>(null);
-  const stageModalRef = useRef<ModalHandle>(null);
+  const [dropStageId, setDropStageId] = useState<string | null>(null);
 
   // Selected item for edit
   const [editingDeal, setEditingDeal] = useState<Deal | null>(null);
@@ -86,27 +98,16 @@ function DealsPageComponent() {
     notes: "",
   });
 
-  // Pipeline Form State
-  const [pipelineForm, setPipelineForm] = useState({
-    name: "",
-    description: "",
-  });
-
-  // Stage Form State
-  const [stageForm, setStageForm] = useState({
-    name: "",
-    color: "#007047",
-  });
 
   // Metric Computations
   const metrics = useMemo(() => {
     let totalDeals = 0;
-    let totalValue = 0;
+    const deals: Deal[] = [];
     kanbanColumns.forEach((col) => {
       totalDeals += col.count || col.deals?.length || 0;
-      totalValue += col.totalValue || 0;
+      deals.push(...(col.deals || []));
     });
-    return { totalDeals, totalValue };
+    return { totalDeals, values: summarizeValues(deals) };
   }, [kanbanColumns]);
 
   // Handlers
@@ -115,7 +116,7 @@ function DealsPageComponent() {
     setDealForm({
       name: "",
       pipelineId: activePipelineId || "",
-      stageId: preselectedStageId || activePipeline?.stages?.[0]?.id || "",
+      stageId: preselectedStageId || stagesList[0]?.id || "",
       value: 1000,
       currency: "NGN",
       expectedCloseDate: new Date(Date.now() + 30 * 86400000)
@@ -210,56 +211,20 @@ function DealsPageComponent() {
     }
   };
 
-  const handleCreatePipeline = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!pipelineForm.name) return;
-    try {
-      const created = await createPipelineMutation.mutateAsync(pipelineForm);
-      toast.success("Pipeline created!");
-      setSelectedPipelineId(created.id);
-      pipelineModalRef.current?.close();
-      setPipelineForm({ name: "", description: "" });
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to create pipeline.");
-    }
-  };
-
-  const handleCreateStage = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!stageForm.name || !activePipelineId) return;
-    try {
-      await addStageMutation.mutateAsync({
-        pipelineId: activePipelineId,
-        ...stageForm,
-      });
-      toast.success("Stage added!");
-      stageModalRef.current?.close();
-      setStageForm({ name: "", color: "#007047" });
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to add stage.");
-    }
-  };
-
-  const stagesList = activePipeline?.stages || [];
-
   return (
     <div className="space-y-6 pb-12">
       <PageHeader
-        title="Sales Pipeline & Deals"
-        description="Visualize opportunity velocity, track deal progression across stages, and accelerate revenue conversion"
+        title="Deals"
+        description="Move opportunities through your sales stages."
       >
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => pipelineModalRef.current?.open()}
-            className="btn btn-outline btn-sm gap-2"
-          >
-            <FolderPlus className="size-4" />
-            New Pipeline
-          </button>
+          <Link to="/staff/pipelines" className="btn btn-outline btn-sm gap-2">
+            <Layers className="size-4" /> Manage pipelines
+          </Link>
           <button
             type="button"
             onClick={() => handleOpenCreateDeal()}
+            disabled={!activePipelineId || !stagesList.length}
             className="btn btn-primary btn-sm gap-2 text-white"
           >
             <PlusCircle className="size-4" />
@@ -289,14 +254,6 @@ function DealsPageComponent() {
               ))
             )}
           </select>
-          <button
-            type="button"
-            onClick={() => stageModalRef.current?.open()}
-            className="btn btn-ghost btn-xs text-primary"
-            disabled={!activePipelineId}
-          >
-            + Add Stage
-          </button>
         </div>
 
         <div className="flex items-center gap-6 text-sm">
@@ -307,12 +264,8 @@ function DealsPageComponent() {
             </span>
           </div>
           <div>
-            <span className="text-base-content/60 text-xs">
-              Pipeline Value:{" "}
-            </span>
-            <span className="font-bold text-primary">
-              ₦{metrics.totalValue.toLocaleString()}
-            </span>
+            <span className="text-base-content/60 text-xs">Pipeline Value: </span>
+            <span className="font-bold text-primary">{metrics.values.join(" · ") || "—"}</span>
           </div>
         </div>
       </div>
@@ -326,13 +279,7 @@ function DealsPageComponent() {
             Create your first sales pipeline to begin tracking deals and
             visualizing stages.
           </p>
-          <button
-            type="button"
-            onClick={() => pipelineModalRef.current?.open()}
-            className="btn btn-primary btn-sm mx-auto text-white"
-          >
-            Create Pipeline
-          </button>
+          <Link to="/staff/pipelines" className="btn btn-primary btn-sm mx-auto text-white">Create a pipeline</Link>
         </div>
       ) : (
         <PageLoader
@@ -342,8 +289,8 @@ function DealsPageComponent() {
             title: "No Stages in Pipeline",
             description:
               "Get started by adding stages to this pipeline (e.g., Prospecting, Qualified, Proposal, Won).",
-            actionText: "Add First Stage",
-            onAction: () => stageModalRef.current?.open(),
+            actionText: "Manage stages",
+            onAction: () => navigate({ to: "/staff/pipelines" }),
           }}
         >
           {(columns) => (
@@ -354,7 +301,24 @@ function DealsPageComponent() {
                 return (
                   <div
                     key={stage.id}
-                    className="w-80 shrink-0 bg-base-200/50 rounded-2xl border border-base-300 p-3 flex flex-col max-h-[calc(100vh-280px)]"
+                    className={`w-80 shrink-0 bg-base-200/50 rounded-2xl border p-3 flex flex-col max-h-[calc(100vh-280px)] ${dropStageId === stage.id ? "border-primary bg-primary/10" : "border-base-300"}`}
+                    onDragOver={(event) => {
+                      if (event.dataTransfer.types.includes("text/deal-id")) {
+                        event.preventDefault();
+                        event.dataTransfer.dropEffect = "move";
+                        setDropStageId(stage.id);
+                      }
+                    }}
+                    onDragLeave={(event) => {
+                      if (!event.currentTarget.contains(event.relatedTarget as Node)) setDropStageId(null);
+                    }}
+                    onDrop={(event) => {
+                      event.preventDefault();
+                      setDropStageId(null);
+                      const dealId = event.dataTransfer.getData("text/deal-id");
+                      const source = kanbanColumns.flatMap((column) => column.deals || []).find((deal) => deal.id === dealId);
+                      if (source && source.stageId !== stage.id) void handleMoveStage(dealId, stage.id);
+                    }}
                   >
                     {/* Stage Header */}
                     <div className="flex items-center justify-between pb-3 px-1 border-b border-base-300/60 mb-3">
@@ -371,7 +335,7 @@ function DealsPageComponent() {
                         </span>
                       </div>
                       <div className="text-xs font-mono font-semibold text-base-content/70">
-                        ₦{(col.totalValue || 0).toLocaleString()}
+                        {summarizeValues(deals).join(" · ") || "—"}
                       </div>
                     </div>
 
@@ -383,6 +347,12 @@ function DealsPageComponent() {
                         return (
                           <div
                             key={deal.id}
+                            draggable={!moveDealStageMutation.isPending}
+                            onDragStart={(event) => {
+                              event.dataTransfer.setData("text/deal-id", deal.id);
+                              event.dataTransfer.effectAllowed = "move";
+                            }}
+                            onDragEnd={() => setDropStageId(null)}
                             className={`card bg-base-100 p-4 shadow-xs border transition-all hover:shadow-md ${
                               isWon
                                 ? "border-success/40 bg-success/5"
@@ -392,12 +362,13 @@ function DealsPageComponent() {
                             }`}
                           >
                             <div className="flex items-start justify-between gap-2">
-                              <h4
+                              <button
+                                type="button"
                                 onClick={() => handleOpenEditDeal(deal)}
-                                className="font-semibold text-sm text-base-content hover:text-primary cursor-pointer leading-snug line-clamp-2"
+                                className="font-semibold text-left text-sm text-base-content hover:text-primary leading-snug line-clamp-2"
                               >
                                 {deal.name}
-                              </h4>
+                              </button>
                               {isWon ? (
                                 <span className="badge badge-xs badge-success text-white">
                                   Won
@@ -412,7 +383,7 @@ function DealsPageComponent() {
                             {/* Value and Date */}
                             <div className="flex items-center justify-between mt-3 text-xs">
                               <div className="font-bold text-primary font-mono text-sm">
-                                ₦{deal.value.toLocaleString()}
+                                {formatCurrency(deal.value, deal.currency)}
                               </div>
                               {deal.expectedCloseDate && (
                                 <div className="flex items-center gap-1 text-base-content/60">
@@ -512,7 +483,6 @@ function DealsPageComponent() {
         <div className="w-full max-w-md p-1">
           <form onSubmit={handleSaveDeal} className="space-y-4">
             <h3 className="font-bold text-lg flex items-center gap-2">
-              <NairaIcon className="size-5 text-primary" />
               {editingDeal ? "Edit Deal" : "Create New Deal"}
             </h3>
             <SimpleInput
@@ -527,7 +497,8 @@ function DealsPageComponent() {
 
             <div className="grid grid-cols-2 gap-4">
               <PriceInput
-                label="Deal Value (₦) *"
+                label="Deal Value *"
+                currency={{ NGN: "₦", USD: "$", EUR: "€", GBP: "£" }[dealForm.currency] || dealForm.currency}
                 value={dealForm.value}
                 onChange={(e) =>
                   setDealForm({ ...dealForm, value: Number(e.target.value) })
@@ -605,106 +576,6 @@ function DealsPageComponent() {
         </div>
       </Modal>
 
-      {/* CREATE PIPELINE MODAL */}
-      <Modal ref={pipelineModalRef} title="Create Sales Pipeline">
-        <div className="w-full  p-1">
-          <form onSubmit={handleCreatePipeline} className="space-y-4">
-            <SimpleInput
-              label="Pipeline Name *"
-              placeholder="e.g. Enterprise Sales, Inbound SMB"
-              value={pipelineForm.name}
-              onChange={(e) =>
-                setPipelineForm({ ...pipelineForm, name: e.target.value })
-              }
-              required
-            />
-            <SimpleTextArea
-              label="Description"
-              placeholder="Target sales cycle and deals managed in this pipeline"
-              value={pipelineForm.description}
-              onChange={(e) =>
-                setPipelineForm({
-                  ...pipelineForm,
-                  description: e.target.value,
-                })
-              }
-            />
-            <div className="flex justify-end gap-2 pt-2">
-              <button
-                type="button"
-                onClick={() => pipelineModalRef.current?.close()}
-                className="btn btn-ghost btn-sm"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={createPipelineMutation.isPending}
-                className="btn btn-primary btn-sm text-white"
-              >
-                {createPipelineMutation.isPending
-                  ? "Creating..."
-                  : "Create Pipeline"}
-              </button>
-            </div>
-          </form>
-        </div>
-      </Modal>
-
-      {/* ADD STAGE MODAL */}
-      <Modal ref={stageModalRef}>
-        <div className="w-full max-w-md p-1">
-          <form onSubmit={handleCreateStage} className="space-y-4">
-            <h3 className="font-bold text-lg flex items-center gap-2">
-              <Layers className="size-5 text-primary" /> Add Stage to{" "}
-              {activePipeline?.name}
-            </h3>
-            <SimpleInput
-              label="Stage Name *"
-              placeholder="e.g. Discovery, Negotiation, Legal Review"
-              value={stageForm.name}
-              onChange={(e) =>
-                setStageForm({ ...stageForm, name: e.target.value })
-              }
-              required
-            />
-            <div>
-              <label className="text-xs font-semibold text-base-content/70">
-                Stage Theme Color
-              </label>
-              <div className="flex items-center gap-3 mt-1.5">
-                <input
-                  type="color"
-                  value={stageForm.color}
-                  onChange={(e) =>
-                    setStageForm({ ...stageForm, color: e.target.value })
-                  }
-                  className="size-8 rounded-lg cursor-pointer border border-base-300 bg-transparent p-0"
-                />
-                <span className="font-mono text-xs text-base-content/70">
-                  {stageForm.color}
-                </span>
-              </div>
-            </div>
-            <div className="flex justify-end gap-2 pt-2">
-              <button
-                type="button"
-                onClick={() => stageModalRef.current?.close()}
-                className="btn btn-ghost btn-sm"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={addStageMutation.isPending}
-                className="btn btn-primary btn-sm text-white"
-              >
-                {addStageMutation.isPending ? "Adding..." : "Add Stage"}
-              </button>
-            </div>
-          </form>
-        </div>
-      </Modal>
     </div>
   );
 }
