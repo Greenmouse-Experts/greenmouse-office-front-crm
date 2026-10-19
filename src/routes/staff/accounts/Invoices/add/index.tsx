@@ -11,6 +11,7 @@ import { useCreateInvoice, type InvoiceItem } from "@/api/financeApi";
 import { useContacts } from "@/api/crmApi";
 import { toast } from "sonner";
 import { Plus, Trash2 } from "lucide-react";
+import SimpleTextArea from "@/components/inputs/SimpleTextArea";
 
 export const Route = createFileRoute("/staff/accounts/Invoices/add/")({
   component: RouteComponent,
@@ -197,20 +198,21 @@ function RouteComponent() {
                       return (
                         <tr key={idx}>
                           <td>
-                            <input
-                              type="text"
-                              value={item.description}
-                              onChange={(e) =>
-                                handleItemChange(
-                                  idx,
-                                  "description",
-                                  e.target.value,
-                                )
-                              }
-                              placeholder="Service or product name..."
-                              className="input input-bordered input-sm w-full"
-                              required
-                            />
+                            <>
+                              <SimpleTextArea
+                                value={item.description}
+                                onChange={(e) =>
+                                  handleItemChange(
+                                    idx,
+                                    "description",
+                                    e.target.value,
+                                  )
+                                }
+                                placeholder="Service or product name..."
+                                className="input input-bordered input-sm w-full"
+                                required
+                              />
+                            </>
                           </td>
                           <td>
                             <input

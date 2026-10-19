@@ -79,13 +79,15 @@ export default function TenantDashStats() {
                   <p className="text-2xl font-semibold text-base-content">
                     {card.value}
                   </p>
-                  <span className=" font-semibold text-xs  text-base-content/70  tracking-wider">
-                    {card.title}
-                  </span>
-                  <span className="inline-flex items-center gap-1 pt-1 text-xs font-medium text-primary">
-                    {card.linkLabel}
-                    <ArrowRight className="size-3" aria-hidden="true" />
-                  </span>
+                  <div className="flex flex-col gap-1 pt-1 text-xs font-medium text-primary">
+                    <span className=" font-semibold text-xs  text-base-content/70  tracking-wider">
+                      {card.title}
+                    </span>
+                    <div className="inline-flex items-center gap-1 pt-1 text-xs font-medium text-primary">
+                      {card.linkLabel}
+                      <ArrowRight className="size-3" aria-hidden="true" />
+                    </div>{" "}
+                  </div>
                 </div>
               </div>
             </div>
