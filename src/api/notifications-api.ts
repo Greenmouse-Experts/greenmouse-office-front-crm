@@ -57,17 +57,16 @@ export const getUnreadCount = async (): Promise<
 // ==================== REACT QUERY HOOKS ====================
 
 export const useNotifications = (params?: NotificationsQueryParams) => {
-  return useQuery({
+  return useQuery<Notification[]>({
     queryKey: ["notifications", params],
     queryFn: async () => {
-      const data = await getNotifications(params);
-      if (Array.isArray(data)) return data;
-      if (Array.isArray((data as any)?.data?.notifications)) {
-        return (data as any).data.notifications as Notification[];
-      }
-      if (Array.isArray((data as any)?.data)) {
-        return (data as any).data as Notification[];
-      }
+      const response = await getNotifications(params);
+      const payload = (response as any)?.data ?? response;
+      if (Array.isArray(payload)) return payload;
+      if (Array.isArray(payload?.notifications)) return payload.notifications;
+      if (Array.isArray(payload?.data)) return payload.data;
+      if (Array.isArray(payload?.data?.notifications))
+        return payload.data.notifications;
       return [];
     },
   });

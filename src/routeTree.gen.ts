@@ -44,6 +44,7 @@ import { Route as StaffSubscriptionCallbackIndexRouteImport } from './routes/sta
 import { Route as StaffSettingsThemeIndexRouteImport } from './routes/staff/settings/theme/index'
 import { Route as StaffSettingsSecurityIndexRouteImport } from './routes/staff/settings/security/index'
 import { Route as StaffSettingsProfileIndexRouteImport } from './routes/staff/settings/profile/index'
+import { Route as StaffSettingsNotificationsIndexRouteImport } from './routes/staff/settings/notifications.index'
 import { Route as StaffProductsServiceIndexRouteImport } from './routes/staff/products/service/index'
 import { Route as StaffProductsCategoriesIndexRouteImport } from './routes/staff/products/categories/index'
 import { Route as StaffProductsAddIndexRouteImport } from './routes/staff/products/add/index'
@@ -250,6 +251,12 @@ const StaffSettingsProfileIndexRoute =
     path: '/profile/',
     getParentRoute: () => StaffSettingsRouteRoute,
   } as any)
+const StaffSettingsNotificationsIndexRoute =
+  StaffSettingsNotificationsIndexRouteImport.update({
+    id: '/notifications/',
+    path: '/notifications/',
+    getParentRoute: () => StaffSettingsRouteRoute,
+  } as any)
 const StaffProductsServiceIndexRoute =
   StaffProductsServiceIndexRouteImport.update({
     id: '/products/service/',
@@ -448,6 +455,7 @@ export interface FileRoutesByFullPath {
   '/staff/products/add': typeof StaffProductsAddIndexRoute
   '/staff/products/categories': typeof StaffProductsCategoriesIndexRoute
   '/staff/products/service': typeof StaffProductsServiceIndexRoute
+  '/staff/settings/notifications': typeof StaffSettingsNotificationsIndexRoute
   '/staff/settings/profile': typeof StaffSettingsProfileIndexRoute
   '/staff/settings/security': typeof StaffSettingsSecurityIndexRoute
   '/staff/settings/theme': typeof StaffSettingsThemeIndexRoute
@@ -505,6 +513,7 @@ export interface FileRoutesByTo {
   '/staff/products/add': typeof StaffProductsAddIndexRoute
   '/staff/products/categories': typeof StaffProductsCategoriesIndexRoute
   '/staff/products/service': typeof StaffProductsServiceIndexRoute
+  '/staff/settings/notifications': typeof StaffSettingsNotificationsIndexRoute
   '/staff/settings/profile': typeof StaffSettingsProfileIndexRoute
   '/staff/settings/security': typeof StaffSettingsSecurityIndexRoute
   '/staff/settings/theme': typeof StaffSettingsThemeIndexRoute
@@ -569,6 +578,7 @@ export interface FileRoutesById {
   '/staff/products/add/': typeof StaffProductsAddIndexRoute
   '/staff/products/categories/': typeof StaffProductsCategoriesIndexRoute
   '/staff/products/service/': typeof StaffProductsServiceIndexRoute
+  '/staff/settings/notifications/': typeof StaffSettingsNotificationsIndexRoute
   '/staff/settings/profile/': typeof StaffSettingsProfileIndexRoute
   '/staff/settings/security/': typeof StaffSettingsSecurityIndexRoute
   '/staff/settings/theme/': typeof StaffSettingsThemeIndexRoute
@@ -634,6 +644,7 @@ export interface FileRouteTypes {
     | '/staff/products/add'
     | '/staff/products/categories'
     | '/staff/products/service'
+    | '/staff/settings/notifications'
     | '/staff/settings/profile'
     | '/staff/settings/security'
     | '/staff/settings/theme'
@@ -691,6 +702,7 @@ export interface FileRouteTypes {
     | '/staff/products/add'
     | '/staff/products/categories'
     | '/staff/products/service'
+    | '/staff/settings/notifications'
     | '/staff/settings/profile'
     | '/staff/settings/security'
     | '/staff/settings/theme'
@@ -754,6 +766,7 @@ export interface FileRouteTypes {
     | '/staff/products/add/'
     | '/staff/products/categories/'
     | '/staff/products/service/'
+    | '/staff/settings/notifications/'
     | '/staff/settings/profile/'
     | '/staff/settings/security/'
     | '/staff/settings/theme/'
@@ -1033,6 +1046,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StaffSettingsProfileIndexRouteImport
       parentRoute: typeof StaffSettingsRouteRoute
     }
+    '/staff/settings/notifications/': {
+      id: '/staff/settings/notifications/'
+      path: '/notifications'
+      fullPath: '/staff/settings/notifications'
+      preLoaderRoute: typeof StaffSettingsNotificationsIndexRouteImport
+      parentRoute: typeof StaffSettingsRouteRoute
+    }
     '/staff/products/service/': {
       id: '/staff/products/service/'
       path: '/products/service'
@@ -1261,6 +1281,7 @@ const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
 
 interface StaffSettingsRouteRouteChildren {
   StaffSettingsIndexRoute: typeof StaffSettingsIndexRoute
+  StaffSettingsNotificationsIndexRoute: typeof StaffSettingsNotificationsIndexRoute
   StaffSettingsProfileIndexRoute: typeof StaffSettingsProfileIndexRoute
   StaffSettingsSecurityIndexRoute: typeof StaffSettingsSecurityIndexRoute
   StaffSettingsThemeIndexRoute: typeof StaffSettingsThemeIndexRoute
@@ -1268,6 +1289,7 @@ interface StaffSettingsRouteRouteChildren {
 
 const StaffSettingsRouteRouteChildren: StaffSettingsRouteRouteChildren = {
   StaffSettingsIndexRoute: StaffSettingsIndexRoute,
+  StaffSettingsNotificationsIndexRoute: StaffSettingsNotificationsIndexRoute,
   StaffSettingsProfileIndexRoute: StaffSettingsProfileIndexRoute,
   StaffSettingsSecurityIndexRoute: StaffSettingsSecurityIndexRoute,
   StaffSettingsThemeIndexRoute: StaffSettingsThemeIndexRoute,
