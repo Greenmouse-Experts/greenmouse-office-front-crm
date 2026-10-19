@@ -247,7 +247,7 @@ function RouteComponent() {
         </Link>
       </PageHeader>
 
-      <InvoicesStat invoices={invoices} />
+      <InvoicesStat />
 
       <SimpleContainer title="Invoices Directory">
         <ContainerRow searchProps={searchProps} />

@@ -397,15 +397,11 @@ export const useInvoice = (id?: string) => {
 };
 
 export interface InvoiceStatsData {
-  total?: number;
-  paid?: number;
-  pending?: number;
-  overdue?: number;
-  draft?: number;
-  sent?: number;
-  revenue?: number;
-  paidAmount?: number;
-  pendingAmount?: number;
+  totalInvoices: number;
+  paid: {
+    count: number;
+    total: number;
+  };
 }
 
 export const useInvoiceStats = () => {

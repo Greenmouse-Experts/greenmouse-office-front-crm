@@ -820,9 +820,17 @@ JPEG/PNG/PDF with a matching signature, maximum 5 MB. Replaced external files ar
 
 `GET /v1/invoices/stats`
 
-**Example responses from the collection**
+**Response body**
 
-#### `200 OK`
+```json
+{
+  "totalInvoices": 1,
+  "paid": {
+    "count": 1,
+    "total": 15000
+  }
+}
+```
 
 ---
 
