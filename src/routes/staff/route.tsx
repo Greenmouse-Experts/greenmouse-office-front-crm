@@ -265,10 +265,9 @@ function RouteComponent() {
             {nav_links.map((link) => {
               const int_url = link.path;
               if (link.type === "submenu" && link.children) {
-                // Submenus should be open by default
                 return (
                   <li key={link.path} className="mb-2">
-                    <details>
+                    <details name="staff-sidebar-submenus">
                       <summary className="text-md  ">
                         {link.icon}
                         {link.label}
