@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import { forwardRef } from "react";
 import type { LucideProps } from "lucide-react";
 
 export const NairaIcon = forwardRef<SVGSVGElement, LucideProps>(
@@ -25,7 +25,7 @@ export const NairaIcon = forwardRef<SVGSVGElement, LucideProps>(
         <path d="M4 14h16" />
       </svg>
     );
-  }
+  },
 );
 
 NairaIcon.displayName = "NairaIcon";
