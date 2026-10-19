@@ -32,13 +32,20 @@ export interface RevenueMonthly {
   count: number;
 }
 
+export interface ReportCategory {
+  categoryId?: string;
+  name: string;
+  total: number;
+  count: number;
+}
+
 export interface RevenueReport {
   basis: string;
   period: ReportPeriod;
   total: number;
   count: number;
   monthly: RevenueMonthly[];
-  byCategory?: Record<string, { total: number; count: number }>;
+  byCategory?: ReportCategory[];
 }
 
 export interface ExpensesReport {
@@ -47,7 +54,7 @@ export interface ExpensesReport {
   total: number;
   count: number;
   monthly: RevenueMonthly[];
-  byCategory?: Record<string, { total: number; count: number }>;
+  byCategory?: ReportCategory[];
 }
 
 export interface InvoiceRevenueMonthly {
@@ -178,6 +185,7 @@ export interface StageDwellReport {
 }
 
 export interface ReportDateFilterParams {
+  month?: string;
   year?: number;
   from?: string;
   to?: string;

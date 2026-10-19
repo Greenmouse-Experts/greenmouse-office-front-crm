@@ -1,184 +1,232 @@
-import SimpleContainer from "@/components/SimpleContainer";
-import { Cell, Pie, PieChart, Tooltip, ResponsiveContainer } from "recharts";
-import { useDashboardBalance } from "@/api/tenantApi";
+import { useState } from "react";
+import {
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import {
+  useExpensesReport,
+  useRevenueReport,
+  type ExpensesReport,
+  type RevenueReport,
+} from "@/api/reportsApi";
 import QueryCompLayout from "@/components/layout/QueryCompLayout";
-import { TrendingUp, TrendingDown } from "lucide-react";
-import { NairaIcon } from "@/components/icons";
 
-export default function TenantMonthly() {
-  const query = useDashboardBalance();
+const money = (value: number) =>
+  new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    maximumFractionDigits: 0,
+  }).format(value);
+
+const shortMoney = (value: number) =>
+  `₦${new Intl.NumberFormat("en-NG", {
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(value)}`;
+
+const monthLabel = (month: string) =>
+  new Date(`${month}-01T00:00:00`).toLocaleDateString("en-NG", {
+    month: "short",
+  });
+
+function ChartCard({
+  title,
+  description,
+  controls,
+  children,
+}: {
+  title: string;
+  description: string;
+  controls: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="min-w-0 rounded-2xl border border-base-200 bg-base-100 p-5 shadow-sm sm:p-6">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h2 className="text-base font-semibold text-base-content">{title}</h2>
+          <p className="mt-0.5 text-xs text-base-content/60">{description}</p>
+        </div>
+        {controls}
+      </div>
+      <div className="mt-6 min-h-64">{children}</div>
+    </section>
+  );
+}
+
+function MonthlyTrend({
+  revenue,
+  expenses,
+  year,
+}: {
+  revenue: RevenueReport;
+  expenses: ExpensesReport;
+  year: number;
+}) {
+  const current = new Date();
+  const lastMonth = year === current.getFullYear() ? current.getMonth() : 11;
+  const revenueByMonth = new Map(
+    (revenue.monthly ?? []).map((item) => [item.month, item.total]),
+  );
+  const expensesByMonth = new Map(
+    (expenses.monthly ?? []).map((item) => [item.month, item.total]),
+  );
+  const data = Array.from({ length: lastMonth + 1 }, (_, index) => {
+    const month = `${year}-${String(index + 1).padStart(2, "0")}`;
+    return {
+      month: monthLabel(month),
+      income: revenueByMonth.get(month) ?? 0,
+      expenses: expensesByMonth.get(month) ?? 0,
+    };
+  });
+  const hasActivity = data.some((item) => item.income > 0 || item.expenses > 0);
+
+  if (!hasActivity) {
+    return (
+      <div className="flex h-64 items-center justify-center text-center text-sm text-base-content/60">
+        No paid income or expenses recorded for {year}.
+      </div>
+    );
+  }
 
   return (
-    <QueryCompLayout query={query}>
-      {(balanceData) => {
-        const total = balanceData?.totalBalance ?? 0;
-        const incomeMonth = balanceData?.incomeThisMonth ?? 0;
-        const expenseMonth = balanceData?.expenseThisMonth ?? 0;
+    <div role="img" aria-label={`Monthly income and expense trend for ${year}`} className="h-64 w-full">
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart data={data} margin={{ top: 4, right: 8, left: -12, bottom: 0 }}>
+          <CartesianGrid stroke="var(--color-base-300)" strokeDasharray="3 3" vertical={false} />
+          <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--color-base-content)" }} />
+          <YAxis axisLine={false} tickLine={false} tickFormatter={shortMoney} tick={{ fontSize: 11, fill: "var(--color-base-content)" }} width={62} />
+          <Tooltip formatter={(value, name) => [money(Number(value) || 0), name === "income" ? "Income" : "Expenses"]} />
+          <Area type="monotone" dataKey="income" stroke="var(--color-primary)" fill="var(--color-primary)" fillOpacity={0.14} strokeWidth={2} />
+          <Area type="monotone" dataKey="expenses" stroke="var(--color-error)" fill="var(--color-error)" fillOpacity={0.08} strokeWidth={2} />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
 
-        const balanceDetails = [
-          {
-            label: "Income Today",
-            value: balanceData?.incomeToday ?? 0,
-            type: "income",
-            icon: TrendingUp,
-          },
-          {
-            label: "Expense Today",
-            value: balanceData?.expenseToday ?? 0,
-            type: "expense",
-            icon: TrendingDown,
-          },
-          {
-            label: "Income This Month",
-            value: incomeMonth,
-            type: "income",
-            icon: TrendingUp,
-          },
-          {
-            label: "Expense This Month",
-            value: expenseMonth,
-            type: "expense",
-            icon: TrendingDown,
-          },
-        ];
+function CategoryPerformance({
+  report,
+  kind,
+}: {
+  report: RevenueReport | ExpensesReport;
+  kind: "income" | "expenses";
+}) {
+  const data = (report.byCategory ?? [])
+    .filter((category) => category.total > 0)
+    .sort((a, b) => b.total - a.total)
+    .slice(0, 5)
+    .map((category) => ({
+      name: category.name || "Uncategorized",
+      total: category.total,
+    }))
+    .reverse();
 
-        const chartData = [
-          {
-            name: "Income",
-            value: incomeMonth > 0 ? incomeMonth : 1,
-            color: "#007047",
-            badge: "badge-primary",
-            actual: incomeMonth,
-          },
-          {
-            name: "Expense",
-            value: expenseMonth > 0 ? expenseMonth : incomeMonth > 0 ? 0 : 1,
-            color: "#ef4444",
-            badge: "badge-error",
-            actual: expenseMonth,
-          },
-        ];
+  if (data.length === 0) {
+    return (
+      <div className="flex h-64 items-center justify-center text-center text-sm text-base-content/60">
+        No {kind} categories recorded for this month.
+      </div>
+    );
+  }
 
-        const hasActivity = incomeMonth > 0 || expenseMonth > 0;
+  return (
+    <div role="img" aria-label={`Top five ${kind} categories`} className="h-64 w-full">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={data} layout="vertical" margin={{ top: 0, right: 8, left: 0, bottom: 0 }}>
+          <CartesianGrid stroke="var(--color-base-300)" strokeDasharray="3 3" horizontal={false} />
+          <XAxis type="number" axisLine={false} tickLine={false} tickFormatter={shortMoney} tick={{ fontSize: 11, fill: "var(--color-base-content)" }} />
+          <YAxis type="category" dataKey="name" axisLine={false} tickLine={false} width={100} tick={{ fontSize: 11, fill: "var(--color-base-content)" }} />
+          <Tooltip formatter={(value) => money(Number(value) || 0)} />
+          <Bar dataKey="total" fill={kind === "income" ? "var(--color-primary)" : "var(--color-error)"} radius={[0, 4, 4, 0]} maxBarSize={32} />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
 
-        return (
-          <div className="grid md:grid-cols-2 gap-6 ">
-            <SimpleContainer fade title="Income vs Expense (This Month)">
-              <div className="bg-base-100 border border-base-200 rounded-b-box p-6 flex flex-col items-center justify-center min-h-[360px] relative">
-                <div className="absolute top-4 left-4 flex gap-2">
-                  <span className="badge badge-soft badge-primary text-xs">
-                    Income: ₦{incomeMonth.toLocaleString()}
-                  </span>
-                  <span className="badge badge-soft badge-error text-xs">
-                    Expense: ₦{expenseMonth.toLocaleString()}
-                  </span>
-                </div>
-                {hasActivity ? (
-                  <div className="w-full h-72  ">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={chartData}
-                          dataKey="value"
-                          nameKey="name"
-                          cx="50%"
-                          cy="50%"
-                          outerRadius={100}
-                          innerRadius={60}
-                          paddingAngle={4}
-                        >
-                          {chartData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                          ))}
-                        </Pie>
-                        <Tooltip
-                          formatter={(_value: any, name: any, item: any) => [
-                            `₦${(item?.payload?.actual ?? 0).toLocaleString()}`,
-                            name,
-                          ]}
-                          contentStyle={{
-                            backgroundColor: "var(--color-base-100)",
-                            borderColor: "var(--color-base-300)",
-                            borderRadius: "0.5rem",
-                            color: "var(--color-base-content)",
-                          }}
-                        />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
-                ) : (
-                  <div className="text-center py-12 space-y-2">
-                    <div className="p-3 bg-base-200 rounded-full w-fit mx-auto text-base-content/40">
-                      <NairaIcon className="size-8" />
-                    </div>
-                    <p className="text-sm font-semibold text-base-content/70">
-                      No financial activity recorded this month
-                    </p>
-                    <p className="text-xs text-base-content/50">
-                      Income and expenses recorded this month will appear here.
-                    </p>
-                  </div>
-                )}
-              </div>
-            </SimpleContainer>
+export default function TenantMonthly() {
+  const today = new Date();
+  const [year, setYear] = useState(today.getFullYear());
+  const [month, setMonth] = useState(
+    `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}`,
+  );
+  const [categoryKind, setCategoryKind] = useState<"income" | "expenses">("income");
+  const yearlyRevenue = useRevenueReport({ year });
+  const yearlyExpenses = useExpensesReport({ year });
+  const monthlyRevenue = useRevenueReport({ month });
+  const monthlyExpenses = useExpensesReport({ month });
+  const monthName = new Date(`${month}-01T00:00:00`).toLocaleDateString("en-NG", {
+    month: "long",
+    year: "numeric",
+  });
 
-            <SimpleContainer fade title="Business Cash Flow & Balance">
-              <div className="bg-base-100 border border-base-200 rounded-b-box p-6 flex flex-col justify-between min-h-[360px]">
-                <div className="text-center py-4">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-base-content/60">
-                    Total Operating Balance
-                  </span>
-                  <h2 className="text-4xl sm:text-5xl font-semibold mt-1 text-primary">
-                    ₦
-                    {total.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
-                  </h2>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
-                  {balanceDetails.map((item, index) => {
-                    const Icon = item.icon;
-                    return (
-                      <div
-                        key={index}
-                        className="flex flex-col p-4 bg-base-200/50 rounded-xl border border-base-200 hover:border-base-300 transition-colors"
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs text-base-content/60 font-medium">
-                            {item.label}
-                          </span>
-                          <Icon
-                            className={`size-4 ${
-                              item.type === "income"
-                                ? "text-success"
-                                : "text-error"
-                            }`}
-                          />
-                        </div>
-                        <span
-                          className={`text-xl font-semibold mt-2 ${
-                            item.type === "income"
-                              ? "text-success"
-                              : "text-error"
-                          }`}
-                        >
-                          ₦
-                          {item.value.toLocaleString(undefined, {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </SimpleContainer>
+  return (
+    <div className="grid gap-5 xl:grid-cols-2">
+      <ChartCard
+        title="Monthly cash flow trend"
+        description={`Paid income and expenses in ${year}`}
+        controls={
+          <div className="flex items-center gap-3">
+            <span className="hidden items-center gap-1.5 text-xs text-base-content/70 sm:inline-flex">
+              <span className="size-2 rounded-full bg-primary" /> Income
+              <span className="ml-2 size-2 rounded-full bg-error" /> Expenses
+            </span>
+            <select
+              aria-label="Trend year"
+              className="select select-bordered select-sm w-24"
+              value={year}
+              onChange={(event) => setYear(Number(event.target.value))}
+            >
+              {Array.from({ length: 5 }, (_, index) => today.getFullYear() - index).map((option) => (
+                <option key={option} value={option}>{option}</option>
+              ))}
+            </select>
           </div>
-        );
-      }}
-    </QueryCompLayout>
+        }
+      >
+        <QueryCompLayout query={yearlyRevenue}>
+          {(revenue) => (
+            <QueryCompLayout query={yearlyExpenses}>
+              {(expenses) => <MonthlyTrend revenue={revenue} expenses={expenses} year={year} />}
+            </QueryCompLayout>
+          )}
+        </QueryCompLayout>
+      </ChartCard>
+
+      <ChartCard
+        title="Category performance"
+        description={`Top 5 paid ${categoryKind} categories · ${monthName}`}
+        controls={
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="join" aria-label="Category report">
+              <button type="button" aria-pressed={categoryKind === "income"} className={`btn btn-sm join-item ${categoryKind === "income" ? "btn-primary" : "btn-ghost"}`} onClick={() => setCategoryKind("income")}>Income</button>
+              <button type="button" aria-pressed={categoryKind === "expenses"} className={`btn btn-sm join-item ${categoryKind === "expenses" ? "btn-primary" : "btn-ghost"}`} onClick={() => setCategoryKind("expenses")}>Expenses</button>
+            </div>
+            <input
+              type="month"
+              aria-label="Category report month"
+              className="input input-bordered input-sm w-36"
+              value={month}
+              max={`${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}`}
+              onChange={(event) => {
+                if (event.target.value) setMonth(event.target.value);
+              }}
+            />
+          </div>
+        }
+      >
+        <QueryCompLayout query={categoryKind === "income" ? monthlyRevenue : monthlyExpenses}>
+          {(report) => <CategoryPerformance report={report} kind={categoryKind} />}
+        </QueryCompLayout>
+      </ChartCard>
+    </div>
   );
 }

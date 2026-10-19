@@ -105,12 +105,15 @@ Paid income minus Paid expenses; invoice cash is separate. Advanced Reports feat
 
 `GET /v1/reports/revenue?year=2657.0056544389954&from=1956-01-31&to=1956-01-31`
 
+For a single month, use `GET /v1/reports/revenue?month=2026-09`.
+
 Not combined with invoice cash. Advanced Reports feature required.
 
 **Query Parameters**
 
 | Parameter | Type / Example | Description |
 | :--- | :--- | :--- |
+| `month` | `2026-09` | Return the report for one calendar month. |
 | `year` | `2657.0056544389954` | Current UTC year by default. Cannot be combined with from/to. |
 | `from` | `1956-01-31` | Inclusive date; from/to must both be supplied |
 | `to` | `1956-01-31` | Filter / pagination param |
@@ -163,12 +166,15 @@ Not combined with invoice cash. Advanced Reports feature required.
 
 `GET /v1/reports/expenses?year=2657.0056544389954&from=1956-01-31&to=1956-01-31`
 
+For a single month, use `GET /v1/reports/expenses?month=2026-09`.
+
 Advanced Reports feature required.
 
 **Query Parameters**
 
 | Parameter | Type / Example | Description |
 | :--- | :--- | :--- |
+| `month` | `2026-09` | Return the report for one calendar month. |
 | `year` | `2657.0056544389954` | Current UTC year by default. Cannot be combined with from/to. |
 | `from` | `1956-01-31` | Inclusive date; from/to must both be supplied |
 | `to` | `1956-01-31` | Filter / pagination param |
