@@ -258,8 +258,8 @@ function RouteComponent() {
           className="drawer-overlay"
         ></label>
         <div className="min-h-full w-3xs bg-base-100 text-base-content">
-          <div className="font-semibold h-18 text-lg flex  items-center px-4 border-b border-base-300/40">
-            CRM
+          <div className="h-20 p-2 ">
+            <img src="/logo.jpeg" className="size-full object-contain " />
           </div>
           <ul className="menu  w-full space-y-2 ">
             {nav_links.map((link) => {
