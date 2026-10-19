@@ -15,6 +15,8 @@ import CustomTable from "@/components/tables/CustomTable";
 import type { Actions } from "@/components/tables/pop-up";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
 import PageLoader from "@/components/layout/PageLoader";
+import SimpleInput from "@/components/inputs/SimpleInput";
+import SimpleTextArea from "@/components/inputs/SimpleTextArea";
 import PriceInput from "@/components/inputs/PriceInput";
 import {
   useServices,
@@ -333,19 +335,15 @@ function RouteComponent() {
       {/* Add Service Modal */}
       <Modal ref={addModalRef} title="Create New Service">
         <form onSubmit={handleSaveAdd} className="space-y-4">
-          <div>
-            <label className="text-xs font-semibold text-base-content/70">
-              Service Name *
-            </label>
-            <input
-              type="text"
-              required
-              className="input input-bordered w-full mt-1"
-              placeholder="e.g. Website Maintenance & Support"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-            />
-          </div>
+          <SimpleInput
+            label="Service Name *"
+            required
+            placeholder="e.g. Website Maintenance & Support"
+            value={form.name}
+            onChange={(e) =>
+              setForm((current) => ({ ...current, name: e.target.value }))
+            }
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <PriceInput
@@ -353,9 +351,13 @@ function RouteComponent() {
               required
               placeholder="0.00"
               value={form.price}
-              onChange={(e) =>
-                setForm({ ...form, price: Number(e.target.value) })
-              }
+              onValueChange={(values, sourceInfo) => {
+                if (sourceInfo.source !== "event") return;
+                setForm((current) => ({
+                  ...current,
+                  price: values.floatValue ?? 0,
+                }));
+              }}
             />
             <div>
               <label className="text-xs font-semibold text-base-content/70">
@@ -365,7 +367,10 @@ function RouteComponent() {
                 className="select select-bordered w-full mt-1"
                 value={form.categoryId}
                 onChange={(e) =>
-                  setForm({ ...form, categoryId: e.target.value })
+                  setForm((current) => ({
+                    ...current,
+                    categoryId: e.target.value,
+                  }))
                 }
               >
                 <option value="">Select a category</option>
@@ -378,20 +383,18 @@ function RouteComponent() {
             </div>
           </div>
 
-          <div>
-            <label className="text-xs font-semibold text-base-content/70">
-              Description
-            </label>
-            <textarea
-              className="textarea textarea-bordered w-full mt-1"
-              rows={3}
-              placeholder="Detail what is included in this service..."
-              value={form.description}
-              onChange={(e) =>
-                setForm({ ...form, description: e.target.value })
-              }
-            />
-          </div>
+          <SimpleTextArea
+            label="Description"
+            rows={3}
+            placeholder="Detail what is included in this service..."
+            value={form.description}
+            onChange={(e) =>
+              setForm((current) => ({
+                ...current,
+                description: e.target.value,
+              }))
+            }
+          />
 
           <div className="modal-action">
             <button
@@ -415,27 +418,27 @@ function RouteComponent() {
       {/* Edit Service Modal */}
       <Modal ref={editModalRef} title="Edit Service">
         <form onSubmit={handleSaveEdit} className="space-y-4">
-          <div>
-            <label className="text-xs font-semibold text-base-content/70">
-              Service Name *
-            </label>
-            <input
-              type="text"
-              required
-              className="input input-bordered w-full mt-1"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-            />
-          </div>
+          <SimpleInput
+            label="Service Name *"
+            required
+            value={form.name}
+            onChange={(e) =>
+              setForm((current) => ({ ...current, name: e.target.value }))
+            }
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <PriceInput
               label="Rate / Price (₦) *"
               required
               value={form.price}
-              onChange={(e) =>
-                setForm({ ...form, price: Number(e.target.value) })
-              }
+              onValueChange={(values, sourceInfo) => {
+                if (sourceInfo.source !== "event") return;
+                setForm((current) => ({
+                  ...current,
+                  price: values.floatValue ?? 0,
+                }));
+              }}
             />
             <div>
               <label className="text-xs font-semibold text-base-content/70">
@@ -445,7 +448,10 @@ function RouteComponent() {
                 className="select select-bordered w-full mt-1"
                 value={form.categoryId}
                 onChange={(e) =>
-                  setForm({ ...form, categoryId: e.target.value })
+                  setForm((current) => ({
+                    ...current,
+                    categoryId: e.target.value,
+                  }))
                 }
               >
                 <option value="">Select a category</option>
@@ -458,19 +464,17 @@ function RouteComponent() {
             </div>
           </div>
 
-          <div>
-            <label className="text-xs font-semibold text-base-content/70">
-              Description
-            </label>
-            <textarea
-              className="textarea textarea-bordered w-full mt-1"
-              rows={3}
-              value={form.description}
-              onChange={(e) =>
-                setForm({ ...form, description: e.target.value })
-              }
-            />
-          </div>
+          <SimpleTextArea
+            label="Description"
+            rows={3}
+            value={form.description}
+            onChange={(e) =>
+              setForm((current) => ({
+                ...current,
+                description: e.target.value,
+              }))
+            }
+          />
 
           <div className="modal-action">
             <button
