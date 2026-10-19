@@ -60,6 +60,7 @@ const PriceInput = forwardRef<HTMLInputElement, PriceInputProps>(
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (!onChange) return;
       if (lastValuesRef.current) {
         const raw = lastValuesRef.current.value;
         const num = lastValuesRef.current.floatValue;
