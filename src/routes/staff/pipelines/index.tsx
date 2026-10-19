@@ -1,8 +1,10 @@
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { FormProvider, useForm } from "react-hook-form";
 import { ArrowDown, ArrowUp, Plus, Pencil, Trash2 } from "lucide-react";
 import PageHeader from "@/components/Headers/PageHeader";
+import PageLoader from "@/components/layout/PageLoader";
+import QueryCompLayout from "@/components/layout/QueryCompLayout";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
 import SimpleInput from "@/components/inputs/SimpleInput";
 import SimpleTextArea from "@/components/inputs/SimpleTextArea";
@@ -50,13 +52,6 @@ function PipelinesPage() {
       ? selectedId
       : pipelines[0]?.id;
   const pipelineQuery = usePipeline(activeId);
-  const activePipeline = useMemo(
-    () => pipelineQuery.data || pipelines.find((item) => item.id === activeId),
-    [pipelineQuery.data, pipelines, activeId],
-  );
-  const stages = [...(activePipeline?.stages || [])].sort(
-    (a, b) => (a.order ?? 0) - (b.order ?? 0),
-  );
 
   const createPipeline = useCreatePipeline();
   const updatePipeline = useUpdatePipeline();
@@ -69,7 +64,9 @@ function PipelinesPage() {
   const pipelineModal = useRef<ModalHandle>(null);
   const stageModal = useRef<ModalHandle>(null);
   const [editingPipeline, setEditingPipeline] = useState<Pipeline | null>(null);
-  const pipelineForm = useForm<PipelineFormValues>({ defaultValues: emptyPipeline });
+  const pipelineForm = useForm<PipelineFormValues>({
+    defaultValues: emptyPipeline,
+  });
   const [editingStage, setEditingStage] = useState<PipelineStage | null>(null);
   const stageForm = useForm<StageFormValues>({ defaultValues: emptyStage });
 
@@ -110,14 +107,10 @@ function PipelinesPage() {
     }
   };
 
-  const removePipeline = async () => {
-    if (
-      !activePipeline ||
-      !window.confirm(`Delete pipeline "${activePipeline.name}"?`)
-    )
-      return;
+  const removePipeline = async (pipeline: Pipeline) => {
+    if (!window.confirm(`Delete pipeline "${pipeline.name}"?`)) return;
     try {
-      await deletePipeline.mutateAsync(activePipeline.id);
+      await deletePipeline.mutateAsync(pipeline.id);
       setSelectedId("");
       toast.success("Pipeline deleted.");
     } catch (error) {
@@ -182,7 +175,11 @@ function PipelinesPage() {
     }
   };
 
-  const moveStage = async (index: number, direction: -1 | 1) => {
+  const moveStage = async (
+    stages: PipelineStage[],
+    index: number,
+    direction: -1 | 1,
+  ) => {
     if (
       !activeId ||
       index + direction < 0 ||
@@ -216,185 +213,187 @@ function PipelinesPage() {
         </Link>
       </PageHeader>
 
-      <section className="bg-base-100 rounded-xl border border-base-200 p-5 space-y-5">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <label className="form-control min-w-52 flex-1 max-w-sm">
-            <span className="label-text font-medium mb-1">Pipeline</span>
-            <select
-              className="select select-bordered w-full"
-              value={activeId || ""}
-              onChange={(event) => setSelectedId(event.target.value)}
-              disabled={pipelinesQuery.isLoading}
-            >
-              {!pipelines.length && <option value="">No pipelines</option>}
-              {pipelines.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={() => openPipeline()}
-          >
-            <Plus className="size-4" /> New pipeline
-          </button>
-        </div>
-        {pipelinesQuery.isError && (
-          <p role="alert" className="text-error">
-            Could not load pipelines.{" "}
-            <button
-              type="button"
-              className="link"
-              onClick={() => pipelinesQuery.refetch()}
-            >
-              Retry
-            </button>
-          </p>
-        )}
-        {pipelinesQuery.isLoading && <p>Loading pipelines...</p>}
-        {!pipelinesQuery.isLoading &&
-          !pipelinesQuery.isError &&
-          !pipelines.length && (
-            <p className="text-base-content/70">
-              Create a pipeline to start organizing deals.
-            </p>
-          )}
-        {activePipeline && (
-          <div className="flex flex-wrap items-start justify-between gap-3 border-t border-base-200 pt-5">
-            <div>
-              <h2 className="text-lg font-semibold">{activePipeline.name}</h2>
-              <p className="text-sm text-base-content/70">
-                {activePipeline.description || "No description"}
-              </p>
-              <span
-                className={`badge badge-sm mt-2 ${activePipeline.isActive === false ? "badge-ghost" : "badge-success"}`}
-              >
-                {activePipeline.isActive === false ? "Inactive" : "Active"}
-              </span>
-            </div>
-            <div className="flex gap-2">
-              <button
-                type="button"
-                className="btn btn-sm btn-ghost"
-                onClick={() => openPipeline(activePipeline)}
-              >
-                <Pencil className="size-4" /> Edit
-              </button>
-              <button
-                type="button"
-                className="btn btn-sm btn-ghost text-error"
-                onClick={removePipeline}
-                disabled={deletePipeline.isPending}
-              >
-                <Trash2 className="size-4" /> Delete
-              </button>
-            </div>
-          </div>
-        )}
-      </section>
-
-      {activePipeline && (
-        <section className="bg-base-100 rounded-xl border border-base-200 p-5 space-y-4">
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <h2 className="text-lg font-semibold">Stages</h2>
-              <p className="text-sm text-base-content/70">
-                Their order sets the board column order.
-              </p>
-            </div>
-            <button
-              type="button"
-              className="btn btn-sm btn-primary"
-              onClick={() => openStage()}
-            >
-              <Plus className="size-4" /> Add stage
-            </button>
-          </div>
-          {pipelineQuery.isError && (
-            <p role="alert" className="text-error">
-              Could not load pipeline details.{" "}
-              <button
-                type="button"
-                className="link"
-                onClick={() => pipelineQuery.refetch()}
-              >
-                Retry
-              </button>
-            </p>
-          )}
-          {pipelineQuery.isLoading ? (
-            <p>Loading stages...</p>
-          ) : !stages.length ? (
-            <p className="text-base-content/70 py-4">
-              No stages yet. Add the first stage to make this pipeline usable on
-              the deals board.
-            </p>
-          ) : (
-            <ol className="divide-y divide-base-200">
-              {stages.map((stage, index) => (
-                <li
-                  key={stage.id}
-                  className="py-3 flex flex-wrap items-center justify-between gap-3"
+      <PageLoader query={pipelinesQuery} loadingText="Loading pipelines...">
+        {(loadedPipelines) => (
+          <>
+            <section className="bg-base-100 rounded-xl border border-base-200 p-5 space-y-5">
+              <div className="flex flex-wrap items-end justify-between gap-3">
+                <label className="form-control min-w-52 flex-1 max-w-sm">
+                  <span className="label-text font-medium mb-1">Pipeline</span>
+                  <select
+                    className="select select-bordered w-full"
+                    value={activeId || ""}
+                    onChange={(event) => setSelectedId(event.target.value)}
+                  >
+                    {!loadedPipelines.length && (
+                      <option value="">No pipelines</option>
+                    )}
+                    {loadedPipelines.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => openPipeline()}
                 >
-                  <div className="flex items-center gap-3 min-w-0">
-                    <span
-                      className="size-3 rounded-full shrink-0"
-                      style={{ backgroundColor: stage.color || "#007047" }}
-                    />
-                    <span className="font-medium truncate">{stage.name}</span>
-                    {stage.isWon && (
-                      <span className="badge badge-success badge-sm">Won</span>
-                    )}
-                    {stage.isLost && (
-                      <span className="badge badge-error badge-sm">Lost</span>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <button
-                      type="button"
-                      className="btn btn-ghost btn-sm btn-square"
-                      aria-label={`Move ${stage.name} earlier`}
-                      disabled={index === 0 || reorderStages.isPending}
-                      onClick={() => moveStage(index, -1)}
-                    >
-                      <ArrowUp className="size-4" />
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-ghost btn-sm btn-square"
-                      aria-label={`Move ${stage.name} later`}
-                      disabled={
-                        index === stages.length - 1 || reorderStages.isPending
-                      }
-                      onClick={() => moveStage(index, 1)}
-                    >
-                      <ArrowDown className="size-4" />
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-ghost btn-sm"
-                      onClick={() => openStage(stage)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-ghost btn-sm text-error"
-                      disabled={deleteStage.isPending}
-                      onClick={() => removeStage(stage)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          )}
-        </section>
-      )}
+                  <Plus className="size-4" /> New pipeline
+                </button>
+              </div>
+              {!loadedPipelines.length && (
+                <p className="text-base-content/70">
+                  Create a pipeline to start organizing deals.
+                </p>
+              )}
+            </section>
+
+            {activeId && (
+              <QueryCompLayout query={pipelineQuery}>
+                {(pipeline) => {
+                  const stages = [...(pipeline.stages || [])].sort(
+                    (a, b) => (a.order ?? 0) - (b.order ?? 0),
+                  );
+                  return (
+                    <>
+                      <section className="bg-base-100 rounded-xl border border-base-200 p-5 flex flex-wrap items-start justify-between gap-3">
+                        <div>
+                          <h2 className="text-lg font-semibold">
+                            {pipeline.name}
+                          </h2>
+                          <p className="text-sm text-base-content/70">
+                            {pipeline.description || "No description"}
+                          </p>
+                          <span
+                            className={`badge badge-sm mt-2 ${pipeline.isActive === false ? "badge-ghost" : "badge-success"}`}
+                          >
+                            {pipeline.isActive === false
+                              ? "Inactive"
+                              : "Active"}
+                          </span>
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-ghost"
+                            onClick={() => openPipeline(pipeline)}
+                          >
+                            <Pencil className="size-4" /> Edit
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-ghost text-error"
+                            onClick={() => removePipeline(pipeline)}
+                            disabled={deletePipeline.isPending}
+                          >
+                            <Trash2 className="size-4" /> Delete
+                          </button>
+                        </div>
+                      </section>
+                      <section className="bg-base-100 rounded-xl border border-base-200 p-5 space-y-4">
+                        <div className="flex items-center justify-between gap-3">
+                          <div>
+                            <h2 className="text-lg font-semibold">Stages</h2>
+                            <p className="text-sm text-base-content/70">
+                              Their order sets the board column order.
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-primary"
+                            onClick={() => openStage()}
+                          >
+                            <Plus className="size-4" /> Add stage
+                          </button>
+                        </div>
+                        {!stages.length ? (
+                          <p className="text-base-content/70 py-4">
+                            No stages yet. Add the first stage to make this
+                            pipeline usable on the deals board.
+                          </p>
+                        ) : (
+                          <ol className="divide-y divide-base-200">
+                            {stages.map((stage, index) => (
+                              <li
+                                key={stage.id}
+                                className="py-3 flex flex-wrap items-center justify-between gap-3"
+                              >
+                                <div className="flex items-center gap-3 min-w-0">
+                                  <span
+                                    className="size-3 rounded-full shrink-0"
+                                    style={{
+                                      backgroundColor: stage.color || "#007047",
+                                    }}
+                                  />
+                                  <span className="font-medium truncate">
+                                    {stage.name}
+                                  </span>
+                                  {stage.isWon && (
+                                    <span className="badge badge-success badge-sm">
+                                      Won
+                                    </span>
+                                  )}
+                                  {stage.isLost && (
+                                    <span className="badge badge-error badge-sm">
+                                      Lost
+                                    </span>
+                                  )}
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <button
+                                    type="button"
+                                    className="btn btn-ghost btn-sm btn-square"
+                                    aria-label={`Move ${stage.name} earlier`}
+                                    disabled={
+                                      index === 0 || reorderStages.isPending
+                                    }
+                                    onClick={() => moveStage(stages, index, -1)}
+                                  >
+                                    <ArrowUp className="size-4" />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="btn btn-ghost btn-sm btn-square"
+                                    aria-label={`Move ${stage.name} later`}
+                                    disabled={
+                                      index === stages.length - 1 ||
+                                      reorderStages.isPending
+                                    }
+                                    onClick={() => moveStage(stages, index, 1)}
+                                  >
+                                    <ArrowDown className="size-4" />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="btn btn-ghost btn-sm"
+                                    onClick={() => openStage(stage)}
+                                  >
+                                    Edit
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="btn btn-ghost btn-sm text-error"
+                                    disabled={deleteStage.isPending}
+                                    onClick={() => removeStage(stage)}
+                                  >
+                                    Delete
+                                  </button>
+                                </div>
+                              </li>
+                            ))}
+                          </ol>
+                        )}
+                      </section>
+                    </>
+                  );
+                }}
+              </QueryCompLayout>
+            )}
+          </>
+        )}
+      </PageLoader>
 
       <Modal
         ref={pipelineModal}
@@ -408,7 +407,9 @@ function PipelinesPage() {
             <SimpleInput
               label="Name"
               required
-              {...pipelineForm.register("name", { required: "Name is required" })}
+              {...pipelineForm.register("name", {
+                required: "Name is required",
+              })}
             />
             <SimpleTextArea
               label="Description"
@@ -460,7 +461,8 @@ function PipelinesPage() {
                 className="checkbox checkbox-primary"
                 {...stageForm.register("isWon", {
                   onChange: (event) => {
-                    if (event.target.checked) stageForm.setValue("isLost", false);
+                    if (event.target.checked)
+                      stageForm.setValue("isLost", false);
                   },
                 })}
               />{" "}
@@ -472,7 +474,8 @@ function PipelinesPage() {
                 className="checkbox checkbox-primary"
                 {...stageForm.register("isLost", {
                   onChange: (event) => {
-                    if (event.target.checked) stageForm.setValue("isWon", false);
+                    if (event.target.checked)
+                      stageForm.setValue("isWon", false);
                   },
                 })}
               />{" "}
