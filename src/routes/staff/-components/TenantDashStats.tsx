@@ -3,10 +3,7 @@ import {
   ArrowRight,
   Clock,
   FileText,
-  Package,
   ReceiptText,
-  ShoppingBag,
-  Users,
   UsersRound,
   Wallet,
 } from "lucide-react";
@@ -68,24 +65,24 @@ export default function TenantDashStats() {
             to: "/staff/contacts/customers",
             accent: "bg-info/10 text-info",
           },
-          {
-            title: "Products",
-            value: formatNumber(stats.totalProducts),
-            change: stats.totalProductsChange,
-            linkLabel: "View products",
-            icon: Package,
-            to: "/staff/products",
-            accent: "bg-primary/10 text-primary",
-          },
-          {
-            title: "Services",
-            value: formatNumber(stats.totalServices),
-            change: stats.totalServicesChange,
-            linkLabel: "View services",
-            icon: ShoppingBag,
-            to: "/staff/products/service",
-            accent: "bg-info/10 text-info",
-          },
+          // {
+          //   title: "Products",
+          //   value: formatNumber(stats.totalProducts),
+          //   change: stats.totalProductsChange,
+          //   linkLabel: "View products",
+          //   icon: Package,
+          //   to: "/staff/products",
+          //   accent: "bg-primary/10 text-primary",
+          // },
+          // {
+          //   title: "Services",
+          //   value: formatNumber(stats.totalServices),
+          //   change: stats.totalServicesChange,
+          //   linkLabel: "View services",
+          //   icon: ShoppingBag,
+          //   to: "/staff/products/service",
+          //   accent: "bg-info/10 text-info",
+          // },
           {
             title: "Pending Orders",
             value: formatNumber(stats.pendingOrders),
@@ -104,18 +101,18 @@ export default function TenantDashStats() {
             to: "/staff/accounts/Invoices",
             accent: "bg-primary/10 text-primary",
           },
-          {
-            title: "Team Members",
-            value: formatNumber(stats.totalStaffs),
-            linkLabel: "View team",
-            icon: Users,
-            to: "/staff/users",
-            accent: "bg-info/10 text-info",
-          },
+          // {
+          //   title: "Team Members",
+          //   value: formatNumber(stats.totalStaffs),
+          //   linkLabel: "View team",
+          //   icon: Users,
+          //   to: "/staff/users",
+          //   accent: "bg-info/10 text-info",
+          // },
         ];
 
         return (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {cards.map((card) => {
               const Icon = card.icon;
               return (
@@ -129,7 +126,9 @@ export default function TenantDashStats() {
                       <div className={`rounded-xl p-2.5 ${card.accent}`}>
                         <Icon className="size-5" aria-hidden="true" />
                       </div>
-                      {card.change !== undefined && <Change value={card.change} />}
+                      {card.change !== undefined && (
+                        <Change value={card.change} />
+                      )}
                     </div>
                     <div>
                       <p className="text-2xl font-semibold tabular-nums text-base-content">
@@ -139,9 +138,11 @@ export default function TenantDashStats() {
                         {card.title}
                       </p>
                     </div>
-                    <span className="inline-flex items-center gap-1 text-xs font-medium text-primary">
+                    <span
+                      className={`inline-flex items-center gap-1 text-xs font-medium ${card.accent} !bg-transparent`}
+                    >
                       {card.linkLabel}
-                      <ArrowRight className="size-3" aria-hidden="true" />
+                      <ArrowRight className="size-0" aria-hidden="true" />
                     </span>
                   </div>
                 </Link>

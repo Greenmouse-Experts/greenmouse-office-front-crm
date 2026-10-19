@@ -1,5 +1,10 @@
 import { useState, useMemo, useEffect } from "react";
-import { createFileRoute, useParams, useNavigate, Link } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  useParams,
+  useNavigate,
+  Link,
+} from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm, FormProvider } from "react-hook-form";
 import { Country, State } from "country-state-city";
@@ -10,10 +15,17 @@ import PageHeader from "@/components/Headers/PageHeader";
 import PageLoader from "@/components/layout/PageLoader";
 import FormWrapper from "@/components/forms/FormWrapper";
 import LocalSelect from "@/components/inputs/LocalSelect";
-import { useContact, useUpdateContact, useCompanies, type Contact } from "@/api/crmApi";
+import {
+  useContact,
+  useUpdateContact,
+  useCompanies,
+  type Contact,
+} from "@/api/crmApi";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/staff/contacts/customers/details/$id/edit")({
+export const Route = createFileRoute(
+  "/staff/contacts/customers/details/$id/edit",
+)({
   component: RouteComponent,
 });
 
@@ -46,7 +58,9 @@ function RouteComponent() {
   const [selectedCountryCode, setSelectedCountryCode] = useState<string>("NG");
 
   const availableStates = useMemo(() => {
-    return selectedCountryCode ? State.getStatesOfCountry(selectedCountryCode) : [];
+    return selectedCountryCode
+      ? State.getStatesOfCountry(selectedCountryCode)
+      : [];
   }, [selectedCountryCode]);
 
   const methods = useForm<CustomerFormData>({
@@ -177,7 +191,10 @@ function RouteComponent() {
         {(_contact: Contact) => (
           <section className="p-6 bg-base-100 shadow-sm border border-base-200 rounded-2xl">
             <FormProvider {...methods}>
-              <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-6">
+              <form
+                onSubmit={methods.handleSubmit(onSubmit)}
+                className="space-y-6"
+              >
                 <div className="grid md:grid-cols-2 gap-6">
                   {/* Contact Identity */}
                   <FormWrapper title="Customer Identity">
@@ -204,7 +221,8 @@ function RouteComponent() {
                       {...methods.register("email", {
                         required: "Email is required",
                         pattern: {
-                          value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                          value:
+                            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
                           message: "Invalid email address",
                         },
                       })}
@@ -217,10 +235,12 @@ function RouteComponent() {
                         required: "Phone number is required",
                       })}
                     />
-                    <LocalSelect label="Customer Type" {...methods.register("type")}>
+                    <LocalSelect
+                      label="Customer Type"
+                      {...methods.register("type")}
+                    >
                       <option value="individual">Individual</option>
-                      <option value="business">Business / Commercial</option>
-                      <option value="partner">Partner</option>
+                      <option value="company">Company </option>
                     </LocalSelect>
                   </FormWrapper>
 
@@ -238,13 +258,19 @@ function RouteComponent() {
                           </option>
                         ))}
                       </LocalSelect>
-                      <LocalSelect label="Status" {...methods.register("status")}>
+                      <LocalSelect
+                        label="Status"
+                        {...methods.register("status")}
+                      >
                         <option value="active">Active Customer</option>
                         <option value="customer">Customer</option>
                         <option value="lead">Lead / Prospect</option>
                         <option value="inactive">Inactive</option>
                       </LocalSelect>
-                      <LocalSelect label="Lead Source" {...methods.register("source")}>
+                      <LocalSelect
+                        label="Lead Source"
+                        {...methods.register("source")}
+                      >
                         <option value="Referral">Referral</option>
                         <option value="Website">Website Form</option>
                         <option value="Organic Search">Organic Search</option>
@@ -334,7 +360,9 @@ function RouteComponent() {
                     disabled={updateContact.isPending}
                   >
                     <UserCheck className="size-4" />
-                    {updateContact.isPending ? "Updating..." : "Update Customer"}
+                    {updateContact.isPending
+                      ? "Updating..."
+                      : "Update Customer"}
                   </ActionButton>
                 </div>
               </form>
