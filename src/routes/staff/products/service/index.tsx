@@ -45,10 +45,12 @@ function RouteComponent() {
   const addModalRef = useRef<ModalHandle>(null);
   const editModalRef = useRef<ModalHandle>(null);
   const detailsModalRef = useRef<ModalHandle>(null);
+  const deleteModalRef = useRef<ModalHandle>(null);
 
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(
     null,
   );
+  const [deletingService, setDeletingService] = useState<ServiceItem | null>(null);
   const [form, setForm] = useState({
     name: "",
     price: 0,
@@ -133,11 +135,13 @@ function RouteComponent() {
     }
   };
 
-  const handleDelete = async (service: ServiceItem) => {
-    if (!confirm(`Are you sure you want to delete "${service.name}"?`)) return;
+  const handleDelete = async () => {
+    if (!deletingService) return;
     try {
-      await deleteService.mutateAsync(service.id);
+      await deleteService.mutateAsync(deletingService.id);
       toast.success("Service deleted successfully");
+      deleteModalRef.current?.close();
+      setDeletingService(null);
     } catch (err: any) {
       toast.error(err?.response?.data?.message || "Failed to delete service");
     }
@@ -234,7 +238,10 @@ function RouteComponent() {
     {
       key: "delete",
       label: "Delete",
-      action: (item) => handleDelete(item),
+      action: (item) => {
+        setDeletingService(item);
+        deleteModalRef.current?.open();
+      },
     },
   ];
 
@@ -476,6 +483,23 @@ function RouteComponent() {
             }
           />
 
+          <div>
+            <label htmlFor="service-status" className="text-xs font-semibold text-base-content/70">
+              Status
+            </label>
+            <select
+              id="service-status"
+              className="select select-bordered mt-1 w-full"
+              value={form.isActive ? "active" : "inactive"}
+              onChange={(e) =>
+                setForm((current) => ({ ...current, isActive: e.target.value === "active" }))
+              }
+            >
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+
           <div className="modal-action">
             <button
               type="button"
@@ -493,6 +517,32 @@ function RouteComponent() {
             </button>
           </div>
         </form>
+      </Modal>
+
+      <Modal ref={deleteModalRef} title="Delete service">
+        <div className="space-y-4">
+          <p className="text-sm text-base-content/80">
+            Delete <strong>{deletingService?.name}</strong>? This action cannot be undone.
+          </p>
+          <div className="modal-action">
+            <button
+              type="button"
+              className="btn btn-ghost"
+              onClick={() => deleteModalRef.current?.close()}
+              disabled={deleteService.isPending}
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              className="btn btn-error"
+              onClick={handleDelete}
+              disabled={deleteService.isPending}
+            >
+              {deleteService.isPending ? "Deleting..." : "Delete service"}
+            </button>
+          </div>
+        </div>
       </Modal>
 
       {/* Details Modal */}
