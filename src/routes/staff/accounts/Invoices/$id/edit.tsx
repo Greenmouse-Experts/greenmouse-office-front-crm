@@ -1,9 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  createFileRoute,
-  useNavigate,
-  useParams,
-} from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm, FormProvider } from "react-hook-form";
 import SimpleInput from "@/components/inputs/SimpleInput";
 import PriceInput from "@/components/inputs/PriceInput";
@@ -47,7 +43,7 @@ const formatDateForInput = (dateStr?: string) => {
 
 function RouteComponent() {
   const navigate = useNavigate();
-  const { id } = useParams({ strict: false });
+  const { id } = Route.useParams();
   const query = useInvoice(id);
   const updateInvoice = useUpdateInvoice();
   const { data: contacts = [] } = useContacts();
@@ -157,7 +153,7 @@ function RouteComponent() {
         status: data.status,
       });
       toast.success("Invoice updated successfully!");
-      navigate({ to: `/tenant/accounts/Invoices/${id}` });
+      navigate({ to: "/staff/accounts/Invoices/$id", params: { id } });
     } catch (err: any) {
       const message = err.response?.data?.message;
       toast.error(
@@ -376,7 +372,10 @@ function RouteComponent() {
                     type="button"
                     className="btn btn-ghost"
                     onClick={() =>
-                      navigate({ to: `/tenant/accounts/Invoices/${id}` })
+                      navigate({
+                        to: "/staff/accounts/Invoices/$id",
+                        params: { id },
+                      })
                     }
                   >
                     Cancel

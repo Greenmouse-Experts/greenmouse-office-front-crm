@@ -189,7 +189,10 @@ function RouteComponent() {
         </span>
       ),
       action: (item: Invoice) => {
-        navigate({ to: `/tenant/accounts/Invoices/${item.id}` });
+        navigate({
+          to: "/staff/accounts/Invoices/$id",
+          params: { id: item.id },
+        });
       },
     },
     {
@@ -201,7 +204,10 @@ function RouteComponent() {
         </span>
       ),
       action: (item: Invoice) => {
-        navigate({ to: `/tenant/accounts/Invoices/${item.id}/edit` });
+        navigate({
+          to: "/staff/accounts/Invoices/$id/edit",
+          params: { id: item.id },
+        });
       },
     },
     {
