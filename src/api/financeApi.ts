@@ -396,12 +396,14 @@ export const useInvoice = (id?: string) => {
   });
 };
 
+export interface InvoiceStatusStats {
+  count: number;
+  total: number;
+}
+
 export interface InvoiceStatsData {
   totalInvoices: number;
-  paid: {
-    count: number;
-    total: number;
-  };
+  [status: string]: number | InvoiceStatusStats;
 }
 
 export const useInvoiceStats = () => {

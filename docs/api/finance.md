@@ -825,12 +825,14 @@ JPEG/PNG/PDF with a matching signature, maximum 5 MB. Replaced external files ar
 ```json
 {
   "totalInvoices": 1,
-  "paid": {
+  "sent": {
     "count": 1,
     "total": 15000
   }
 }
 ```
+
+Status keys such as `sent` and `paid` are present when returned by the API.
 
 ---
 

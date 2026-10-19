@@ -1,4 +1,4 @@
-import { useInvoiceStats } from "@/api/financeApi";
+import { useInvoiceStats, type InvoiceStatusStats } from "@/api/financeApi";
 import PageLoader from "@/components/layout/PageLoader";
 
 const formatAmount = (amount: number) =>
@@ -7,29 +7,40 @@ const formatAmount = (amount: number) =>
     maximumFractionDigits: 2,
   })}`;
 
+const isStatusStats = (value: unknown): value is InvoiceStatusStats =>
+  typeof value === "object" &&
+  value !== null &&
+  "count" in value &&
+  typeof value.count === "number" &&
+  "total" in value &&
+  typeof value.total === "number";
+
+const statusTitle = (status: string) =>
+  `${status.replace(/[_-]/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase())} Invoices`;
+
 export default function InvoicesStat() {
   const query = useInvoiceStats();
 
   return (
     <PageLoader query={query} loadingText="Loading invoice statistics...">
       {(stats) => {
-        const remaining = Math.max(0, stats.totalInvoices - stats.paid.count);
         const cards = [
           {
             title: "Total Invoices",
             value: stats.totalInvoices,
             description: "All invoices",
           },
-          {
-            title: "Paid Invoices",
-            value: stats.paid.count,
-            description: `Collected: ${formatAmount(stats.paid.total)}`,
-          },
-          {
-            title: "Other Invoices",
-            value: remaining,
-            description: "Invoices not marked paid",
-          },
+          ...Object.entries(stats).flatMap(([status, value]) =>
+            status !== "totalInvoices" && isStatusStats(value)
+              ? [
+                  {
+                    title: statusTitle(status),
+                    value: value.count,
+                    description: `${status === "paid" ? "Collected" : "Total"}: ${formatAmount(value.total)}`,
+                  },
+                ]
+              : [],
+          ),
         ];
 
         return (
