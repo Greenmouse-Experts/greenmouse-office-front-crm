@@ -26,6 +26,7 @@ import { Route as StaffReportsIndexRouteImport } from './routes/staff/reports/in
 import { Route as StaffProductsIndexRouteImport } from './routes/staff/products/index'
 import { Route as StaffPipelinesIndexRouteImport } from './routes/staff/pipelines/index'
 import { Route as StaffOrdersIndexRouteImport } from './routes/staff/orders/index'
+import { Route as StaffNotiicationsIndexRouteImport } from './routes/staff/notiications/index'
 import { Route as StaffLeadsIndexRouteImport } from './routes/staff/leads/index'
 import { Route as StaffDealsIndexRouteImport } from './routes/staff/deals/index'
 import { Route as AuthVerifyIndexRouteImport } from './routes/auth/verify/index'
@@ -159,6 +160,11 @@ const StaffPipelinesIndexRoute = StaffPipelinesIndexRouteImport.update({
 const StaffOrdersIndexRoute = StaffOrdersIndexRouteImport.update({
   id: '/orders/',
   path: '/orders/',
+  getParentRoute: () => StaffRouteRoute,
+} as any)
+const StaffNotiicationsIndexRoute = StaffNotiicationsIndexRouteImport.update({
+  id: '/notiications/',
+  path: '/notiications/',
   getParentRoute: () => StaffRouteRoute,
 } as any)
 const StaffLeadsIndexRoute = StaffLeadsIndexRouteImport.update({
@@ -460,6 +466,7 @@ export interface FileRoutesByFullPath {
   '/auth/verify/': typeof AuthVerifyIndexRoute
   '/staff/deals': typeof StaffDealsIndexRoute
   '/staff/leads': typeof StaffLeadsIndexRoute
+  '/staff/notiications': typeof StaffNotiicationsIndexRoute
   '/staff/orders': typeof StaffOrdersIndexRoute
   '/staff/pipelines': typeof StaffPipelinesIndexRoute
   '/staff/products': typeof StaffProductsIndexRoute
@@ -522,6 +529,7 @@ export interface FileRoutesByTo {
   '/auth/verify': typeof AuthVerifyIndexRoute
   '/staff/deals': typeof StaffDealsIndexRoute
   '/staff/leads': typeof StaffLeadsIndexRoute
+  '/staff/notiications': typeof StaffNotiicationsIndexRoute
   '/staff/orders': typeof StaffOrdersIndexRoute
   '/staff/pipelines': typeof StaffPipelinesIndexRoute
   '/staff/products': typeof StaffProductsIndexRoute
@@ -591,6 +599,7 @@ export interface FileRoutesById {
   '/auth/verify/': typeof AuthVerifyIndexRoute
   '/staff/deals/': typeof StaffDealsIndexRoute
   '/staff/leads/': typeof StaffLeadsIndexRoute
+  '/staff/notiications/': typeof StaffNotiicationsIndexRoute
   '/staff/orders/': typeof StaffOrdersIndexRoute
   '/staff/pipelines/': typeof StaffPipelinesIndexRoute
   '/staff/products/': typeof StaffProductsIndexRoute
@@ -661,6 +670,7 @@ export interface FileRouteTypes {
     | '/auth/verify/'
     | '/staff/deals'
     | '/staff/leads'
+    | '/staff/notiications'
     | '/staff/orders'
     | '/staff/pipelines'
     | '/staff/products'
@@ -723,6 +733,7 @@ export interface FileRouteTypes {
     | '/auth/verify'
     | '/staff/deals'
     | '/staff/leads'
+    | '/staff/notiications'
     | '/staff/orders'
     | '/staff/pipelines'
     | '/staff/products'
@@ -791,6 +802,7 @@ export interface FileRouteTypes {
     | '/auth/verify/'
     | '/staff/deals/'
     | '/staff/leads/'
+    | '/staff/notiications/'
     | '/staff/orders/'
     | '/staff/pipelines/'
     | '/staff/products/'
@@ -970,6 +982,13 @@ declare module '@tanstack/react-router' {
       path: '/orders'
       fullPath: '/staff/orders'
       preLoaderRoute: typeof StaffOrdersIndexRouteImport
+      parentRoute: typeof StaffRouteRoute
+    }
+    '/staff/notiications/': {
+      id: '/staff/notiications/'
+      path: '/notiications'
+      fullPath: '/staff/notiications'
+      preLoaderRoute: typeof StaffNotiicationsIndexRouteImport
       parentRoute: typeof StaffRouteRoute
     }
     '/staff/leads/': {
@@ -1383,6 +1402,7 @@ interface StaffRouteRouteChildren {
   StaffIndexRoute: typeof StaffIndexRoute
   StaffDealsIndexRoute: typeof StaffDealsIndexRoute
   StaffLeadsIndexRoute: typeof StaffLeadsIndexRoute
+  StaffNotiicationsIndexRoute: typeof StaffNotiicationsIndexRoute
   StaffOrdersIndexRoute: typeof StaffOrdersIndexRoute
   StaffPipelinesIndexRoute: typeof StaffPipelinesIndexRoute
   StaffProductsIndexRoute: typeof StaffProductsIndexRoute
@@ -1423,6 +1443,7 @@ const StaffRouteRouteChildren: StaffRouteRouteChildren = {
   StaffIndexRoute: StaffIndexRoute,
   StaffDealsIndexRoute: StaffDealsIndexRoute,
   StaffLeadsIndexRoute: StaffLeadsIndexRoute,
+  StaffNotiicationsIndexRoute: StaffNotiicationsIndexRoute,
   StaffOrdersIndexRoute: StaffOrdersIndexRoute,
   StaffPipelinesIndexRoute: StaffPipelinesIndexRoute,
   StaffProductsIndexRoute: StaffProductsIndexRoute,

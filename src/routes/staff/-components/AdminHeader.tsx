@@ -1,7 +1,11 @@
 import { Bell, Menu } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { useUnreadNotificationCount } from "@/api/notifications-api";
 import TenantUserProfile from "./TenantUserProfile";
 
 export default function AdminHeader() {
+  const { data: unreadCount } = useUnreadNotificationCount();
+
   return (
     <div className="h-18 px-4 flex sticky top-0 bg-base-100  border-b border-current/10 shadow z-20 items-center">
       <label
@@ -15,11 +19,18 @@ export default function AdminHeader() {
       </h2>
 
       <div className="ml-auto flex items-center gap-2">
-        <div className="relative">
-          <span className="absolute top-0 right-0 -mt-1 mr-1 flex h-2 w-2 animate-ping rounded-full bg-error"></span>
-          <span className="absolute top-0 right-0 -mt-1 mr-1 flex h-2 w-2 rounded-full bg-error"></span>
-          <Bell className="!size-6"></Bell>
-        </div>
+        <Link
+          to="/staff/notiications"
+          className="btn btn-ghost btn-square relative"
+          aria-label={unreadCount ? `Notifications, ${unreadCount} unread` : "Notifications"}
+        >
+          <Bell className="size-5" aria-hidden="true" />
+          {!!unreadCount && (
+            <span className="badge badge-error badge-xs absolute -right-1 -top-1 min-w-5 text-[10px]" aria-hidden="true">
+              {unreadCount > 99 ? "99+" : unreadCount}
+            </span>
+          )}
+        </Link>
         <TenantUserProfile />
       </div>
     </div>
