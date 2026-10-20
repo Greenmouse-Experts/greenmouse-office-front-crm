@@ -33,7 +33,6 @@ export const getNotifications = async (
       limit: params?.limit ?? 20,
       cursor: params?.cursor ?? undefined,
       page: params?.page ?? undefined,
-      unreadOnly: params?.unreadOnly ?? undefined,
     },
   });
   return resp.data;
@@ -60,14 +59,47 @@ export const useNotifications = (params?: NotificationsQueryParams) => {
   return useQuery<Notification[]>({
     queryKey: ["notifications", params],
     queryFn: async () => {
-      const response = await getNotifications(params);
-      const payload = (response as any)?.data ?? response;
-      if (Array.isArray(payload)) return payload;
-      if (Array.isArray(payload?.notifications)) return payload.notifications;
-      if (Array.isArray(payload?.data)) return payload.data;
-      if (Array.isArray(payload?.data?.notifications))
-        return payload.data.notifications;
-      return [];
+      const readPage = async (page: number, limit: number) => {
+        const response = await getNotifications({ ...params, page, limit });
+        const payload = (response as any)?.data ?? response;
+        const notifications: Notification[] = Array.isArray(payload)
+          ? payload
+          : Array.isArray(payload?.notifications)
+            ? payload.notifications
+            : Array.isArray(payload?.data)
+              ? payload.data
+              : Array.isArray(payload?.data?.notifications)
+                ? payload.data.notifications
+                : [];
+        const pagination = (response as any)?.pagination ?? payload?.pagination ?? payload?.data?.pagination;
+        const hasMore = typeof pagination?.hasMore === "boolean"
+          ? pagination.hasMore
+          : notifications.length >= limit;
+        return { notifications, hasMore };
+      };
+
+      const limit = params?.limit ?? 20;
+      const page = params?.page ?? 1;
+      if (!params?.unreadOnly) {
+        return (await readPage(page, limit)).notifications;
+      }
+
+      // The API currently rejects unreadOnly as a URL string. Gather enough
+      // unfiltered pages to paginate unread notifications accurately.
+      const unread: Notification[] = [];
+      const seen = new Set<string>();
+      const needed = page * limit + 1;
+      for (let sourcePage = 1; unread.length < needed; sourcePage += 1) {
+        const result = await readPage(sourcePage, limit);
+        const newNotifications = result.notifications.filter((notification) => {
+          if (seen.has(notification.id)) return false;
+          seen.add(notification.id);
+          return true;
+        });
+        unread.push(...newNotifications.filter((notification) => !notification.isRead));
+        if (!result.hasMore || newNotifications.length === 0) break;
+      }
+      return unread.slice((page - 1) * limit, needed);
     },
   });
 };

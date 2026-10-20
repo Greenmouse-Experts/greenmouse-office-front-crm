@@ -186,7 +186,7 @@ function NotificationsPage() {
           {(notifications) => (
             <>
               <ul className="overflow-hidden rounded-xl border border-base-200 bg-base-100">
-                {notifications.map((notification) => (
+                {notifications.slice(0, limit).map((notification) => (
                   <NotificationItem
                     key={notification.id}
                     notification={notification}
@@ -214,7 +214,9 @@ function NotificationsPage() {
                   type="button"
                   className="btn btn-outline btn-sm"
                   disabled={
-                    notifications.length < limit ||
+                    (unreadOnly
+                      ? notifications.length <= limit
+                      : notifications.length < limit) ||
                     notificationsQuery.isFetching
                   }
                   onClick={() => setPage((current) => current + 1)}
