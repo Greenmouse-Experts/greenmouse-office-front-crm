@@ -147,17 +147,17 @@ function RouteComponent() {
   ];
 
   const actions: Actions<Contact>[] = [
-    {
-      key: "ticket",
-      label: "Create Ticket",
-      render: () => (
-        <span className="flex items-center gap-2">
-          <Ticket className="size-4" /> Create Ticket
-        </span>
-      ),
-      action: (item: Contact) =>
-        ticketModalRef.current?.open({ contactId: item.id }),
-    },
+    // {
+    //   key: "ticket",
+    //   label: "Create Ticket",
+    //   render: () => (
+    //     <span className="flex items-center gap-2">
+    //       <Ticket className="size-4" /> Create Ticket
+    //     </span>
+    //   ),
+    //   action: (item: Contact) =>
+    //     ticketModalRef.current?.open({ contactId: item.id }),
+    // },
     {
       key: "view",
       label: "View Details",
