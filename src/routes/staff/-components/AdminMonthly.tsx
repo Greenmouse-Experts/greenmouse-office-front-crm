@@ -61,7 +61,7 @@ function ChartCard({
         </div>
         {controls}
       </div>
-      <div className="mt-6 min-h-64">{children}</div>
+      <div className="mt-6 min-h-64 ">{children}</div>
     </section>
   );
 }
@@ -102,15 +102,56 @@ function MonthlyTrend({
   }
 
   return (
-    <div role="img" aria-label={`Monthly income and expense trend for ${year}`} className="h-64 w-full">
+    <div
+      role="img"
+      aria-label={`Monthly income and expense trend for ${year}`}
+      className="h-64 w-full"
+    >
       <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={data} margin={{ top: 4, right: 8, left: -12, bottom: 0 }}>
-          <CartesianGrid stroke="var(--color-base-300)" strokeDasharray="3 3" vertical={false} />
-          <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--color-base-content)" }} />
-          <YAxis axisLine={false} tickLine={false} tickFormatter={shortMoney} tick={{ fontSize: 11, fill: "var(--color-base-content)" }} width={62} />
-          <Tooltip formatter={(value, name) => [money(Number(value) || 0), name === "income" ? "Income" : "Expenses"]} />
-          <Area type="monotone" dataKey="income" stroke="var(--color-primary)" fill="var(--color-primary)" fillOpacity={0.14} strokeWidth={2} />
-          <Area type="monotone" dataKey="expenses" stroke="var(--color-error)" fill="var(--color-error)" fillOpacity={0.08} strokeWidth={2} />
+        <AreaChart
+          data={data}
+          margin={{ top: 4, right: 8, left: -12, bottom: 0 }}
+        >
+          <CartesianGrid
+            stroke="var(--color-base-300)"
+            strokeDasharray="3 3"
+            vertical={false}
+          />
+          <XAxis
+            dataKey="month"
+            axisLine={false}
+            tickLine={false}
+            tick={{ fontSize: 11, fill: "var(--color-base-content)" }}
+          />
+          <YAxis
+            axisLine={false}
+            tickLine={false}
+            tickFormatter={shortMoney}
+            tick={{ fontSize: 11, fill: "var(--color-base-content)" }}
+            width={62}
+          />
+          <Tooltip
+            formatter={(value, name) => [
+              money(Number(value) || 0),
+              name === "income" ? "Income" : "Expenses",
+            ]}
+          />
+          <Area
+            type="monotone"
+            dataKey="income"
+            stroke="var(--color-primary)"
+            fill="var(--color-primary)"
+            fillOpacity={0.14}
+            strokeWidth={2}
+          />
+          <Area
+            type="monotone"
+            dataKey="expenses"
+            stroke="var(--color-error)"
+            fill="var(--color-error)"
+            fillOpacity={0.08}
+            strokeWidth={2}
+          />
         </AreaChart>
       </ResponsiveContainer>
     </div>
@@ -143,14 +184,46 @@ function CategoryPerformance({
   }
 
   return (
-    <div role="img" aria-label={`Top five ${kind} categories`} className="h-64 w-full">
+    <div
+      role="img"
+      aria-label={`Top five ${kind} categories`}
+      className="h-64 w-full"
+    >
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} layout="vertical" margin={{ top: 0, right: 8, left: 0, bottom: 0 }}>
-          <CartesianGrid stroke="var(--color-base-300)" strokeDasharray="3 3" horizontal={false} />
-          <XAxis type="number" axisLine={false} tickLine={false} tickFormatter={shortMoney} tick={{ fontSize: 11, fill: "var(--color-base-content)" }} />
-          <YAxis type="category" dataKey="name" axisLine={false} tickLine={false} width={100} tick={{ fontSize: 11, fill: "var(--color-base-content)" }} />
+        <BarChart
+          data={data}
+          layout="vertical"
+          margin={{ top: 0, right: 8, left: 0, bottom: 0 }}
+        >
+          <CartesianGrid
+            stroke="var(--color-base-300)"
+            strokeDasharray="3 3"
+            horizontal={false}
+          />
+          <XAxis
+            type="number"
+            axisLine={false}
+            tickLine={false}
+            tickFormatter={shortMoney}
+            tick={{ fontSize: 11, fill: "var(--color-base-content)" }}
+          />
+          <YAxis
+            type="category"
+            dataKey="name"
+            axisLine={false}
+            tickLine={false}
+            width={100}
+            tick={{ fontSize: 11, fill: "var(--color-base-content)" }}
+          />
           <Tooltip formatter={(value) => money(Number(value) || 0)} />
-          <Bar dataKey="total" fill={kind === "income" ? "var(--color-primary)" : "var(--color-error)"} radius={[0, 4, 4, 0]} maxBarSize={32} />
+          <Bar
+            dataKey="total"
+            fill={
+              kind === "income" ? "var(--color-primary)" : "var(--color-error)"
+            }
+            radius={[0, 4, 4, 0]}
+            maxBarSize={32}
+          />
         </BarChart>
       </ResponsiveContainer>
     </div>
@@ -163,7 +236,9 @@ export default function TenantMonthly() {
   const [month, setMonth] = useState(
     `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}`,
   );
-  const [categoryKind, setCategoryKind] = useState<"income" | "expenses">("income");
+  const [categoryKind, setCategoryKind] = useState<"income" | "expenses">(
+    "income",
+  );
   const selectedYear = Number(month.slice(0, 4));
   const selectedMonth = Number(month.slice(5, 7));
   const currentYear = today.getFullYear();
@@ -172,10 +247,13 @@ export default function TenantMonthly() {
   const yearlyExpenses = useExpensesReport({ year });
   const monthlyRevenue = useRevenueReport({ month });
   const monthlyExpenses = useExpensesReport({ month });
-  const monthName = new Date(`${month}-01T00:00:00`).toLocaleDateString("en-NG", {
-    month: "long",
-    year: "numeric",
-  });
+  const monthName = new Date(`${month}-01T00:00:00`).toLocaleDateString(
+    "en-NG",
+    {
+      month: "long",
+      year: "numeric",
+    },
+  );
 
   return (
     <div className="grid gap-5 xl:grid-cols-2">
@@ -194,8 +272,13 @@ export default function TenantMonthly() {
               value={year}
               onChange={(event) => setYear(Number(event.target.value))}
             >
-              {Array.from({ length: 5 }, (_, index) => today.getFullYear() - index).map((option) => (
-                <option key={option} value={option}>{option}</option>
+              {Array.from(
+                { length: 5 },
+                (_, index) => today.getFullYear() - index,
+              ).map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
               ))}
             </select>
           </div>
@@ -204,7 +287,13 @@ export default function TenantMonthly() {
         <QueryCompLayout query={yearlyRevenue}>
           {(revenue) => (
             <QueryCompLayout query={yearlyExpenses}>
-              {(expenses) => <MonthlyTrend revenue={revenue} expenses={expenses} year={year} />}
+              {(expenses) => (
+                <MonthlyTrend
+                  revenue={revenue}
+                  expenses={expenses}
+                  year={year}
+                />
+              )}
             </QueryCompLayout>
           )}
         </QueryCompLayout>
@@ -214,47 +303,53 @@ export default function TenantMonthly() {
         title="Category performance"
         description={`Top 5 paid ${categoryKind} categories · ${monthName}`}
         controls={
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="join" aria-label="Category report">
-              <button type="button" aria-pressed={categoryKind === "income"} className={`btn btn-sm join-item ${categoryKind === "income" ? "btn-primary" : "btn-ghost"}`} onClick={() => setCategoryKind("income")}>Income</button>
-              <button type="button" aria-pressed={categoryKind === "expenses"} className={`btn btn-sm join-item ${categoryKind === "expenses" ? "btn-primary" : "btn-ghost"}`} onClick={() => setCategoryKind("expenses")}>Expenses</button>
-            </div>
-            <div className="flex items-center gap-1 rounded-lg border border-base-300 bg-base-100 px-2 focus-within:border-primary">
-              <CalendarDays className="size-4 shrink-0 text-base-content/50" aria-hidden="true" />
-              <select
-                aria-label="Category report month"
-                className="select select-ghost select-sm w-32 border-0 px-1 focus:outline-none"
-                value={selectedMonth}
-                onChange={(event) => {
-                  setMonth(`${selectedYear}-${event.target.value.padStart(2, "0")}`);
-                }}
-              >
-                {monthNames.map((name, index) => (
-                  <option key={name} value={index + 1} disabled={selectedYear === currentYear && index + 1 > currentMonth}>
-                    {name}
-                  </option>
-                ))}
-              </select>
-              <select
-                aria-label="Category report year"
-                className="select select-ghost select-sm w-20 border-0 px-1 focus:outline-none"
-                value={selectedYear}
-                onChange={(event) => {
-                  const nextYear = Number(event.target.value);
-                  const nextMonth = nextYear === currentYear ? Math.min(selectedMonth, currentMonth) : selectedMonth;
-                  setMonth(`${nextYear}-${String(nextMonth).padStart(2, "0")}`);
-                }}
-              >
-                {Array.from({ length: 30 }, (_, index) => currentYear - index).map((option) => (
-                  <option key={option} value={option}>{option}</option>
-                ))}
-              </select>
-            </div>
-          </div>
+          <>
+            {/*<div className="flex flex-wrap items-center gap-2">
+              <div className="join" aria-label="Category report">
+                <button type="button" aria-pressed={categoryKind === "income"} className={`btn btn-sm join-item ${categoryKind === "income" ? "btn-primary" : "btn-ghost"}`} onClick={() => setCategoryKind("income")}>Income</button>
+                <button type="button" aria-pressed={categoryKind === "expenses"} className={`btn btn-sm join-item ${categoryKind === "expenses" ? "btn-primary" : "btn-ghost"}`} onClick={() => setCategoryKind("expenses")}>Expenses</button>
+              </div>
+              <div className="flex items-center gap-1 rounded-lg border border-base-300 bg-base-100 px-2 focus-within:border-primary">
+                <CalendarDays className="size-4 shrink-0 text-base-content/50" aria-hidden="true" />
+                <select
+                  aria-label="Category report month"
+                  className="select select-ghost select-sm w-32 border-0 px-1 focus:outline-none"
+                  value={selectedMonth}
+                  onChange={(event) => {
+                    setMonth(`${selectedYear}-${event.target.value.padStart(2, "0")}`);
+                  }}
+                >
+                  {monthNames.map((name, index) => (
+                    <option key={name} value={index + 1} disabled={selectedYear === currentYear && index + 1 > currentMonth}>
+                      {name}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  aria-label="Category report year"
+                  className="select select-ghost select-sm w-20 border-0 px-1 focus:outline-none"
+                  value={selectedYear}
+                  onChange={(event) => {
+                    const nextYear = Number(event.target.value);
+                    const nextMonth = nextYear === currentYear ? Math.min(selectedMonth, currentMonth) : selectedMonth;
+                    setMonth(`${nextYear}-${String(nextMonth).padStart(2, "0")}`);
+                  }}
+                >
+                  {Array.from({ length: 30 }, (_, index) => currentYear - index).map((option) => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
+              </div>
+            </div>*/}
+          </>
         }
       >
-        <QueryCompLayout query={categoryKind === "income" ? monthlyRevenue : monthlyExpenses}>
-          {(report) => <CategoryPerformance report={report} kind={categoryKind} />}
+        <QueryCompLayout
+          query={categoryKind === "income" ? monthlyRevenue : monthlyExpenses}
+        >
+          {(report) => (
+            <CategoryPerformance report={report} kind={categoryKind} />
+          )}
         </QueryCompLayout>
       </ChartCard>
     </div>

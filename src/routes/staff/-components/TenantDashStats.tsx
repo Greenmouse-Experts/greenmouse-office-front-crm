@@ -142,7 +142,7 @@ export default function TenantDashStats() {
                       className={`inline-flex items-center gap-1 text-xs font-medium ${card.accent} !bg-transparent`}
                     >
                       {card.linkLabel}
-                      <ArrowRight className="size-0" aria-hidden="true" />
+                      <ArrowRight className="!size-3" aria-hidden="true" />
                     </span>
                   </div>
                 </Link>

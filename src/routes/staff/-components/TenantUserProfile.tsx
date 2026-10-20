@@ -25,7 +25,7 @@ export default function TenantUserProfile() {
           <button className="btn btn-circle size-8 ring ring-primary/20 p-0 overflow-hidden">
             <img
               src={profile?.profilePic ?? "https://github.com/shadcn.png"}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
               alt="User avatar"
             />
           </button>
