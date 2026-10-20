@@ -103,9 +103,9 @@ Paid income minus Paid expenses; invoice cash is separate. Advanced Reports feat
 
 ### Paid income-ledger revenue by month/category
 
-`GET /v1/reports/revenue?year=2657.0056544389954&from=1956-01-31&to=1956-01-31`
+`GET /v1/reports/revenue?from=2026-10-01&to=2026-10-31`
 
-For a single month, use `GET /v1/reports/revenue?month=2026-09`.
+For a single month, supply its first and last dates with `from` and `to`.
 
 Not combined with invoice cash. Advanced Reports feature required.
 
@@ -113,7 +113,6 @@ Not combined with invoice cash. Advanced Reports feature required.
 
 | Parameter | Type / Example | Description |
 | :--- | :--- | :--- |
-| `month` | `2026-09` | Return the report for one calendar month. |
 | `year` | `2657.0056544389954` | Current UTC year by default. Cannot be combined with from/to. |
 | `from` | `1956-01-31` | Inclusive date; from/to must both be supplied |
 | `to` | `1956-01-31` | Filter / pagination param |
@@ -164,9 +163,9 @@ Not combined with invoice cash. Advanced Reports feature required.
 
 ### Paid expense-ledger report by business date and category
 
-`GET /v1/reports/expenses?year=2657.0056544389954&from=1956-01-31&to=1956-01-31`
+`GET /v1/reports/expenses?from=2026-10-01&to=2026-10-31`
 
-For a single month, use `GET /v1/reports/expenses?month=2026-09`.
+For a single month, supply its first and last dates with `from` and `to`.
 
 Advanced Reports feature required.
 
@@ -174,7 +173,6 @@ Advanced Reports feature required.
 
 | Parameter | Type / Example | Description |
 | :--- | :--- | :--- |
-| `month` | `2026-09` | Return the report for one calendar month. |
 | `year` | `2657.0056544389954` | Current UTC year by default. Cannot be combined with from/to. |
 | `from` | `1956-01-31` | Inclusive date; from/to must both be supplied |
 | `to` | `1956-01-31` | Filter / pagination param |

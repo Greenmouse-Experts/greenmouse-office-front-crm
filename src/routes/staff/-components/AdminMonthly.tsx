@@ -243,10 +243,14 @@ export default function TenantMonthly() {
   const selectedMonth = Number(month.slice(5, 7));
   const currentYear = today.getFullYear();
   const currentMonth = today.getMonth() + 1;
+  const monthRange = {
+    from: `${month}-01`,
+    to: `${month}-${String(new Date(selectedYear, selectedMonth, 0).getDate()).padStart(2, "0")}`,
+  };
   const yearlyRevenue = useRevenueReport({ year });
   const yearlyExpenses = useExpensesReport({ year });
-  const monthlyRevenue = useRevenueReport({ month });
-  const monthlyExpenses = useExpensesReport({ month });
+  const monthlyRevenue = useRevenueReport(monthRange);
+  const monthlyExpenses = useExpensesReport(monthRange);
   const monthName = new Date(`${month}-01T00:00:00`).toLocaleDateString(
     "en-NG",
     {

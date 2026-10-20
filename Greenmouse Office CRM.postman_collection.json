@@ -13421,7 +13421,7 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{baseUrl}}/v1/reports/revenue?year=6785.471570331669&from=1999-12-29&to=1999-12-29&month=2026-10",
+                      "raw": "{{baseUrl}}/v1/reports/revenue?from=2026-10-01&to=2026-10-31",
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -13432,23 +13432,13 @@
                       ],
                       "query": [
                         {
-                          "description": "Current UTC year by default. Cannot be combined with from/to.",
-                          "key": "year",
-                          "value": "6785.471570331669"
-                        },
-                        {
                           "description": "Inclusive date; from/to must both be supplied",
                           "key": "from",
-                          "value": "1999-12-29"
+                          "value": "2026-10-01"
                         },
                         {
                           "key": "to",
-                          "value": "1999-12-29"
-                        },
-                        {
-                          "description": "UTC calendar month; defaults to the current month",
-                          "key": "month",
-                          "value": "2026-10"
+                          "value": "2026-10-31"
                         }
                       ]
                     },
@@ -13471,7 +13461,7 @@
                           }
                         ],
                         "url": {
-                          "raw": "{{baseUrl}}/v1/reports/revenue?year=6785.471570331669&from=1999-12-29&to=1999-12-29&month=2026-10",
+                          "raw": "{{baseUrl}}/v1/reports/revenue?from=2026-10-01&to=2026-10-31",
                           "host": [
                             "{{baseUrl}}"
                           ],
@@ -13482,23 +13472,13 @@
                           ],
                           "query": [
                             {
-                              "description": "Current UTC year by default. Cannot be combined with from/to.",
-                              "key": "year",
-                              "value": "6785.471570331669"
-                            },
-                            {
                               "description": "Inclusive date; from/to must both be supplied",
                               "key": "from",
-                              "value": "1999-12-29"
+                              "value": "2026-10-01"
                             },
                             {
                               "key": "to",
-                              "value": "1999-12-29"
-                            },
-                            {
-                              "description": "UTC calendar month; defaults to the current month",
-                              "key": "month",
-                              "value": "2026-10"
+                              "value": "2026-10-31"
                             }
                           ]
                         }
@@ -13543,7 +13523,7 @@
                       }
                     ],
                     "url": {
-                      "raw": "{{baseUrl}}/v1/reports/expenses?year=6785.471570331669&from=1999-12-29&to=1999-12-29&month=2026-10",
+                      "raw": "{{baseUrl}}/v1/reports/expenses?from=2026-10-01&to=2026-10-31",
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -13554,23 +13534,13 @@
                       ],
                       "query": [
                         {
-                          "description": "Current UTC year by default. Cannot be combined with from/to.",
-                          "key": "year",
-                          "value": "6785.471570331669"
-                        },
-                        {
                           "description": "Inclusive date; from/to must both be supplied",
                           "key": "from",
-                          "value": "1999-12-29"
+                          "value": "2026-10-01"
                         },
                         {
                           "key": "to",
-                          "value": "1999-12-29"
-                        },
-                        {
-                          "description": "UTC calendar month; defaults to the current month",
-                          "key": "month",
-                          "value": "2026-10"
+                          "value": "2026-10-31"
                         }
                       ]
                     },
@@ -13593,7 +13563,7 @@
                           }
                         ],
                         "url": {
-                          "raw": "{{baseUrl}}/v1/reports/expenses?year=6785.471570331669&from=1999-12-29&to=1999-12-29&month=2026-10",
+                          "raw": "{{baseUrl}}/v1/reports/expenses?from=2026-10-01&to=2026-10-31",
                           "host": [
                             "{{baseUrl}}"
                           ],
@@ -13604,23 +13574,13 @@
                           ],
                           "query": [
                             {
-                              "description": "Current UTC year by default. Cannot be combined with from/to.",
-                              "key": "year",
-                              "value": "6785.471570331669"
-                            },
-                            {
                               "description": "Inclusive date; from/to must both be supplied",
                               "key": "from",
-                              "value": "1999-12-29"
+                              "value": "2026-10-01"
                             },
                             {
                               "key": "to",
-                              "value": "1999-12-29"
-                            },
-                            {
-                              "description": "UTC calendar month; defaults to the current month",
-                              "key": "month",
-                              "value": "2026-10"
+                              "value": "2026-10-31"
                             }
                           ]
                         }

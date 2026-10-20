@@ -185,7 +185,6 @@ export interface StageDwellReport {
 }
 
 export interface ReportDateFilterParams {
-  month?: string;
   year?: number;
   from?: string;
   to?: string;
