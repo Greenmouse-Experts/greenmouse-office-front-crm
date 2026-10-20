@@ -30,6 +30,7 @@ import { Route as StaffNotificationsIndexRouteImport } from './routes/staff/noti
 import { Route as StaffLeadsIndexRouteImport } from './routes/staff/leads/index'
 import { Route as StaffDealsIndexRouteImport } from './routes/staff/deals/index'
 import { Route as AuthVerifyIndexRouteImport } from './routes/auth/verify/index'
+import { Route as AuthStaffIndexRouteImport } from './routes/auth/staff.index'
 import { Route as AuthRegisterIndexRouteImport } from './routes/auth/register/index'
 import { Route as AuthLoginIndexRouteImport } from './routes/auth/login/index'
 import { Route as AuthForgotPasswordIndexRouteImport } from './routes/auth/forgot-password/index'
@@ -184,6 +185,11 @@ const AuthVerifyIndexRoute = AuthVerifyIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthVerifyRouteRoute,
+} as any)
+const AuthStaffIndexRoute = AuthStaffIndexRouteImport.update({
+  id: '/auth/staff/',
+  path: '/auth/staff/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRegisterIndexRoute = AuthRegisterIndexRouteImport.update({
   id: '/',
@@ -482,6 +488,7 @@ export interface FileRoutesByFullPath {
   '/auth/forgot-password': typeof AuthForgotPasswordIndexRoute
   '/auth/login': typeof AuthLoginIndexRoute
   '/auth/register/': typeof AuthRegisterIndexRoute
+  '/auth/staff': typeof AuthStaffIndexRoute
   '/auth/verify/': typeof AuthVerifyIndexRoute
   '/staff/deals': typeof StaffDealsIndexRoute
   '/staff/leads': typeof StaffLeadsIndexRoute
@@ -548,6 +555,7 @@ export interface FileRoutesByTo {
   '/auth/forgot-password': typeof AuthForgotPasswordIndexRoute
   '/auth/login': typeof AuthLoginIndexRoute
   '/auth/register': typeof AuthRegisterIndexRoute
+  '/auth/staff': typeof AuthStaffIndexRoute
   '/auth/verify': typeof AuthVerifyIndexRoute
   '/staff/deals': typeof StaffDealsIndexRoute
   '/staff/leads': typeof StaffLeadsIndexRoute
@@ -621,6 +629,7 @@ export interface FileRoutesById {
   '/auth/forgot-password/': typeof AuthForgotPasswordIndexRoute
   '/auth/login/': typeof AuthLoginIndexRoute
   '/auth/register/': typeof AuthRegisterIndexRoute
+  '/auth/staff/': typeof AuthStaffIndexRoute
   '/auth/verify/': typeof AuthVerifyIndexRoute
   '/staff/deals/': typeof StaffDealsIndexRoute
   '/staff/leads/': typeof StaffLeadsIndexRoute
@@ -695,6 +704,7 @@ export interface FileRouteTypes {
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register/'
+    | '/auth/staff'
     | '/auth/verify/'
     | '/staff/deals'
     | '/staff/leads'
@@ -761,6 +771,7 @@ export interface FileRouteTypes {
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
+    | '/auth/staff'
     | '/auth/verify'
     | '/staff/deals'
     | '/staff/leads'
@@ -833,6 +844,7 @@ export interface FileRouteTypes {
     | '/auth/forgot-password/'
     | '/auth/login/'
     | '/auth/register/'
+    | '/auth/staff/'
     | '/auth/verify/'
     | '/staff/deals/'
     | '/staff/leads/'
@@ -898,6 +910,7 @@ export interface RootRouteChildren {
   AuthAdminIndexRoute: typeof AuthAdminIndexRoute
   AuthForgotPasswordIndexRoute: typeof AuthForgotPasswordIndexRoute
   AuthLoginIndexRoute: typeof AuthLoginIndexRoute
+  AuthStaffIndexRoute: typeof AuthStaffIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1048,6 +1061,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth/verify/'
       preLoaderRoute: typeof AuthVerifyIndexRouteImport
       parentRoute: typeof AuthVerifyRouteRoute
+    }
+    '/auth/staff/': {
+      id: '/auth/staff/'
+      path: '/auth/staff'
+      fullPath: '/auth/staff'
+      preLoaderRoute: typeof AuthStaffIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/auth/register/': {
       id: '/auth/register/'
@@ -1589,6 +1609,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthAdminIndexRoute: AuthAdminIndexRoute,
   AuthForgotPasswordIndexRoute: AuthForgotPasswordIndexRoute,
   AuthLoginIndexRoute: AuthLoginIndexRoute,
+  AuthStaffIndexRoute: AuthStaffIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
