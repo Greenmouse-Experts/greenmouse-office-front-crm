@@ -378,7 +378,8 @@ export const useUpdateStaff = () => {
       const { data } = await apiClient.patch<any>(`/staffs/${id}`, staff);
       return data?.data || data;
     },
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["tenant", "staff", variables.id] });
       queryClient.invalidateQueries({ queryKey: ["tenant", "staffs"] });
       queryClient.invalidateQueries({ queryKey: ["staffs"] });
     },

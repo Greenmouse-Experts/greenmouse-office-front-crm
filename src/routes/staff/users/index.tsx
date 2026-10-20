@@ -1,9 +1,18 @@
 import { useState, useRef } from "react";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import ContainerRow from "@/components/ContainerRow";
 import SimpleContainer from "@/components/SimpleContainer";
 import { useSearch } from "@/stores/data";
-import { PlusCircleIcon, User } from "lucide-react";
+import { Pencil, PlusCircleIcon, User } from "lucide-react";
+import SimpleInput from "@/components/inputs/SimpleInput";
+import LocalSelect from "@/components/inputs/LocalSelect";
+import PhoneNumberInput, {
+  validatePhoneNumber,
+} from "@/components/inputs/PhoneNumberInput";
+import SelectImage from "@/components/images/SelectImage";
+import { useSelectImage } from "@/helpers/images";
+import { useUploadImage } from "@/api/imageApi";
 import CustomTable from "@/components/tables/CustomTable";
 import UserSummary from "./-components/UsersSummary";
 import DropDownBtn from "@/components/buttons/DropdownBtn";
@@ -16,6 +25,8 @@ import {
   useRoles,
   useCreateStaff,
   useDeleteStaff,
+  useUpdateStaff,
+  type Role,
   type StaffMember,
 } from "@/api/tenantApi";
 import { toast } from "sonner";
@@ -23,6 +34,166 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/staff/users/")({
   component: RouteComponent,
 });
+
+interface EditStaffFields {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  roleId: string;
+  status: string;
+}
+
+function EditStaffForm({
+  staff,
+  roles,
+  onClose,
+}: {
+  staff: StaffMember;
+  roles: Role[];
+  onClose: () => void;
+}) {
+  const updateStaff = useUpdateStaff();
+  const uploadImage = useUploadImage();
+  const { image, setImage, image_link } = useSelectImage();
+  const methods = useForm<EditStaffFields>({
+    defaultValues: {
+      firstName: staff.firstName || "",
+      lastName: staff.lastName || "",
+      email: staff.email || "",
+      phoneNumber: staff.phoneNumber || "",
+      roleId: staff.roleId || staff.role?.id || "",
+      status: staff.status || "active",
+    },
+  });
+
+  const handleSave = async (values: EditStaffFields) => {
+    try {
+      const uploaded = image ? await uploadImage.mutateAsync(image) : null;
+      if (image && !uploaded?.url) {
+        throw new Error("The profile photo upload did not return a URL.");
+      }
+      await updateStaff.mutateAsync({
+        id: staff.id,
+        firstName: values.firstName.trim(),
+        lastName: values.lastName.trim(),
+        email: values.email.trim(),
+        phoneNumber: values.phoneNumber,
+        ...(values.roleId ? { roleId: values.roleId } : {}),
+        status: values.status,
+        ...(uploaded?.url ? { profilePic: uploaded.url } : {}),
+      });
+      toast.success("Staff member updated.");
+      onClose();
+    } catch (error) {
+      const response = error as { response?: { data?: { message?: string | string[] } }; message?: string };
+      const message = response.response?.data?.message;
+      toast.error(
+        (Array.isArray(message) ? message.join(". ") : message) ||
+          response.message ||
+          "Failed to update staff member.",
+      );
+    }
+  };
+
+  return (
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(handleSave)} className="space-y-4">
+        <div className="flex flex-wrap items-center gap-4">
+          {staff.profilePic && !image && (
+            <img
+              src={staff.profilePic}
+              alt={`${staff.firstName} ${staff.lastName}`}
+              className="size-16 rounded-full object-cover"
+            />
+          )}
+          <SelectImage
+            image={image}
+            setImage={setImage}
+            image_link={image_link}
+            title={staff.profilePic ? "Replace profile photo" : "Profile photo"}
+          />
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <SimpleInput
+            label="First name"
+            autoComplete="given-name"
+            {...methods.register("firstName", {
+              validate: (value) => !!value.trim() || "First name is required",
+            })}
+          />
+          <SimpleInput
+            label="Last name"
+            autoComplete="family-name"
+            {...methods.register("lastName", {
+              validate: (value) => !!value.trim() || "Last name is required",
+            })}
+          />
+        </div>
+        <SimpleInput
+          label="Email address"
+          type="email"
+          autoComplete="email"
+          {...methods.register("email", {
+            required: "Email is required",
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: "Enter a valid email address",
+            },
+          })}
+        />
+        <Controller
+          name="phoneNumber"
+          control={methods.control}
+          rules={{ validate: validatePhoneNumber }}
+          render={({ field, fieldState }) => (
+            <PhoneNumberInput
+              label="Phone number"
+              name={field.name}
+              value={field.value}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              error={fieldState.error?.message}
+            />
+          )}
+        />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <LocalSelect label="Assigned role" {...methods.register("roleId")}>
+            <option value="" disabled={!!(staff.roleId || staff.role?.id)}>
+              No role assigned
+            </option>
+            {(staff.roleId || staff.role?.id) &&
+              !roles.some((role) => role.id === (staff.roleId || staff.role?.id)) && (
+                <option value={staff.roleId || staff.role?.id}>
+                  {staff.role?.name || "Current role"}
+                </option>
+              )}
+            {roles.map((role) => (
+              <option key={role.id} value={role.id}>
+                {role.name}
+              </option>
+            ))}
+          </LocalSelect>
+          <LocalSelect label="Status" {...methods.register("status")}>
+            {staff.status && !["active", "inactive"].includes(staff.status) && (
+              <option value={staff.status}>{staff.status}</option>
+            )}
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </LocalSelect>
+        </div>
+        <div className="flex justify-end gap-2 pt-2">
+          <button type="button" className="btn btn-ghost" onClick={onClose} disabled={updateStaff.isPending || uploadImage.isPending}>
+            Cancel
+          </button>
+          <button type="submit" className="btn btn-primary" disabled={updateStaff.isPending || uploadImage.isPending}>
+            {updateStaff.isPending || uploadImage.isPending ? "Saving..." : "Save changes"}
+          </button>
+        </div>
+      </form>
+    </FormProvider>
+  );
+}
 
 function RouteComponent() {
   const query = useStaffs();
@@ -32,6 +203,8 @@ function RouteComponent() {
 
   const props = useSearch();
   const addModalRef = useRef<ModalHandle>(null);
+  const editModalRef = useRef<ModalHandle>(null);
+  const [editingStaff, setEditingStaff] = useState<StaffMember | null>(null);
 
   const [form, setForm] = useState({
     firstName: "",
@@ -158,6 +331,19 @@ function RouteComponent() {
         nav({
           to: "/staff/users/details/" + (item.id || "details"),
         });
+      },
+    },
+    {
+      key: "edit",
+      label: "Edit Staff",
+      render: () => (
+        <span className="flex items-center gap-2">
+          <Pencil className="size-4" /> Edit Staff
+        </span>
+      ),
+      action: (item: StaffMember) => {
+        setEditingStaff(item);
+        editModalRef.current?.open();
       },
     },
     {
@@ -336,6 +522,16 @@ function RouteComponent() {
             </button>
           </div>
         </form>
+      </Modal>
+      <Modal ref={editModalRef} title="Edit Staff Member">
+        {editingStaff && (
+          <EditStaffForm
+            key={editingStaff.id}
+            staff={editingStaff}
+            roles={rolesQuery.data || []}
+            onClose={() => editModalRef.current?.close()}
+          />
+        )}
       </Modal>
     </div>
   );
