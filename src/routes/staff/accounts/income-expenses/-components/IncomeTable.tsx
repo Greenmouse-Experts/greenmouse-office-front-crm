@@ -28,17 +28,24 @@ export default function IncomeTable() {
 
   const editModalRef = useRef<ModalHandle>(null);
   const [editingItem, setEditingItem] = useState<Partial<IncomeRecord>>({});
+  const [editAmount, setEditAmount] = useState("");
 
   const incomeList = query.data || [];
 
   const handleOpenEdit = (item: IncomeRecord) => {
     setEditingItem({ ...item });
+    setEditAmount(String(item.amount ?? ""));
     editModalRef.current?.open();
   };
 
   const handleSaveEdit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!editingItem.id || !editingItem.amount || !editingItem.categoryId) {
+    if (
+      !editingItem.id ||
+      !editingItem.categoryId ||
+      !Number.isFinite(Number(editAmount)) ||
+      Number(editAmount) <= 0
+    ) {
       toast.error("Amount is required.");
       return;
     }
@@ -46,7 +53,7 @@ export default function IncomeTable() {
     try {
       await updateIncome.mutateAsync({
         id: editingItem.id,
-        amount: Number(editingItem.amount),
+        amount: Number(editAmount),
         categoryId: editingItem.categoryId,
         source: editingItem.source,
         description: editingItem.description,
@@ -192,13 +199,10 @@ export default function IncomeTable() {
         <form onSubmit={handleSaveEdit} className="space-y-4 pt-2">
           <PriceInput
             label="Amount (₦)"
-            value={editingItem.amount ?? ""}
-            onChange={(e) =>
-              setEditingItem((prev) => ({
-                ...prev,
-                amount: parseFloat(e.target.value) || 0,
-              }))
-            }
+            value={editAmount}
+            onValueChange={(values, sourceInfo) => {
+              if (sourceInfo.source === "event") setEditAmount(values.value);
+            }}
             required
           />
           <LocalSelect

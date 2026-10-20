@@ -193,9 +193,10 @@ function RouteComponent() {
             label="Amount (₦)"
             placeholder="0.00"
             value={incomeForm.amount}
-            onChange={(e) =>
-              setIncomeForm({ ...incomeForm, amount: e.target.value })
-            }
+            onValueChange={(values, sourceInfo) => {
+              if (sourceInfo.source !== "event") return;
+              setIncomeForm((current) => ({ ...current, amount: values.value }));
+            }}
             required
           />
           <LocalSelect
@@ -289,9 +290,10 @@ function RouteComponent() {
             label="Amount (₦)"
             placeholder="0.00"
             value={expenseForm.amount}
-            onChange={(e) =>
-              setExpenseForm({ ...expenseForm, amount: e.target.value })
-            }
+            onValueChange={(values, sourceInfo) => {
+              if (sourceInfo.source !== "event") return;
+              setExpenseForm((current) => ({ ...current, amount: values.value }));
+            }}
             required
           />
           <LocalSelect
