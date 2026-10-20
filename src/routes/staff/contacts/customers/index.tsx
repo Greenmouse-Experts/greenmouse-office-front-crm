@@ -1,4 +1,4 @@
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import SimpleContainer from "@/components/SimpleContainer";
@@ -10,13 +10,13 @@ import {
   Eye,
   Pencil,
   Trash2,
-  Ticket,
 } from "lucide-react";
 import CustomTable from "@/components/tables/CustomTable";
 import type { Actions } from "@/components/tables/pop-up";
 import CustomerSummary from "./-components/CustomerSum";
 import PageHeader from "@/components/Headers/PageHeader";
 import PageLoader from "@/components/layout/PageLoader";
+import Modal, { type ModalHandle } from "@/components/DialogModal";
 import CreateTicketModal, {
   type CreateTicketModalHandle,
 } from "@/components/support/CreateTicketModal";
@@ -35,6 +35,8 @@ function RouteComponent() {
   const searchProps = useSearch();
 
   const ticketModalRef = useRef<CreateTicketModalHandle>(null);
+  const deleteModalRef = useRef<ModalHandle>(null);
+  const [contactToDelete, setContactToDelete] = useState<Contact | null>(null);
 
   const contacts = query.data || [];
 
@@ -55,13 +57,19 @@ function RouteComponent() {
     });
   }, [contacts, searchProps.search]);
 
-  const handleDelete = async (contact: Contact) => {
-    const name =
-      `${contact.firstName || ""} ${contact.lastName || ""}`.trim() ||
-      contact.email;
-    if (!window.confirm(`Are you sure you want to delete contact "${name}"?`)) {
-      return;
-    }
+  const contactName = (contact: Contact) =>
+    `${contact.firstName || ""} ${contact.lastName || ""}`.trim() ||
+    contact.email || "this contact";
+
+  const requestDelete = (contact: Contact) => {
+    setContactToDelete(contact);
+    deleteModalRef.current?.open();
+  };
+
+  const handleDelete = async () => {
+    if (!contactToDelete || deleteContact.isPending) return;
+    const contact = contactToDelete;
+    const name = contactName(contact);
 
     try {
       await deleteContact.mutateAsync(contact.id);
@@ -69,6 +77,8 @@ function RouteComponent() {
       await queryClient.invalidateQueries({ queryKey: ["customers"] });
       await query.refetch();
       toast.success(`Contact "${name}" deleted.`);
+      deleteModalRef.current?.close();
+      setContactToDelete(null);
     } catch (err: any) {
       toast.error(err.response?.data?.message || "Failed to delete contact.");
     }
@@ -196,7 +206,7 @@ function RouteComponent() {
           <Trash2 className="size-4" /> Delete
         </span>
       ),
-      action: (item: Contact) => handleDelete(item),
+      action: requestDelete,
     },
   ];
 
@@ -237,6 +247,34 @@ function RouteComponent() {
         </PageLoader>
       </SimpleContainer>
 
+      <Modal ref={deleteModalRef} title="Delete contact">
+        {contactToDelete && (
+          <div className="space-y-5">
+            <p className="text-sm text-base-content/70">
+              Delete <span className="font-semibold text-base-content">{contactName(contactToDelete)}</span>?
+              {" "}This contact will be removed from your customer directory.
+            </p>
+            <div className="flex justify-end gap-2">
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={() => deleteModalRef.current?.close()}
+                disabled={deleteContact.isPending}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn btn-error"
+                onClick={handleDelete}
+                disabled={deleteContact.isPending}
+              >
+                {deleteContact.isPending ? "Deleting..." : "Delete contact"}
+              </button>
+            </div>
+          </div>
+        )}
+      </Modal>
       <CreateTicketModal ref={ticketModalRef} />
     </>
   );
