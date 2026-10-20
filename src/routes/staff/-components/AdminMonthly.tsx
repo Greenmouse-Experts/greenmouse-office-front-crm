@@ -305,7 +305,7 @@ export default function TenantMonthly() {
 
       <ChartCard
         title="Category performance"
-        description={`${categoryKind} categories · ${monthName}`}
+        description={`Income categories . 2026`}
         controls={
           <>
             {/*<div className="flex flex-wrap items-center gap-2">
