@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import SimpleContainer from "@/components/SimpleContainer";
 import ContainerRow from "@/components/ContainerRow";
 import { useSearch } from "@/stores/data";
@@ -42,6 +42,7 @@ interface EditProductFormValues {
   price: number;
   categoryId?: string;
   description?: string;
+  isActive: boolean;
 }
 
 function RouteComponent() {
@@ -93,6 +94,7 @@ function RouteComponent() {
       price: 0,
       categoryId: "",
       description: "",
+      isActive: true,
     },
   });
 
@@ -117,6 +119,7 @@ function RouteComponent() {
       price: Number(product.price) || 0,
       categoryId: product.categoryId || "",
       description: product.description || "",
+      isActive: product.isActive !== false,
     });
     setEditNewImages([]);
     setEditPrevImages(
@@ -201,6 +204,7 @@ function RouteComponent() {
         categoryId: data.categoryId || undefined,
         description: data.description?.trim() || undefined,
         images: finalImages,
+        isActive: data.isActive,
       });
       toast.success("Product updated successfully");
       editModalRef.current?.close();
@@ -627,6 +631,28 @@ function RouteComponent() {
               {...editMethods.register("description")}
             />
           </div>
+
+          <Controller
+            control={editMethods.control}
+            name="isActive"
+            render={({ field }) => (
+              <div>
+                <label htmlFor="product-status" className="text-xs font-semibold text-base-content/70">
+                  Status
+                </label>
+                <select
+                  id="product-status"
+                  className="select select-bordered mt-1 w-full"
+                  value={field.value ? "active" : "inactive"}
+                  onChange={(event) => field.onChange(event.target.value === "active")}
+                  onBlur={field.onBlur}
+                >
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+            )}
+          />
 
           <div className="modal-action pt-2">
             <button
