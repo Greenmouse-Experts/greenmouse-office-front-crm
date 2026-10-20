@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useRef, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import InvoicesStat from "./-components/InvocesStat";
 import SimpleContainer from "@/components/SimpleContainer";
@@ -6,6 +6,8 @@ import ContainerRow from "@/components/ContainerRow";
 import CustomTable from "@/components/tables/CustomTable";
 import PageHeader from "@/components/Headers/PageHeader";
 import PageLoader from "@/components/layout/PageLoader";
+import type { ModalHandle } from "@/components/DialogModal";
+import RecordPaymentModal from "./-components/RecordPaymentModal";
 import type { Actions } from "@/components/tables/pop-up";
 import {
   PlusCircleIcon,
@@ -19,7 +21,6 @@ import { useSearch } from "@/stores/data";
 import {
   useInvoices,
   useSendInvoice,
-  useMarkInvoicePaid,
   useDeleteInvoice,
   type Invoice,
 } from "@/api/financeApi";
@@ -32,7 +33,8 @@ export const Route = createFileRoute("/staff/accounts/Invoices/")({
 function RouteComponent() {
   const query = useInvoices();
   const sendInvoice = useSendInvoice();
-  const markPaid = useMarkInvoicePaid();
+  const paymentModalRef = useRef<ModalHandle>(null);
+  const [paymentInvoice, setPaymentInvoice] = useState<Invoice | null>(null);
   const deleteInvoice = useDeleteInvoice();
   const searchProps = useSearch();
   const navigate = useNavigate();
@@ -68,13 +70,9 @@ function RouteComponent() {
     }
   };
 
-  const handleMarkPaid = async (inv: Invoice) => {
-    try {
-      await markPaid.mutateAsync(inv.id);
-      toast.success(`Invoice ${inv.invoiceNumber || inv.id} marked as paid.`);
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to update invoice.");
-    }
+  const openPayment = (invoice: Invoice) => {
+    setPaymentInvoice(invoice);
+    paymentModalRef.current?.open();
   };
 
   const handleDelete = async (inv: Invoice) => {
@@ -221,14 +219,15 @@ function RouteComponent() {
       action: (item: Invoice) => handleSend(item),
     },
     {
-      key: "mark-paid",
-      label: "Mark as Paid",
+      key: "record-payment",
+      label: "Record Payment",
+      disabled: (item) => item.status === "paid" || item.status === "cancelled",
       render: () => (
         <span className="flex items-center gap-2 text-success">
-          <CheckCircle className="size-4" /> Mark Paid
+          <CheckCircle className="size-4" /> Record Payment
         </span>
       ),
-      action: (item: Invoice) => handleMarkPaid(item),
+      action: openPayment,
     },
     {
       key: "delete",
@@ -268,6 +267,7 @@ function RouteComponent() {
           </div>
         </PageLoader>
       </SimpleContainer>
+      <RecordPaymentModal invoice={paymentInvoice} modalRef={paymentModalRef} />
     </div>
   );
 }

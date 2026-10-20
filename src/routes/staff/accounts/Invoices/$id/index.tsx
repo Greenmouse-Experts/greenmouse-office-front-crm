@@ -1,10 +1,12 @@
 import SimpleTitle from "@/components/SimpleTitle";
+import { useRef } from "react";
+import type { ModalHandle } from "@/components/DialogModal";
+import RecordPaymentModal from "../-components/RecordPaymentModal";
 import { useParams, Link } from "@tanstack/react-router";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   useInvoice,
   useSendInvoice,
-  useMarkInvoicePaid,
 } from "@/api/financeApi";
 import PageLoader from "@/components/layout/PageLoader";
 import ReactMarkdown from "react-markdown";
@@ -30,7 +32,7 @@ function RouteComponent() {
 
   const query = useInvoice(id);
   const sendInvoice = useSendInvoice();
-  const markPaid = useMarkInvoicePaid();
+  const paymentModalRef = useRef<ModalHandle>(null);
 
   const invoice = query.data;
 
@@ -41,18 +43,6 @@ function RouteComponent() {
       toast.success("Invoice sent to customer.");
     } catch (err: any) {
       toast.error(err.response?.data?.message || "Failed to send invoice.");
-    }
-  };
-
-  const handleMarkPaid = async () => {
-    if (!id) return;
-    try {
-      await markPaid.mutateAsync(id);
-      toast.success("Invoice marked as paid.");
-    } catch (err: any) {
-      toast.error(
-        err.response?.data?.message || "Failed to mark invoice paid.",
-      );
     }
   };
 
@@ -92,13 +82,12 @@ function RouteComponent() {
                   >
                     <Edit className="size-4 mr-1" /> Edit
                   </Link>
-                  {invoice.status !== "paid" && (
+                  {invoice.status !== "paid" && invoice.status !== "cancelled" && (
                     <button
-                      onClick={handleMarkPaid}
-                      disabled={markPaid.isPending}
+                      onClick={() => paymentModalRef.current?.open()}
                       className="btn btn-sm btn-accent text-accent-content"
                     >
-                      <CheckCircle className="size-4 mr-1" /> Mark Paid
+                      <CheckCircle className="size-4 mr-1" /> Record Payment
                     </button>
                   )}
                   <button
@@ -273,6 +262,7 @@ function RouteComponent() {
           </section>
         )}
       </PageLoader>
+      <RecordPaymentModal invoice={invoice ?? null} modalRef={paymentModalRef} />
     </section>
   );
 }

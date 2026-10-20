@@ -548,19 +548,6 @@ export const useSendInvoice = () => {
   });
 };
 
-export const useMarkInvoicePaid = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: async (id: string) => {
-      const { data } = await apiClient.patch(`/invoices/${id}/mark-paid`);
-      return data?.data || data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["invoices"] });
-    },
-  });
-};
-
 export const useCancelInvoice = () => {
   const queryClient = useQueryClient();
   return useMutation({
