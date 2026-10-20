@@ -87,7 +87,10 @@ export interface OutstandingInvoiceItem {
   balanceDue: number;
   customer?: {
     id: string;
-    name: string;
+    name?: string;
+    firstName?: string;
+    lastName?: string;
+    companyName?: string;
     email?: string;
   };
 }
@@ -254,7 +257,9 @@ export const useOutstandingInvoicesReport = (params?: {
         "/reports/outstanding-invoices",
         { params }
       );
-      return data?.data || data;
+      if (Array.isArray(data?.data)) return data;
+      if (Array.isArray(data?.data?.data)) return data.data;
+      return data?.data ?? data;
     },
   });
 };

@@ -8,6 +8,7 @@ import {
   Wallet,
 } from "lucide-react";
 import { useDashboardStats } from "@/api/tenantApi";
+import { useInvoiceRevenueReport } from "@/api/reportsApi";
 import QueryCompLayout from "@/components/layout/QueryCompLayout";
 
 const formatNumber = (value: number) => new Intl.NumberFormat().format(value);
@@ -33,6 +34,7 @@ function Change({ value }: { value: number }) {
 
 export default function TenantDashStats() {
   const query = useDashboardStats();
+  const debtsQuery = useInvoiceRevenueReport({ currency: "NGN" });
 
   return (
     <QueryCompLayout query={query}>
@@ -85,11 +87,10 @@ export default function TenantDashStats() {
           // },
           {
             title: "Total Debts",
-            value: 0,
-            change: stats.pendingOrdersChange,
+            value: debtsQuery.isLoading ? "…" : debtsQuery.data ? formatMoney(debtsQuery.data.outstandingTotal) : "—",
             linkLabel: "View Debts",
             icon: Clock,
-            to: "/staff/orders",
+            to: "/staff/accounts/debts",
             accent: "bg-warning/10 text-warning",
           },
           {

@@ -661,6 +661,8 @@ export const useRecordInvoicePayment = () => {
         queryKey: ["invoices", variables.invoiceId, "receipts"],
       });
       queryClient.invalidateQueries({ queryKey: ["receipts"] });
+      queryClient.invalidateQueries({ queryKey: ["reports", "outstanding-invoices"] });
+      queryClient.invalidateQueries({ queryKey: ["reports", "invoice-revenue"] });
     },
   });
 };
@@ -725,6 +727,8 @@ export const useVoidReceipt = () => {
       queryClient.invalidateQueries({ queryKey: ["receipts"] });
       queryClient.invalidateQueries({ queryKey: ["receipts", variables.id] });
       queryClient.invalidateQueries({ queryKey: ["invoices"] });
+      queryClient.invalidateQueries({ queryKey: ["reports", "outstanding-invoices"] });
+      queryClient.invalidateQueries({ queryKey: ["reports", "invoice-revenue"] });
     },
   });
 };

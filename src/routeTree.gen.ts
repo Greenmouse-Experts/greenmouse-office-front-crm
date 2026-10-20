@@ -56,6 +56,7 @@ import { Route as StaffContactsCompaniesIndexRouteImport } from './routes/staff/
 import { Route as StaffAccountsTransactionsIndexRouteImport } from './routes/staff/accounts/transactions/index'
 import { Route as StaffAccountsQuotesIndexRouteImport } from './routes/staff/accounts/quotes/index'
 import { Route as StaffAccountsIncomeExpensesIndexRouteImport } from './routes/staff/accounts/income-expenses/index'
+import { Route as StaffAccountsDebtsIndexRouteImport } from './routes/staff/accounts/debts/index'
 import { Route as StaffAccountsAnalysisIndexRouteImport } from './routes/staff/accounts/analysis/index'
 import { Route as StaffAccountsInvoicesIndexRouteImport } from './routes/staff/accounts/Invoices/index'
 import { Route as AuthRegisterOnBoardingIndexRouteImport } from './routes/auth/register/on-boarding/index'
@@ -328,6 +329,11 @@ const StaffAccountsIncomeExpensesIndexRoute =
     path: '/accounts/income-expenses/',
     getParentRoute: () => StaffRouteRoute,
   } as any)
+const StaffAccountsDebtsIndexRoute = StaffAccountsDebtsIndexRouteImport.update({
+  id: '/accounts/debts/',
+  path: '/accounts/debts/',
+  getParentRoute: () => StaffRouteRoute,
+} as any)
 const StaffAccountsAnalysisIndexRoute =
   StaffAccountsAnalysisIndexRouteImport.update({
     id: '/accounts/analysis/',
@@ -509,6 +515,7 @@ export interface FileRoutesByFullPath {
   '/auth/register/on-boarding': typeof AuthRegisterOnBoardingIndexRoute
   '/staff/accounts/Invoices': typeof StaffAccountsInvoicesIndexRoute
   '/staff/accounts/analysis': typeof StaffAccountsAnalysisIndexRoute
+  '/staff/accounts/debts': typeof StaffAccountsDebtsIndexRoute
   '/staff/accounts/income-expenses': typeof StaffAccountsIncomeExpensesIndexRoute
   '/staff/accounts/quotes': typeof StaffAccountsQuotesIndexRoute
   '/staff/accounts/transactions': typeof StaffAccountsTransactionsIndexRoute
@@ -576,6 +583,7 @@ export interface FileRoutesByTo {
   '/auth/register/on-boarding': typeof AuthRegisterOnBoardingIndexRoute
   '/staff/accounts/Invoices': typeof StaffAccountsInvoicesIndexRoute
   '/staff/accounts/analysis': typeof StaffAccountsAnalysisIndexRoute
+  '/staff/accounts/debts': typeof StaffAccountsDebtsIndexRoute
   '/staff/accounts/income-expenses': typeof StaffAccountsIncomeExpensesIndexRoute
   '/staff/accounts/quotes': typeof StaffAccountsQuotesIndexRoute
   '/staff/accounts/transactions': typeof StaffAccountsTransactionsIndexRoute
@@ -650,6 +658,7 @@ export interface FileRoutesById {
   '/auth/register/on-boarding/': typeof AuthRegisterOnBoardingIndexRoute
   '/staff/accounts/Invoices/': typeof StaffAccountsInvoicesIndexRoute
   '/staff/accounts/analysis/': typeof StaffAccountsAnalysisIndexRoute
+  '/staff/accounts/debts/': typeof StaffAccountsDebtsIndexRoute
   '/staff/accounts/income-expenses/': typeof StaffAccountsIncomeExpensesIndexRoute
   '/staff/accounts/quotes/': typeof StaffAccountsQuotesIndexRoute
   '/staff/accounts/transactions/': typeof StaffAccountsTransactionsIndexRoute
@@ -725,6 +734,7 @@ export interface FileRouteTypes {
     | '/auth/register/on-boarding'
     | '/staff/accounts/Invoices'
     | '/staff/accounts/analysis'
+    | '/staff/accounts/debts'
     | '/staff/accounts/income-expenses'
     | '/staff/accounts/quotes'
     | '/staff/accounts/transactions'
@@ -792,6 +802,7 @@ export interface FileRouteTypes {
     | '/auth/register/on-boarding'
     | '/staff/accounts/Invoices'
     | '/staff/accounts/analysis'
+    | '/staff/accounts/debts'
     | '/staff/accounts/income-expenses'
     | '/staff/accounts/quotes'
     | '/staff/accounts/transactions'
@@ -865,6 +876,7 @@ export interface FileRouteTypes {
     | '/auth/register/on-boarding/'
     | '/staff/accounts/Invoices/'
     | '/staff/accounts/analysis/'
+    | '/staff/accounts/debts/'
     | '/staff/accounts/income-expenses/'
     | '/staff/accounts/quotes/'
     | '/staff/accounts/transactions/'
@@ -1244,6 +1256,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StaffAccountsIncomeExpensesIndexRouteImport
       parentRoute: typeof StaffRouteRoute
     }
+    '/staff/accounts/debts/': {
+      id: '/staff/accounts/debts/'
+      path: '/accounts/debts'
+      fullPath: '/staff/accounts/debts'
+      preLoaderRoute: typeof StaffAccountsDebtsIndexRouteImport
+      parentRoute: typeof StaffRouteRoute
+    }
     '/staff/accounts/analysis/': {
       id: '/staff/accounts/analysis/'
       path: '/accounts/analysis'
@@ -1490,6 +1509,7 @@ interface StaffRouteRouteChildren {
   StaffOrdersIdEditRoute: typeof StaffOrdersIdEditRoute
   StaffAccountsInvoicesIndexRoute: typeof StaffAccountsInvoicesIndexRoute
   StaffAccountsAnalysisIndexRoute: typeof StaffAccountsAnalysisIndexRoute
+  StaffAccountsDebtsIndexRoute: typeof StaffAccountsDebtsIndexRoute
   StaffAccountsIncomeExpensesIndexRoute: typeof StaffAccountsIncomeExpensesIndexRoute
   StaffAccountsQuotesIndexRoute: typeof StaffAccountsQuotesIndexRoute
   StaffAccountsTransactionsIndexRoute: typeof StaffAccountsTransactionsIndexRoute
@@ -1534,6 +1554,7 @@ const StaffRouteRouteChildren: StaffRouteRouteChildren = {
   StaffOrdersIdEditRoute: StaffOrdersIdEditRoute,
   StaffAccountsInvoicesIndexRoute: StaffAccountsInvoicesIndexRoute,
   StaffAccountsAnalysisIndexRoute: StaffAccountsAnalysisIndexRoute,
+  StaffAccountsDebtsIndexRoute: StaffAccountsDebtsIndexRoute,
   StaffAccountsIncomeExpensesIndexRoute: StaffAccountsIncomeExpensesIndexRoute,
   StaffAccountsQuotesIndexRoute: StaffAccountsQuotesIndexRoute,
   StaffAccountsTransactionsIndexRoute: StaffAccountsTransactionsIndexRoute,

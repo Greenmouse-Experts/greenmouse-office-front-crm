@@ -170,6 +170,13 @@ const nav_links = [
         children: null,
       },
       {
+        path: "/staff/accounts/debts",
+        label: "Debts",
+        icon: <QuoteIcon size={ICON_SIZE} />,
+        type: "menu",
+        children: null,
+      },
+      {
         path: "/staff/accounts/analysis",
         label: "Analysis",
         icon: <BarChart2 size={ICON_SIZE} />,
