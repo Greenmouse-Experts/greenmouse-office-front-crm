@@ -610,9 +610,9 @@ export const useInvoicePayments = (invoiceId?: string) => {
       const { data } = await apiClient.get<any>(
         `/invoices/${invoiceId}/payments`,
       );
-      if (Array.isArray(data)) return data;
-      if (Array.isArray(data?.data)) return data.data;
-      if (Array.isArray(data?.payments)) return data.payments;
+      const payload = data?.data ?? data;
+      if (Array.isArray(payload)) return payload;
+      if (Array.isArray(payload?.payments)) return payload.payments;
       return [];
     },
     enabled: !!invoiceId,
@@ -627,9 +627,9 @@ export const useInvoiceReceipts = (invoiceId?: string) => {
       const { data } = await apiClient.get<any>(
         `/invoices/${invoiceId}/receipts`,
       );
-      if (Array.isArray(data)) return data;
-      if (Array.isArray(data?.data)) return data.data;
-      if (Array.isArray(data?.receipts)) return data.receipts;
+      const payload = data?.data ?? data;
+      if (Array.isArray(payload)) return payload;
+      if (Array.isArray(payload?.receipts)) return payload.receipts;
       return [];
     },
     enabled: !!invoiceId,
@@ -682,11 +682,20 @@ export const useReceiptHtml = (id?: string) => {
     queryKey: ["receipts", id, "html"],
     queryFn: async () => {
       if (!id) throw new Error("Receipt ID required");
-      const { data } = await apiClient.get<string>(`/receipts/${id}/html`);
-      return data;
+      const { data } = await apiClient.get<any>(`/receipts/${id}/html`);
+      const html = typeof data === "string" ? data : data?.html ?? data?.data?.html ?? data?.data;
+      if (typeof html !== "string") throw new Error("Receipt preview is unavailable.");
+      return html;
     },
     enabled: !!id,
   });
+};
+
+export const downloadReceiptPdf = async (id: string): Promise<Blob> => {
+  const { data } = await apiClient.get<Blob>(`/receipts/${id}/pdf`, {
+    responseType: "blob",
+  });
+  return data;
 };
 
 export const useReceiptPdf = (id?: string) => {

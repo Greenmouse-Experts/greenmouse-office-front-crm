@@ -2,6 +2,7 @@ import SimpleTitle from "@/components/SimpleTitle";
 import { useRef } from "react";
 import type { ModalHandle } from "@/components/DialogModal";
 import RecordPaymentModal from "../-components/RecordPaymentModal";
+import InvoiceReceipts from "../-components/InvoiceReceipts";
 import { useParams, Link } from "@tanstack/react-router";
 import { createFileRoute } from "@tanstack/react-router";
 import {
@@ -255,10 +256,23 @@ function RouteComponent() {
                         {invoice.currency || "NGN"}
                       </span>
                     </div>
+                    {invoice.paidAmount != null && (
+                      <div className="flex justify-between text-success">
+                        <span>Paid</span>
+                        <span>₦{Number(invoice.paidAmount).toFixed(2)}</span>
+                      </div>
+                    )}
+                    {(invoice.amountDue ?? invoice.balance) != null && (
+                      <div className="flex justify-between font-semibold">
+                        <span>Balance due</span>
+                        <span>₦{Number(invoice.amountDue ?? invoice.balance).toFixed(2)}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
+            <InvoiceReceipts invoice={invoice} />
           </section>
         )}
       </PageLoader>
