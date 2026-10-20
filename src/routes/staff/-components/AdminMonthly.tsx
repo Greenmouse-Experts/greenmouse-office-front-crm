@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { CalendarDays } from "lucide-react";
 import {
   Area,
   AreaChart,
@@ -35,6 +36,10 @@ const monthLabel = (month: string) =>
   new Date(`${month}-01T00:00:00`).toLocaleDateString("en-NG", {
     month: "short",
   });
+
+const monthNames = Array.from({ length: 12 }, (_, index) =>
+  new Date(2020, index, 1).toLocaleDateString("en-NG", { month: "long" }),
+);
 
 function ChartCard({
   title,
@@ -159,6 +164,10 @@ export default function TenantMonthly() {
     `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}`,
   );
   const [categoryKind, setCategoryKind] = useState<"income" | "expenses">("income");
+  const selectedYear = Number(month.slice(0, 4));
+  const selectedMonth = Number(month.slice(5, 7));
+  const currentYear = today.getFullYear();
+  const currentMonth = today.getMonth() + 1;
   const yearlyRevenue = useRevenueReport({ year });
   const yearlyExpenses = useExpensesReport({ year });
   const monthlyRevenue = useRevenueReport({ month });
@@ -210,16 +219,37 @@ export default function TenantMonthly() {
               <button type="button" aria-pressed={categoryKind === "income"} className={`btn btn-sm join-item ${categoryKind === "income" ? "btn-primary" : "btn-ghost"}`} onClick={() => setCategoryKind("income")}>Income</button>
               <button type="button" aria-pressed={categoryKind === "expenses"} className={`btn btn-sm join-item ${categoryKind === "expenses" ? "btn-primary" : "btn-ghost"}`} onClick={() => setCategoryKind("expenses")}>Expenses</button>
             </div>
-            <input
-              type="month"
-              aria-label="Category report month"
-              className="input input-bordered input-sm w-36"
-              value={month}
-              max={`${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}`}
-              onChange={(event) => {
-                if (event.target.value) setMonth(event.target.value);
-              }}
-            />
+            <div className="flex items-center gap-1 rounded-lg border border-base-300 bg-base-100 px-2 focus-within:border-primary">
+              <CalendarDays className="size-4 shrink-0 text-base-content/50" aria-hidden="true" />
+              <select
+                aria-label="Category report month"
+                className="select select-ghost select-sm w-32 border-0 px-1 focus:outline-none"
+                value={selectedMonth}
+                onChange={(event) => {
+                  setMonth(`${selectedYear}-${event.target.value.padStart(2, "0")}`);
+                }}
+              >
+                {monthNames.map((name, index) => (
+                  <option key={name} value={index + 1} disabled={selectedYear === currentYear && index + 1 > currentMonth}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+              <select
+                aria-label="Category report year"
+                className="select select-ghost select-sm w-20 border-0 px-1 focus:outline-none"
+                value={selectedYear}
+                onChange={(event) => {
+                  const nextYear = Number(event.target.value);
+                  const nextMonth = nextYear === currentYear ? Math.min(selectedMonth, currentMonth) : selectedMonth;
+                  setMonth(`${nextYear}-${String(nextMonth).padStart(2, "0")}`);
+                }}
+              >
+                {Array.from({ length: 30 }, (_, index) => currentYear - index).map((option) => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
+            </div>
           </div>
         }
       >
