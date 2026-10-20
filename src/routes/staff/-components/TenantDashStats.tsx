@@ -84,8 +84,8 @@ export default function TenantDashStats() {
           //   accent: "bg-info/10 text-info",
           // },
           {
-            title: "Pending Orders",
-            value: formatNumber(stats.pendingOrders),
+            title: "Total Debts",
+            value: 0,
             change: stats.pendingOrdersChange,
             linkLabel: "View orders",
             icon: Clock,
