@@ -11,7 +11,7 @@ import {
   type Notification,
 } from "@/api/notifications-api";
 
-export const Route = createFileRoute("/staff/notiications/")({
+export const Route = createFileRoute("/staff/notifications/")({
   component: NotificationsPage,
 });
 

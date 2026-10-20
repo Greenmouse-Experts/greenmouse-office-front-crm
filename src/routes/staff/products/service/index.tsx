@@ -35,7 +35,7 @@ export const Route = createFileRoute("/staff/products/service/")({
 
 function RouteComponent() {
   const query = useServices();
-  const categoriesQuery = useCategories();
+  const categoriesQuery = useCategories("service");
   const createService = useCreateService();
   const updateService = useUpdateService();
   const deleteService = useDeleteService();
@@ -253,7 +253,7 @@ function RouteComponent() {
       >
         <div className="flex items-center gap-2">
           <Link
-            to="/staff/products/categories"
+            to="/staff/products/service/categories"
             className="btn btn-outline btn-sm"
           >
             <Layers className="size-4" /> Categories

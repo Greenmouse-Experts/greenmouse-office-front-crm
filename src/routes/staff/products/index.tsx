@@ -46,7 +46,7 @@ interface EditProductFormValues {
 
 function RouteComponent() {
   const query = useProducts();
-  const categoriesQuery = useCategories();
+  const categoriesQuery = useCategories("product");
   const createProduct = useCreateProduct();
   const updateProduct = useUpdateProduct();
   const deleteProduct = useDeleteProduct();

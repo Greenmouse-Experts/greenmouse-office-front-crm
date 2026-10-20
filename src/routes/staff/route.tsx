@@ -17,6 +17,7 @@ import {
   Kanban,
   Layers,
   TrendingUp,
+  Bell,
 } from "lucide-react";
 import AdminHeader from "./-components/AdminHeader";
 import { Link } from "@tanstack/react-router";
@@ -127,7 +128,14 @@ const nav_links = [
       },
       {
         path: "/staff/products/categories",
-        label: "Categories",
+        label: "Product Categories",
+        icon: <Tag size={ICON_SIZE} />,
+        type: "menu",
+        children: null,
+      },
+      {
+        path: "/staff/products/service/categories",
+        label: "Service Categories",
         icon: <Tag size={ICON_SIZE} />,
         type: "menu",
         children: null,
@@ -184,13 +192,13 @@ const nav_links = [
     type: "menu",
     children: null,
   },
-  // {
-  //   path: "/staff/subscription",
-  //   label: "Subscription",
-  //   icon: <CheckCircle size={ICON_SIZE} />,
-  //   type: "menu",
-  //   children: null,
-  // },
+  {
+    path: "/staff/notifications",
+    label: "Notifications",
+    icon: <Bell size={ICON_SIZE} />,
+    type: "menu",
+    children: null,
+  },
 
   {
     path: "/staff/support",

@@ -215,7 +215,7 @@ function ReminderPreferencesPage() {
           {(preferences) => <ReminderPreferencesForm preferences={preferences} />}
         </PageLoader>
       </section>
-      <Link to="/staff/notiications" className="link link-primary text-sm">
+      <Link to="/staff/notifications" className="link link-primary text-sm">
         View notification inbox
       </Link>
     </div>

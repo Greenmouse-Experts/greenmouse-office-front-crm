@@ -27,7 +27,7 @@ export const Route = createFileRoute("/staff/products/service/add/")({
 function RouteComponent() {
   const navigate = useNavigate();
   const createService = useCreateService();
-  const categoriesQuery = useCategories();
+  const categoriesQuery = useCategories("service");
   const uploadImage = useUploadImage();
   const { image, setImage, image_link } = useSelectImage();
   const [submitting, setSubmitting] = useState(false);

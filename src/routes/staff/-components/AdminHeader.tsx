@@ -20,7 +20,7 @@ export default function AdminHeader() {
 
       <div className="ml-auto flex items-center gap-2">
         <Link
-          to="/staff/notiications"
+          to="/staff/notifications"
           className="btn btn-ghost btn-square relative"
           aria-label={unreadCount ? `Notifications, ${unreadCount} unread` : "Notifications"}
         >

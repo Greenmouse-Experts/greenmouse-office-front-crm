@@ -423,11 +423,15 @@ export interface Category {
   createdAt?: string;
 }
 
-export const useCategories = () => {
+export type CategoryType = "product" | "service";
+
+export const useCategories = (type?: CategoryType) => {
   return useQuery<Category[]>({
-    queryKey: ["categories"],
+    queryKey: ["categories", type],
     queryFn: async () => {
-      const { data } = await apiClient.get<any>("/categories");
+      const { data } = await apiClient.get<any>("/categories", {
+        params: type ? { type } : undefined,
+      });
       if (Array.isArray(data)) return data;
       if (Array.isArray(data?.data)) return data.data;
       if (Array.isArray(data?.categories)) return data.categories;

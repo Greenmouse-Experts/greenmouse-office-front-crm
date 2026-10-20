@@ -28,7 +28,7 @@ export const Route = createFileRoute("/staff/products/add/")({
 function RouteComponent() {
   const navigate = useNavigate();
   const createProduct = useCreateProduct();
-  const categoriesQuery = useCategories();
+  const categoriesQuery = useCategories("product");
   const uploadImage = useUploadImage();
   const [submitting, setSubmitting] = useState(false);
 

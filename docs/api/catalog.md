@@ -101,7 +101,8 @@ Inventory items, physical products, recurring/one-off services, item categories,
 ```json
 {
   "name": "Electronics",
-  "description": "All electronic products and gadgets"
+  "description": "All electronic products and gadgets",
+  "type": "product"
 }
 ```
 
@@ -113,13 +114,14 @@ Inventory items, physical products, recurring/one-off services, item categories,
 
 ### Get all categories
 
-`GET /v1/categories?search=string`
+`GET /v1/categories?type=product&search=string`
 
 **Query Parameters**
 
 | Parameter | Type / Example | Description |
 | :--- | :--- | :--- |
 | `search` | `string` | Search by category name |
+| `type` | `product` or `service` | Return categories for the selected catalog type |
 
 **Example responses from the collection**
 
