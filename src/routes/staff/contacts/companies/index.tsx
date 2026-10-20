@@ -25,7 +25,6 @@ import {
   Eye,
   Pencil,
   Trash2,
-  TicketPlus,
 } from "lucide-react";
 
 export const Route = createFileRoute("/staff/contacts/companies/")({
@@ -40,8 +39,10 @@ function RouteComponent() {
   const searchProps = useSearch();
 
   const detailsModalRef = useRef<ModalHandle>(null);
+  const deleteModalRef = useRef<ModalHandle>(null);
   const ticketModalRef = useRef<CreateTicketModalHandle>(null);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
+  const [companyToDelete, setCompanyToDelete] = useState<Company | null>(null);
 
   const companies = query.data || [];
 
@@ -62,20 +63,21 @@ function RouteComponent() {
     });
   }, [companies, searchProps.search]);
 
-  const handleDelete = async (company: Company) => {
-    if (
-      !window.confirm(
-        `Are you sure you want to delete company account "${company.name}"?`,
-      )
-    ) {
-      return;
-    }
+  const requestDelete = (company: Company) => {
+    setCompanyToDelete(company);
+    deleteModalRef.current?.open();
+  };
 
+  const handleDelete = async () => {
+    if (!companyToDelete || deleteCompany.isPending) return;
+    const company = companyToDelete;
     try {
       await deleteCompany.mutateAsync(company.id);
       await queryClient.invalidateQueries({ queryKey: ["companies"] });
       await query.refetch();
       toast.success(`Company "${company.name}" deleted successfully.`);
+      deleteModalRef.current?.close();
+      setCompanyToDelete(null);
     } catch (err: any) {
       toast.error(err.response?.data?.message || "Failed to delete company.");
     }
@@ -194,7 +196,7 @@ function RouteComponent() {
           <Trash2 className="size-4" /> Delete
         </span>
       ),
-      action: (item: Company) => handleDelete(item),
+      action: requestDelete,
     },
   ];
 
@@ -360,6 +362,34 @@ function RouteComponent() {
             </div>
           </div>
         )}
+      </Modal>
+      <Modal ref={deleteModalRef} title="Delete company">
+        <div className="space-y-4">
+          <p className="text-sm text-base-content/80">
+            Delete <strong>{companyToDelete?.name}</strong>? This action cannot be undone.
+          </p>
+          <div className="modal-action">
+            <button
+              type="button"
+              className="btn btn-ghost"
+              onClick={() => {
+                deleteModalRef.current?.close();
+                setCompanyToDelete(null);
+              }}
+              disabled={deleteCompany.isPending}
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              className="btn btn-error"
+              onClick={handleDelete}
+              disabled={!companyToDelete || deleteCompany.isPending}
+            >
+              {deleteCompany.isPending ? "Deleting..." : "Delete company"}
+            </button>
+          </div>
+        </div>
       </Modal>
       <CreateTicketModal ref={ticketModalRef} />
     </>
