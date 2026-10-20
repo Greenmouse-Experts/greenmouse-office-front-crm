@@ -1,9 +1,9 @@
 import { useMemo, useRef, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import ReactMarkdown from "react-markdown";
 import { useQueryClient } from "@tanstack/react-query";
-import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus } from "lucide-react";
 import CustomTable, { type columnType } from "@/components/tables/CustomTable";
 import type { Actions } from "@/components/tables/pop-up";
 import SimpleContainer from "@/components/SimpleContainer";
@@ -11,17 +11,12 @@ import PageHeader from "@/components/Headers/PageHeader";
 import ContainerRow from "@/components/ContainerRow";
 import { useSearch } from "@/stores/data";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
-import SimpleInput from "@/components/inputs/SimpleInput";
-import PriceInput from "@/components/inputs/PriceInput";
-import LocalSelect from "@/components/inputs/LocalSelect";
 import PageLoader from "@/components/layout/PageLoader";
 import { useContacts } from "@/api/crmApi";
 import { useProducts } from "@/api/catalogApi";
 import {
   useOrders,
   useOrder,
-  useCreateOrder,
-  useUpdateOrder,
   useDeleteOrder,
   type Order,
   type OrderItem,
@@ -30,28 +25,6 @@ import {
 export const Route = createFileRoute("/staff/orders/")({
   component: RouteComponent,
 });
-
-interface OrderFormValues {
-  contactId: string;
-  currency: string;
-  discount: number;
-  tax: number;
-  status: string;
-  paymentStatus: string;
-  notes: string;
-}
-
-const defaultValues: OrderFormValues = {
-  contactId: "",
-  currency: "NGN",
-  discount: 0,
-  tax: 0,
-  status: "pending",
-  paymentStatus: "unpaid",
-  notes: "",
-};
-
-const emptyItem = (): OrderItem => ({ productId: "", qty: 1, unitPrice: 0 });
 
 const errorMessage = (error: unknown, fallback: string) => {
   const message = (
@@ -90,34 +63,20 @@ const statusBadge = (status?: string) => {
 };
 
 function RouteComponent() {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const ordersQuery = useOrders();
   const productsQuery = useProducts();
   const contactsQuery = useContacts();
-  const createOrder = useCreateOrder();
-  const updateOrder = useUpdateOrder();
   const deleteOrder = useDeleteOrder();
   const searchProps = useSearch();
-  const formModalRef = useRef<ModalHandle>(null);
   const detailsModalRef = useRef<ModalHandle>(null);
-  const [editingOrder, setEditingOrder] = useState<Order | null>(null);
   const [selectedOrderId, setSelectedOrderId] = useState<string>();
-  const [items, setItems] = useState<OrderItem[]>([emptyItem()]);
-  const methods = useForm<OrderFormValues>({ defaultValues });
   const detailsQuery = useOrder(selectedOrderId);
 
   const products = productsQuery.data || [];
   const contacts = contactsQuery.data || [];
   const orders = ordersQuery.data || [];
-  const currency = methods.watch("currency") || "NGN";
-  const discount = Number(methods.watch("discount")) || 0;
-  const tax = Number(methods.watch("tax")) || 0;
-  const subtotal = items.reduce(
-    (sum, item) =>
-      sum + (Number(item.qty) || 0) * (Number(item.unitPrice) || 0),
-    0,
-  );
-  const total = Math.max(0, subtotal - discount + tax);
 
   const customerName = (order: Order) => {
     const contact =
@@ -140,118 +99,9 @@ function RouteComponent() {
     );
   }, [orders, contacts, searchProps.search]);
 
-  const openCreate = () => {
-    setEditingOrder(null);
-    setItems([emptyItem()]);
-    methods.reset(defaultValues);
-    formModalRef.current?.open();
-  };
-
   const openDetails = (order: Order) => {
     setSelectedOrderId(order.id);
     detailsModalRef.current?.open();
-  };
-
-  const openEdit = (order: Order) => {
-    setEditingOrder(order);
-    setItems(
-      order.items?.length
-        ? order.items.map((item) => ({
-            productId: item.productId,
-            qty: item.qty,
-            unitPrice: item.unitPrice,
-          }))
-        : [emptyItem()],
-    );
-    methods.reset({
-      contactId: order.contactId || "",
-      currency: order.currency || "NGN",
-      discount: Number(order.discount) || 0,
-      tax: Number(order.tax) || 0,
-      status: order.status || "pending",
-      paymentStatus: order.paymentStatus || "unpaid",
-      notes: order.notes || "",
-    });
-    detailsModalRef.current?.close();
-    formModalRef.current?.open();
-  };
-
-  const changeProduct = (index: number, productId: string) => {
-    const product = products.find((item) => item.id === productId);
-    setItems((current) =>
-      current.map((item, itemIndex) =>
-        itemIndex === index
-          ? {
-              ...item,
-              productId,
-              unitPrice: product ? Number(product.price) || 0 : 0,
-            }
-          : item,
-      ),
-    );
-  };
-
-  const changeItemNumber = (
-    index: number,
-    field: "qty" | "unitPrice",
-    value: number,
-  ) => {
-    setItems((current) =>
-      current.map((item, itemIndex) =>
-        itemIndex === index ? { ...item, [field]: value } : item,
-      ),
-    );
-  };
-
-  const onSubmit = async (values: OrderFormValues) => {
-    if (
-      items.length === 0 ||
-      items.some(
-        (item) =>
-          !item.productId ||
-          !Number.isInteger(Number(item.qty)) ||
-          Number(item.qty) < 1 ||
-          !Number.isFinite(Number(item.unitPrice)) ||
-          Number(item.unitPrice) < 0,
-      )
-    ) {
-      toast.error(
-        "Choose a product and enter a valid quantity and price for each item.",
-      );
-      return;
-    }
-
-    const payload = {
-      items: items.map(({ productId, qty, unitPrice }) => ({
-        productId,
-        qty: Number(qty),
-        unitPrice: Number(unitPrice),
-      })),
-      contactId: values.contactId || (editingOrder ? null : undefined),
-      currency: values.currency,
-      discount: Number(values.discount) || 0,
-      tax: Number(values.tax) || 0,
-      status: values.status,
-      paymentStatus: values.paymentStatus,
-      notes: values.notes.trim(),
-    };
-
-    try {
-      if (editingOrder) {
-        await updateOrder.mutateAsync({ id: editingOrder.id, ...payload });
-        toast.success("Order updated successfully.");
-      } else {
-        await createOrder.mutateAsync(payload);
-        toast.success("Order created successfully.");
-      }
-      formModalRef.current?.close();
-      setEditingOrder(null);
-      void queryClient.invalidateQueries({ queryKey: ["orders"] });
-    } catch (error) {
-      toast.error(
-        errorMessage(error, "Failed to save order. Please try again."),
-      );
-    }
   };
 
   const handleDelete = async (order: Order) => {
@@ -338,7 +188,6 @@ function RouteComponent() {
     },
   ];
 
-  const isSaving = createOrder.isPending || updateOrder.isPending;
   const selectedOrder = detailsQuery.data;
 
   return (
@@ -347,13 +196,9 @@ function RouteComponent() {
         title="Orders"
         description="Track customer orders, fulfillment, and payment status."
       >
-        <button
-          type="button"
-          onClick={openCreate}
-          className="btn btn-primary btn-sm"
-        >
+        <Link to="/staff/orders/add" className="btn btn-primary btn-sm">
           <Plus className="size-4" /> Create Order
-        </button>
+        </Link>
       </PageHeader>
 
       <SimpleContainer
@@ -371,7 +216,7 @@ function RouteComponent() {
             description:
               "Create an order to start tracking purchases and fulfillment.",
             actionText: "Create Order",
-            onAction: openCreate,
+            onAction: () => { void navigate({ to: "/staff/orders/add" }); },
           }}
         >
           {() =>
@@ -431,221 +276,6 @@ function RouteComponent() {
           }
         </PageLoader>
       </SimpleContainer>
-
-      <Modal
-        ref={formModalRef}
-        title={editingOrder ? "Edit Order" : "Create Order"}
-      >
-        <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-5">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <LocalSelect label="Customer" {...methods.register("contactId")}>
-                <option value="">Unassigned</option>
-                {contacts.map((contact) => (
-                  <option key={contact.id} value={contact.id}>
-                    {contact.firstName} {contact.lastName}
-                  </option>
-                ))}
-              </LocalSelect>
-              <LocalSelect label="Currency" {...methods.register("currency")}>
-                <option value="NGN">NGN (₦)</option>
-                <option value="USD">USD ($)</option>
-                <option value="EUR">EUR (€)</option>
-                <option value="GBP">GBP (£)</option>
-              </LocalSelect>
-            </div>
-            {contactsQuery.isError && (
-              <p className="text-sm text-error">
-                Customers could not be loaded. You can still create an
-                unassigned order.
-              </p>
-            )}
-
-            <div className="space-y-3 border-t border-base-200 pt-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="text-sm font-semibold">Order Items</h4>
-                  <p className="text-xs text-base-content/70">
-                    Add products, quantities, and negotiated unit prices.
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  className="btn btn-outline btn-xs"
-                  onClick={() =>
-                    setItems((current) => [...current, emptyItem()])
-                  }
-                >
-                  <Plus className="size-3.5" /> Add Item
-                </button>
-              </div>
-
-              {productsQuery.isLoading ? (
-                <div className="py-4 text-center text-sm text-base-content/70">
-                  Loading product list...
-                </div>
-              ) : productsQuery.isError ? (
-                <div className="rounded-lg border border-error/20 bg-error/10 p-3 text-sm text-error">
-                  Products could not be loaded. Please reload the page before
-                  creating an order.
-                </div>
-              ) : products.length === 0 ? (
-                <div className="rounded-lg border border-warning/20 bg-warning/10 p-3 text-sm text-warning-content">
-                  No products are available yet. Add products in the catalog
-                  before creating an order.
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {items.map((item, index) => (
-                    <div
-                      key={index}
-                      className="grid gap-3 rounded-xl border border-base-200 bg-base-200/30 p-3 sm:grid-cols-[1.5fr_0.8fr_1fr_auto] sm:items-end"
-                    >
-                      <LocalSelect
-                        label={`Item #${index + 1}`}
-                        value={item.productId}
-                        onChange={(e) => changeProduct(index, e.target.value)}
-                      >
-                        <option value="">Select a product</option>
-                        {products.map((product) => (
-                          <option key={product.id} value={product.id}>
-                            {product.name} (
-                            {formatMoney(Number(product.price) || 0, currency)})
-                          </option>
-                        ))}
-                      </LocalSelect>
-                      <SimpleInput
-                        label="Qty"
-                        type="number"
-                        min="1"
-                        step="1"
-                        value={item.qty}
-                        onChange={(e) =>
-                          changeItemNumber(
-                            index,
-                            "qty",
-                            Math.max(1, Number(e.target.value) || 1),
-                          )
-                        }
-                      />
-                      <PriceInput
-                        label="Unit Price"
-                        value={item.unitPrice}
-                        onChange={(e) =>
-                          changeItemNumber(
-                            index,
-                            "unitPrice",
-                            Math.max(0, Number(e.target.value) || 0),
-                          )
-                        }
-                      />
-                      <button
-                        type="button"
-                        aria-label="Remove item"
-                        disabled={items.length === 1}
-                        className="btn btn-ghost btn-sm text-error self-end disabled:opacity-30"
-                        onClick={() =>
-                          setItems((current) =>
-                            current.filter(
-                              (_, itemIndex) => itemIndex !== index,
-                            ),
-                          )
-                        }
-                      >
-                        <Trash2 className="size-4" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="grid gap-4 border-t border-base-200 pt-4 sm:grid-cols-2">
-              <SimpleInput
-                label="Discount"
-                type="number"
-                min="0"
-                step="0.01"
-                {...methods.register("discount", {
-                  valueAsNumber: true,
-                  min: 0,
-                })}
-              />
-              <SimpleInput
-                label="Tax"
-                type="number"
-                min="0"
-                step="0.01"
-                {...methods.register("tax", { valueAsNumber: true, min: 0 })}
-              />
-              <LocalSelect label="Status" {...methods.register("status")}>
-                <option value="pending">Pending</option>
-                <option value="processing">Processing</option>
-                <option value="shipped">Shipped</option>
-                <option value="delivered">Delivered</option>
-                <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
-              </LocalSelect>
-              <LocalSelect
-                label="Payment status"
-                {...methods.register("paymentStatus")}
-              >
-                <option value="unpaid">Unpaid</option>
-                <option value="partial">Partially paid</option>
-                <option value="paid">Paid</option>
-              </LocalSelect>
-            </div>
-            <SimpleInput
-              label="Notes"
-              placeholder="Optional fulfillment notes"
-              {...methods.register("notes")}
-            />
-            <div className="rounded-lg bg-base-200/60 p-3 text-sm tabular-nums">
-              <div className="flex justify-between text-base-content/70">
-                <span>Subtotal</span>
-                <span>{formatMoney(subtotal, currency)}</span>
-              </div>
-              <div className="mt-1 flex justify-between text-base-content/70">
-                <span>Discount</span>
-                <span>−{formatMoney(discount, currency)}</span>
-              </div>
-              <div className="mt-1 flex justify-between text-base-content/70">
-                <span>Tax</span>
-                <span>+{formatMoney(tax, currency)}</span>
-              </div>
-              <div className="mt-2 flex justify-between border-t border-base-300 pt-2 font-semibold">
-                <span>Total</span>
-                <span>{formatMoney(total, currency)}</span>
-              </div>
-            </div>
-            <div className="flex justify-end gap-2 border-t border-base-200 pt-4">
-              <button
-                type="button"
-                className="btn btn-sm btn-ghost"
-                onClick={() => formModalRef.current?.close()}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="btn btn-sm btn-primary"
-                disabled={
-                  isSaving ||
-                  productsQuery.isLoading ||
-                  productsQuery.isError ||
-                  products.length === 0
-                }
-              >
-                {isSaving
-                  ? "Saving..."
-                  : editingOrder
-                    ? "Save Changes"
-                    : "Create Order"}
-              </button>
-            </div>
-          </form>
-        </FormProvider>
-      </Modal>
 
       <Modal ref={detailsModalRef} title="Order Details">
         {detailsQuery.isLoading ? (
@@ -734,9 +364,15 @@ function RouteComponent() {
               </div>
             </div>
             {selectedOrder.notes && (
-              <p className="rounded-lg bg-base-200/50 p-3 text-sm text-base-content/70">
-                {selectedOrder.notes}
-              </p>
+              <div className="rounded-lg bg-base-200/50 p-3 text-sm text-base-content/70">
+                <h4 className="mb-2 font-semibold text-base-content">Notes</h4>
+                <ReactMarkdown components={{
+                  p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                  ul: ({ children }) => <ul className="list-disc pl-5">{children}</ul>,
+                  ol: ({ children }) => <ol className="list-decimal pl-5">{children}</ol>,
+                  a: ({ children, href }) => <a href={href} target="_blank" rel="noopener noreferrer" className="link link-primary">{children}</a>,
+                }}>{selectedOrder.notes}</ReactMarkdown>
+              </div>
             )}
             <div className="flex items-center justify-between border-t border-base-200 pt-4">
               <span className="font-semibold tabular-nums">
@@ -753,13 +389,13 @@ function RouteComponent() {
                 >
                   Close
                 </button>
-                <button
-                  type="button"
+                <Link
+                  to="/staff/orders/$id/edit"
+                  params={{ id: selectedOrder.id }}
                   className="btn btn-sm btn-primary"
-                  onClick={() => openEdit(selectedOrder)}
                 >
                   Edit Order
-                </button>
+                </Link>
               </div>
             </div>
           </div>

@@ -49,6 +49,7 @@ import { Route as StaffSettingsNotificationsIndexRouteImport } from './routes/st
 import { Route as StaffProductsServiceIndexRouteImport } from './routes/staff/products/service/index'
 import { Route as StaffProductsCategoriesIndexRouteImport } from './routes/staff/products/categories/index'
 import { Route as StaffProductsAddIndexRouteImport } from './routes/staff/products/add/index'
+import { Route as StaffOrdersAddIndexRouteImport } from './routes/staff/orders/add/index'
 import { Route as StaffContactsCustomersIndexRouteImport } from './routes/staff/contacts/customers/index'
 import { Route as StaffContactsCompaniesIndexRouteImport } from './routes/staff/contacts/companies/index'
 import { Route as StaffAccountsTransactionsIndexRouteImport } from './routes/staff/accounts/transactions/index'
@@ -62,6 +63,7 @@ import { Route as AdminUsersAddIndexRouteImport } from './routes/admin/users/add
 import { Route as AdminSettingsThemeIndexRouteImport } from './routes/admin/settings/theme/index'
 import { Route as AdminSettingsSecurityIndexRouteImport } from './routes/admin/settings/security/index'
 import { Route as AdminSettingsProfileIndexRouteImport } from './routes/admin/settings/profile/index'
+import { Route as StaffOrdersIdEditRouteImport } from './routes/staff/orders/$id/edit'
 import { Route as StaffUsersDetailsIdIndexRouteImport } from './routes/staff/users/details/$id/index'
 import { Route as StaffProductsServiceCategoriesIndexRouteImport } from './routes/staff/products/service/categories/index'
 import { Route as StaffProductsServiceAddIndexRouteImport } from './routes/staff/products/service/add/index'
@@ -285,6 +287,11 @@ const StaffProductsAddIndexRoute = StaffProductsAddIndexRouteImport.update({
   path: '/products/add/',
   getParentRoute: () => StaffRouteRoute,
 } as any)
+const StaffOrdersAddIndexRoute = StaffOrdersAddIndexRouteImport.update({
+  id: '/orders/add/',
+  path: '/orders/add/',
+  getParentRoute: () => StaffRouteRoute,
+} as any)
 const StaffContactsCustomersIndexRoute =
   StaffContactsCustomersIndexRouteImport.update({
     id: '/contacts/customers/',
@@ -360,6 +367,11 @@ const AdminSettingsProfileIndexRoute =
     path: '/profile/',
     getParentRoute: () => AdminSettingsRouteRoute,
   } as any)
+const StaffOrdersIdEditRoute = StaffOrdersIdEditRouteImport.update({
+  id: '/orders/$id/edit',
+  path: '/orders/$id/edit',
+  getParentRoute: () => StaffRouteRoute,
+} as any)
 const StaffUsersDetailsIdIndexRoute =
   StaffUsersDetailsIdIndexRouteImport.update({
     id: '/users/details/$id/',
@@ -481,6 +493,7 @@ export interface FileRoutesByFullPath {
   '/staff/settings/': typeof StaffSettingsIndexRoute
   '/staff/support': typeof StaffSupportIndexRoute
   '/staff/users': typeof StaffUsersIndexRoute
+  '/staff/orders/$id/edit': typeof StaffOrdersIdEditRoute
   '/admin/settings/profile': typeof AdminSettingsProfileIndexRoute
   '/admin/settings/security': typeof AdminSettingsSecurityIndexRoute
   '/admin/settings/theme': typeof AdminSettingsThemeIndexRoute
@@ -494,6 +507,7 @@ export interface FileRoutesByFullPath {
   '/staff/accounts/transactions': typeof StaffAccountsTransactionsIndexRoute
   '/staff/contacts/companies': typeof StaffContactsCompaniesIndexRoute
   '/staff/contacts/customers': typeof StaffContactsCustomersIndexRoute
+  '/staff/orders/add': typeof StaffOrdersAddIndexRoute
   '/staff/products/add': typeof StaffProductsAddIndexRoute
   '/staff/products/categories': typeof StaffProductsCategoriesIndexRoute
   '/staff/products/service': typeof StaffProductsServiceIndexRoute
@@ -545,6 +559,7 @@ export interface FileRoutesByTo {
   '/staff/settings': typeof StaffSettingsIndexRoute
   '/staff/support': typeof StaffSupportIndexRoute
   '/staff/users': typeof StaffUsersIndexRoute
+  '/staff/orders/$id/edit': typeof StaffOrdersIdEditRoute
   '/admin/settings/profile': typeof AdminSettingsProfileIndexRoute
   '/admin/settings/security': typeof AdminSettingsSecurityIndexRoute
   '/admin/settings/theme': typeof AdminSettingsThemeIndexRoute
@@ -558,6 +573,7 @@ export interface FileRoutesByTo {
   '/staff/accounts/transactions': typeof StaffAccountsTransactionsIndexRoute
   '/staff/contacts/companies': typeof StaffContactsCompaniesIndexRoute
   '/staff/contacts/customers': typeof StaffContactsCustomersIndexRoute
+  '/staff/orders/add': typeof StaffOrdersAddIndexRoute
   '/staff/products/add': typeof StaffProductsAddIndexRoute
   '/staff/products/categories': typeof StaffProductsCategoriesIndexRoute
   '/staff/products/service': typeof StaffProductsServiceIndexRoute
@@ -616,6 +632,7 @@ export interface FileRoutesById {
   '/staff/settings/': typeof StaffSettingsIndexRoute
   '/staff/support/': typeof StaffSupportIndexRoute
   '/staff/users/': typeof StaffUsersIndexRoute
+  '/staff/orders/$id/edit': typeof StaffOrdersIdEditRoute
   '/admin/settings/profile/': typeof AdminSettingsProfileIndexRoute
   '/admin/settings/security/': typeof AdminSettingsSecurityIndexRoute
   '/admin/settings/theme/': typeof AdminSettingsThemeIndexRoute
@@ -629,6 +646,7 @@ export interface FileRoutesById {
   '/staff/accounts/transactions/': typeof StaffAccountsTransactionsIndexRoute
   '/staff/contacts/companies/': typeof StaffContactsCompaniesIndexRoute
   '/staff/contacts/customers/': typeof StaffContactsCustomersIndexRoute
+  '/staff/orders/add/': typeof StaffOrdersAddIndexRoute
   '/staff/products/add/': typeof StaffProductsAddIndexRoute
   '/staff/products/categories/': typeof StaffProductsCategoriesIndexRoute
   '/staff/products/service/': typeof StaffProductsServiceIndexRoute
@@ -688,6 +706,7 @@ export interface FileRouteTypes {
     | '/staff/settings/'
     | '/staff/support'
     | '/staff/users'
+    | '/staff/orders/$id/edit'
     | '/admin/settings/profile'
     | '/admin/settings/security'
     | '/admin/settings/theme'
@@ -701,6 +720,7 @@ export interface FileRouteTypes {
     | '/staff/accounts/transactions'
     | '/staff/contacts/companies'
     | '/staff/contacts/customers'
+    | '/staff/orders/add'
     | '/staff/products/add'
     | '/staff/products/categories'
     | '/staff/products/service'
@@ -752,6 +772,7 @@ export interface FileRouteTypes {
     | '/staff/settings'
     | '/staff/support'
     | '/staff/users'
+    | '/staff/orders/$id/edit'
     | '/admin/settings/profile'
     | '/admin/settings/security'
     | '/admin/settings/theme'
@@ -765,6 +786,7 @@ export interface FileRouteTypes {
     | '/staff/accounts/transactions'
     | '/staff/contacts/companies'
     | '/staff/contacts/customers'
+    | '/staff/orders/add'
     | '/staff/products/add'
     | '/staff/products/categories'
     | '/staff/products/service'
@@ -822,6 +844,7 @@ export interface FileRouteTypes {
     | '/staff/settings/'
     | '/staff/support/'
     | '/staff/users/'
+    | '/staff/orders/$id/edit'
     | '/admin/settings/profile/'
     | '/admin/settings/security/'
     | '/admin/settings/theme/'
@@ -835,6 +858,7 @@ export interface FileRouteTypes {
     | '/staff/accounts/transactions/'
     | '/staff/contacts/companies/'
     | '/staff/contacts/customers/'
+    | '/staff/orders/add/'
     | '/staff/products/add/'
     | '/staff/products/categories/'
     | '/staff/products/service/'
@@ -1158,6 +1182,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StaffProductsAddIndexRouteImport
       parentRoute: typeof StaffRouteRoute
     }
+    '/staff/orders/add/': {
+      id: '/staff/orders/add/'
+      path: '/orders/add'
+      fullPath: '/staff/orders/add'
+      preLoaderRoute: typeof StaffOrdersAddIndexRouteImport
+      parentRoute: typeof StaffRouteRoute
+    }
     '/staff/contacts/customers/': {
       id: '/staff/contacts/customers/'
       path: '/contacts/customers'
@@ -1248,6 +1279,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/settings/profile'
       preLoaderRoute: typeof AdminSettingsProfileIndexRouteImport
       parentRoute: typeof AdminSettingsRouteRoute
+    }
+    '/staff/orders/$id/edit': {
+      id: '/staff/orders/$id/edit'
+      path: '/orders/$id/edit'
+      fullPath: '/staff/orders/$id/edit'
+      preLoaderRoute: typeof StaffOrdersIdEditRouteImport
+      parentRoute: typeof StaffRouteRoute
     }
     '/staff/users/details/$id/': {
       id: '/staff/users/details/$id/'
@@ -1429,6 +1467,7 @@ interface StaffRouteRouteChildren {
   StaffReportsIndexRoute: typeof StaffReportsIndexRoute
   StaffSupportIndexRoute: typeof StaffSupportIndexRoute
   StaffUsersIndexRoute: typeof StaffUsersIndexRoute
+  StaffOrdersIdEditRoute: typeof StaffOrdersIdEditRoute
   StaffAccountsInvoicesIndexRoute: typeof StaffAccountsInvoicesIndexRoute
   StaffAccountsAnalysisIndexRoute: typeof StaffAccountsAnalysisIndexRoute
   StaffAccountsIncomeExpensesIndexRoute: typeof StaffAccountsIncomeExpensesIndexRoute
@@ -1436,6 +1475,7 @@ interface StaffRouteRouteChildren {
   StaffAccountsTransactionsIndexRoute: typeof StaffAccountsTransactionsIndexRoute
   StaffContactsCompaniesIndexRoute: typeof StaffContactsCompaniesIndexRoute
   StaffContactsCustomersIndexRoute: typeof StaffContactsCustomersIndexRoute
+  StaffOrdersAddIndexRoute: typeof StaffOrdersAddIndexRoute
   StaffProductsAddIndexRoute: typeof StaffProductsAddIndexRoute
   StaffProductsCategoriesIndexRoute: typeof StaffProductsCategoriesIndexRoute
   StaffProductsServiceIndexRoute: typeof StaffProductsServiceIndexRoute
@@ -1471,6 +1511,7 @@ const StaffRouteRouteChildren: StaffRouteRouteChildren = {
   StaffReportsIndexRoute: StaffReportsIndexRoute,
   StaffSupportIndexRoute: StaffSupportIndexRoute,
   StaffUsersIndexRoute: StaffUsersIndexRoute,
+  StaffOrdersIdEditRoute: StaffOrdersIdEditRoute,
   StaffAccountsInvoicesIndexRoute: StaffAccountsInvoicesIndexRoute,
   StaffAccountsAnalysisIndexRoute: StaffAccountsAnalysisIndexRoute,
   StaffAccountsIncomeExpensesIndexRoute: StaffAccountsIncomeExpensesIndexRoute,
@@ -1478,6 +1519,7 @@ const StaffRouteRouteChildren: StaffRouteRouteChildren = {
   StaffAccountsTransactionsIndexRoute: StaffAccountsTransactionsIndexRoute,
   StaffContactsCompaniesIndexRoute: StaffContactsCompaniesIndexRoute,
   StaffContactsCustomersIndexRoute: StaffContactsCustomersIndexRoute,
+  StaffOrdersAddIndexRoute: StaffOrdersAddIndexRoute,
   StaffProductsAddIndexRoute: StaffProductsAddIndexRoute,
   StaffProductsCategoriesIndexRoute: StaffProductsCategoriesIndexRoute,
   StaffProductsServiceIndexRoute: StaffProductsServiceIndexRoute,
