@@ -77,7 +77,7 @@ function RouteComponent() {
       zipCode: "",
       country: "Nigeria",
       source: "Referral",
-      status: "customer",
+      status: "active",
     },
   });
 
@@ -263,7 +263,6 @@ function RouteComponent() {
                         {...methods.register("status")}
                       >
                         <option value="active">Active Customer</option>
-                        <option value="customer">Customer</option>
                         <option value="lead">Lead / Prospect</option>
                         <option value="inactive">Inactive</option>
                       </LocalSelect>
