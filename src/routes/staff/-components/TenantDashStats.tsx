@@ -87,7 +87,7 @@ export default function TenantDashStats() {
             title: "Total Debts",
             value: 0,
             change: stats.pendingOrdersChange,
-            linkLabel: "View orders",
+            linkLabel: "View Debts",
             icon: Clock,
             to: "/staff/orders",
             accent: "bg-warning/10 text-warning",
