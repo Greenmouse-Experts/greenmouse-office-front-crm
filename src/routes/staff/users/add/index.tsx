@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useForm, FormProvider } from "react-hook-form";
+import { Controller, useForm, FormProvider } from "react-hook-form";
 import SimpleInput from "@/components/inputs/SimpleInput";
+import PhoneNumberInput, { validatePhoneNumber } from "@/components/inputs/PhoneNumberInput";
 import ActionButton from "@/components/buttons/ActionButton";
 import { useSelectImage } from "@/helpers/images";
 import SelectImage from "@/components/images/SelectImage";
@@ -19,7 +20,7 @@ interface AddStaffFormFields {
   firstName: string;
   lastName: string;
   email: string;
-  phone: string;
+  phoneNumber: string;
   roleId: string;
 }
 
@@ -36,7 +37,7 @@ function RouteComponent() {
       firstName: "",
       lastName: "",
       email: "",
-      phone: "",
+      phoneNumber: "",
       roleId: "",
     },
   });
@@ -59,7 +60,7 @@ function RouteComponent() {
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
-        phoneNumber: data.phone || undefined,
+        phoneNumber: data.phoneNumber || undefined,
         roleId: data.roleId || undefined,
         profilePic: profilePicUrl,
       });
@@ -131,11 +132,20 @@ function RouteComponent() {
                 ))}
               </LocalSelect>
 
-              <SimpleInput
-                label="Phone Number"
-                type="tel"
-                placeholder="+2348012345678"
-                {...methods.register("phone")}
+              <Controller
+                name="phoneNumber"
+                control={methods.control}
+                rules={{ validate: validatePhoneNumber }}
+                render={({ field, fieldState }) => (
+                  <PhoneNumberInput
+                    label="Phone Number"
+                    name={field.name}
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    error={fieldState.error?.message}
+                  />
+                )}
               />
             </div>
 

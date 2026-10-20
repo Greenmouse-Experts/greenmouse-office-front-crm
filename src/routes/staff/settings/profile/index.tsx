@@ -1,11 +1,12 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { FormProvider, useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import PageHeader from "@/components/Headers/PageHeader";
 import PageLoader from "@/components/layout/PageLoader";
 import Modal from "@/components/DialogModal";
 import SimpleInput from "@/components/inputs/SimpleInput";
+import PhoneNumberInput, { validatePhoneNumber } from "@/components/inputs/PhoneNumberInput";
 import SelectImage from "@/components/images/SelectImage";
 import { useModal } from "@/store/modals";
 import { useUploadImage } from "@/api/imageApi";
@@ -117,7 +118,22 @@ function RouteComponent() {
                 {...methods.register("lastName", { validate: (value) => !!value.trim() || "Last name is required" })}
               />
             </div>
-            <SimpleInput label="Phone number" type="tel" {...methods.register("phoneNumber")} />
+            <Controller
+              name="phoneNumber"
+              control={methods.control}
+              rules={{ validate: validatePhoneNumber }}
+              render={({ field, fieldState }) => (
+                <PhoneNumberInput
+                  label="Phone number"
+                  name={field.name}
+                  value={field.value || ""}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  error={fieldState.error?.message}
+                  disabled={isSaving}
+                />
+              )}
+            />
             <p className="text-sm text-base-content/70">Email address: {query.data?.email || "—"}</p>
             <div className="modal-action">
               <button type="button" className="btn btn-ghost" onClick={editModal.closeModal} disabled={isSaving}>Cancel</button>
