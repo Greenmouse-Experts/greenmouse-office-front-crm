@@ -59,9 +59,11 @@ function RouteComponent() {
   const editModalRef = useRef<ModalHandle>(null);
   const detailsModalRef = useRef<ModalHandle>(null);
   const stockModalRef = useRef<ModalHandle>(null);
+  const deleteModalRef = useRef<ModalHandle>(null);
 
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [stockAdjustment, setStockAdjustment] = useState<number>(0);
+  const [productToDelete, setProductToDelete] = useState<Product | null>(null);
 
   // Add Product Images State
   const [addNewImages, setAddNewImages] = useState<File[] | FileList | []>([]);
@@ -228,11 +230,18 @@ function RouteComponent() {
     }
   };
 
-  const handleDelete = async (product: Product) => {
-    if (!confirm(`Are you sure you want to delete "${product.name}"?`)) return;
+  const requestDelete = (product: Product) => {
+    setProductToDelete(product);
+    deleteModalRef.current?.open();
+  };
+
+  const handleDelete = async () => {
+    if (!productToDelete || deleteProduct.isPending) return;
     try {
-      await deleteProduct.mutateAsync(product.id);
+      await deleteProduct.mutateAsync(productToDelete.id);
       toast.success("Product deleted successfully");
+      deleteModalRef.current?.close();
+      setProductToDelete(null);
     } catch (err: any) {
       toast.error(err?.response?.data?.message || "Failed to delete product");
     }
@@ -356,7 +365,7 @@ function RouteComponent() {
     {
       key: "delete",
       label: "Delete",
-      action: (item) => handleDelete(item),
+      action: requestDelete,
     },
   ];
 
@@ -637,14 +646,19 @@ function RouteComponent() {
             name="isActive"
             render={({ field }) => (
               <div>
-                <label htmlFor="product-status" className="text-xs font-semibold text-base-content/70">
+                <label
+                  htmlFor="product-status"
+                  className="text-xs font-semibold text-base-content/70"
+                >
                   Status
                 </label>
                 <select
                   id="product-status"
                   className="select select-bordered mt-1 w-full"
                   value={field.value ? "active" : "inactive"}
-                  onChange={(event) => field.onChange(event.target.value === "active")}
+                  onChange={(event) =>
+                    field.onChange(event.target.value === "active")
+                  }
                   onBlur={field.onBlur}
                 >
                   <option value="active">Active</option>
@@ -848,6 +862,39 @@ function RouteComponent() {
                 onClick={() => detailsModalRef.current?.close()}
               >
                 Close
+              </button>
+            </div>
+          </div>
+        )}
+      </Modal>
+
+      {/* Delete Product Modal */}
+      <Modal ref={deleteModalRef} title="Delete product">
+        {productToDelete && (
+          <div className="space-y-5">
+            <p className="text-sm text-base-content/70">
+              Delete{" "}
+              <span className="font-semibold text-base-content">
+                {productToDelete.name}
+              </span>
+              ? This product will be permanently removed from your catalog.
+            </p>
+            <div className="flex justify-end gap-2">
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={() => deleteModalRef.current?.close()}
+                disabled={deleteProduct.isPending}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn btn-error"
+                onClick={handleDelete}
+                disabled={deleteProduct.isPending}
+              >
+                {deleteProduct.isPending ? "Deleting..." : "Delete product"}
               </button>
             </div>
           </div>
