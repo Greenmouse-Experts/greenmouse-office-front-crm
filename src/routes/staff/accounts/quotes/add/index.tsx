@@ -20,7 +20,9 @@ function AddQuotePage() {
   const contactsQuery = useContacts();
   const companiesQuery = useCompanies();
   const createQuote = useCreateQuote();
-  const methods = useForm<QuoteFormValues>({ defaultValues: defaultQuoteValues() });
+  const methods = useForm<QuoteFormValues>({
+    defaultValues: defaultQuoteValues(),
+  });
 
   const onSubmit = async (values: QuoteFormValues) => {
     if (!values.contactId && !values.companyRecordId) {
@@ -33,21 +35,35 @@ function AddQuotePage() {
       toast.success("Quote created successfully.");
       await navigate({ to: "/staff/accounts/quotes" });
     } catch (error) {
-      const response = error as { response?: { data?: { message?: string | string[] } } };
+      const response = error as {
+        response?: { data?: { message?: string | string[] } };
+      };
       const message = response.response?.data?.message;
-      toast.error((Array.isArray(message) ? message.join(". ") : message) || "Failed to create quote. Please try again.");
+      toast.error(
+        (Array.isArray(message) ? message.join(". ") : message) ||
+          "Failed to create quote. Please try again.",
+      );
     }
   };
 
   return (
-    <div className="mx-auto max-w-5xl space-y-5 pb-12">
-      <Link to="/staff/accounts/quotes" className="btn btn-ghost btn-sm w-fit gap-2">
+    <div className="mx-auto  space-y-5 pb-12">
+      <Link
+        to="/staff/accounts/quotes"
+        className="btn btn-ghost btn-sm w-fit gap-2"
+      >
         <ArrowLeft className="size-4" /> Back to quotes
       </Link>
-      <PageHeader title="Create quote" description="Set the client, amount, scope, and terms for a new quote." />
+      <PageHeader
+        title="Create quote"
+        description="Set the client, amount, scope, and terms for a new quote."
+      />
 
       <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-6 rounded-xl bg-base-100 p-5 sm:p-8">
+        <form
+          onSubmit={methods.handleSubmit(onSubmit)}
+          className="space-y-6 rounded-xl bg-base-100 p-5 sm:p-8"
+        >
           <QuoteFields
             contacts={contactsQuery.data || []}
             companies={companiesQuery.data || []}
@@ -56,12 +72,19 @@ function AddQuotePage() {
           />
           {(contactsQuery.isError || companiesQuery.isError) && (
             <p role="alert" className="text-sm text-error">
-              Some customer options could not be loaded. Retry the page to see the full list.
+              Some customer options could not be loaded. Retry the page to see
+              the full list.
             </p>
           )}
           <div className="flex flex-wrap justify-end gap-3 border-t border-base-200 pt-5">
-            <Link to="/staff/accounts/quotes" className="btn btn-ghost">Cancel</Link>
-            <button type="submit" className="btn btn-primary" disabled={createQuote.isPending}>
+            <Link to="/staff/accounts/quotes" className="btn btn-ghost">
+              Cancel
+            </Link>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={createQuote.isPending}
+            >
               {createQuote.isPending ? "Creating quote..." : "Create quote"}
             </button>
           </div>

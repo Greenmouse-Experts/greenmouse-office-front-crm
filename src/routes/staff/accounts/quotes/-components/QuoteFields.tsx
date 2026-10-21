@@ -1,4 +1,4 @@
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import SimpleInput from "@/components/inputs/SimpleInput";
 import FormattedPriceInput from "@/components/inputs/FormattedPriceInput";
 import LocalSelect from "@/components/inputs/LocalSelect";
@@ -35,7 +35,9 @@ export const quotePayload = (values: QuoteFormValues): Partial<Quote> => ({
   description: values.description.trim(),
   status: values.status,
   ...(values.contactId ? { contactId: values.contactId } : {}),
-  ...(values.companyRecordId ? { companyRecordId: values.companyRecordId } : {}),
+  ...(values.companyRecordId
+    ? { companyRecordId: values.companyRecordId }
+    : {}),
   ...(values.expiresAt ? { expiresAt: values.expiresAt } : {}),
   ...(values.notes.trim() ? { notes: values.notes.trim() } : {}),
 });
@@ -61,38 +63,67 @@ export default function QuoteFields({
   return (
     <div className="space-y-6">
       <div className="grid gap-4 sm:grid-cols-2">
-        <SimpleInput label="Quote date" type="date" {...methods.register("date", { required: "Quote date is required" })} />
+        <SimpleInput
+          label="Quote date"
+          type="date"
+          {...methods.register("date", { required: "Quote date is required" })}
+        />
         <SimpleInput
           label="Expires on"
           type="date"
           min={quoteDate || undefined}
           {...methods.register("expiresAt", {
-            validate: (value) => !value || !quoteDate || value >= quoteDate || "Expiry must be on or after the quote date",
+            validate: (value) =>
+              !value ||
+              !quoteDate ||
+              value >= quoteDate ||
+              "Expiry must be on or after the quote date",
           })}
         />
-        <FormattedPriceInput
-          label="Amount (₦)"
-          {...methods.register("amount", {
-            required: "Amount is required",
-            valueAsNumber: true,
-            min: { value: 0.01, message: "Amount must be positive" },
-          })}
+        <Controller
+          name="amount"
+          control={methods.control}
+          rules={{
+            validate: (value) =>
+              (Number.isFinite(Number(value)) && Number(value) > 0) ||
+              "Amount must be positive",
+          }}
+          render={({ field }) => (
+            <FormattedPriceInput
+              label="Amount (₦)"
+              name={field.name}
+              ref={field.ref}
+              value={field.value ?? ""}
+              onBlur={field.onBlur}
+              onValueChange={(values, sourceInfo) => {
+                if (sourceInfo.source === "event")
+                  field.onChange(values.floatValue);
+              }}
+            />
+          )}
         />
         <LocalSelect label="Status" {...methods.register("status")}>
           <option value="draft">Draft</option>
           <option value="sent">Sent</option>
           <option value="accepted">Accepted</option>
           <option value="rejected">Rejected</option>
-          {editingStatus && !["draft", "sent", "accepted", "rejected"].includes(editingStatus.toLowerCase()) && (
-            <option value={editingStatus.toLowerCase()}>{editingStatus}</option>
-          )}
+          {editingStatus &&
+            !["draft", "sent", "accepted", "rejected"].includes(
+              editingStatus.toLowerCase(),
+            ) && (
+              <option value={editingStatus.toLowerCase()}>
+                {editingStatus}
+              </option>
+            )}
         </LocalSelect>
       </div>
 
       <div className="space-y-3">
         <div>
           <h2 className="text-base font-semibold">Customer details</h2>
-          <p className="text-sm text-base-content/70">Link a contact, a company, or both to this quote.</p>
+          <p className="text-sm text-base-content/70">
+            Link a contact, a company, or both to this quote.
+          </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
@@ -100,18 +131,34 @@ export default function QuoteFields({
               <option value="">No contact selected</option>
               {contacts.map((contact) => (
                 <option key={contact.id} value={contact.id}>
-                  {`${contact.firstName || ""} ${contact.lastName || ""}`.trim() || contact.email}
+                  {`${contact.firstName || ""} ${contact.lastName || ""}`.trim() ||
+                    contact.email}
                 </option>
               ))}
             </LocalSelect>
-            {contactsLoading && <p className="mt-1 text-xs text-base-content/70">Loading contacts...</p>}
+            {contactsLoading && (
+              <p className="mt-1 text-xs text-base-content/70">
+                Loading contacts...
+              </p>
+            )}
           </div>
           <div>
-            <LocalSelect label="Company" {...methods.register("companyRecordId")}>
+            <LocalSelect
+              label="Company"
+              {...methods.register("companyRecordId")}
+            >
               <option value="">No company selected</option>
-              {companies.map((company) => <option key={company.id} value={company.id}>{company.name}</option>)}
+              {companies.map((company) => (
+                <option key={company.id} value={company.id}>
+                  {company.name}
+                </option>
+              ))}
             </LocalSelect>
-            {companiesLoading && <p className="mt-1 text-xs text-base-content/70">Loading companies...</p>}
+            {companiesLoading && (
+              <p className="mt-1 text-xs text-base-content/70">
+                Loading companies...
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -119,7 +166,9 @@ export default function QuoteFields({
       <div className="space-y-3">
         <div>
           <h2 className="text-base font-semibold">Quote content</h2>
-          <p className="text-sm text-base-content/70">Add the work covered by the quote and any internal notes.</p>
+          <p className="text-sm text-base-content/70">
+            Add the work covered by the quote and any internal notes.
+          </p>
         </div>
         <MarkdownEditor />
         <SimpleTextArea
