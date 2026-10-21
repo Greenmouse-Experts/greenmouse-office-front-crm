@@ -65,4 +65,4 @@ const SimpleInput = forwardRef<HTMLInputElement, SimpleInputProps>(
 SimpleInput.displayName = "SimpleInput";
 export default SimpleInput;
 export { SimpleInput };
-export { PriceInput } from "./PriceInput";
+export { FormattedPriceInput } from "./FormattedPriceInput";

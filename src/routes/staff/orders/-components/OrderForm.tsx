@@ -12,7 +12,7 @@ import {
   type OrderItem,
 } from "@/api/salesApi";
 import SimpleInput from "@/components/inputs/SimpleInput";
-import PriceInput from "@/components/inputs/PriceInput";
+import FormattedPriceInput from "@/components/inputs/FormattedPriceInput";
 import LocalSelect from "@/components/inputs/LocalSelect";
 import MarkdownTextArea from "@/components/inputs/MarkdownTextArea";
 
@@ -283,7 +283,7 @@ export default function OrderForm({ order }: { order?: Order }) {
                       )
                     }
                   />
-                  <PriceInput
+                  <FormattedPriceInput
                     label="Unit Price"
                     value={item.unitPrice}
                     onChange={(e) =>

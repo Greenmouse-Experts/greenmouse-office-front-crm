@@ -7,7 +7,7 @@ import {
 } from "react-number-format";
 import { useFormContext } from "react-hook-form";
 
-export interface PriceInputProps
+export interface FormattedPriceInputProps
   extends Omit<NumericFormatProps, "customInput" | "type" | "size"> {
   label?: string;
   icon?: React.ReactNode;
@@ -16,7 +16,7 @@ export interface PriceInputProps
   wrapperClassName?: string;
 }
 
-const PriceInput = forwardRef<HTMLInputElement, PriceInputProps>(
+const FormattedPriceInput = forwardRef<HTMLInputElement, FormattedPriceInputProps>(
   (
     {
       label,
@@ -139,7 +139,7 @@ const PriceInput = forwardRef<HTMLInputElement, PriceInputProps>(
   },
 );
 
-PriceInput.displayName = "PriceInput";
+FormattedPriceInput.displayName = "FormattedPriceInput";
 
-export default PriceInput;
-export { PriceInput };
+export default FormattedPriceInput;
+export { FormattedPriceInput };

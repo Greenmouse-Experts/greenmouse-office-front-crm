@@ -1,7 +1,7 @@
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
-import PriceInput from "@/components/inputs/PriceInput";
+import FormattedPriceInput from "@/components/inputs/FormattedPriceInput";
 import SimpleInput from "@/components/inputs/SimpleInput";
 import SimpleTextArea from "@/components/inputs/SimpleTextArea";
 import LocalSelect from "@/components/inputs/LocalSelect";
@@ -93,7 +93,7 @@ function PaymentForm({ invoice, onClose }: { invoice: Invoice; onClose: () => vo
               "Enter a positive amount no greater than the outstanding balance.",
           }}
           render={({ field }) => (
-            <PriceInput
+            <FormattedPriceInput
               label="Payment amount"
               aria-label="Payment amount"
               name={field.name}

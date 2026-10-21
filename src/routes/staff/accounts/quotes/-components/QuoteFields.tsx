@@ -1,6 +1,6 @@
 import { useFormContext } from "react-hook-form";
 import SimpleInput from "@/components/inputs/SimpleInput";
-import PriceInput from "@/components/inputs/PriceInput";
+import FormattedPriceInput from "@/components/inputs/FormattedPriceInput";
 import LocalSelect from "@/components/inputs/LocalSelect";
 import SimpleTextArea from "@/components/inputs/SimpleTextArea";
 import type { Company, Contact } from "@/api/crmApi";
@@ -70,7 +70,7 @@ export default function QuoteFields({
             validate: (value) => !value || !quoteDate || value >= quoteDate || "Expiry must be on or after the quote date",
           })}
         />
-        <PriceInput
+        <FormattedPriceInput
           label="Amount (₦)"
           {...methods.register("amount", {
             required: "Amount is required",

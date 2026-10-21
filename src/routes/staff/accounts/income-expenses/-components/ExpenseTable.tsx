@@ -3,7 +3,7 @@ import CustomTable from "@/components/tables/CustomTable";
 import { type Actions } from "@/components/tables/pop-up";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
 import SimpleInput from "@/components/inputs/SimpleInput";
-import PriceInput from "@/components/inputs/PriceInput";
+import FormattedPriceInput from "@/components/inputs/FormattedPriceInput";
 import SimpleTextArea from "@/components/inputs/SimpleTextArea";
 import LocalSelect from "@/components/inputs/LocalSelect";
 import PageLoader from "@/components/layout/PageLoader";
@@ -193,7 +193,7 @@ export default function ExpenseTable() {
 
       <Modal ref={editModalRef} title="Edit Expense Record">
         <form onSubmit={handleSaveEdit} className="space-y-4 pt-2">
-          <PriceInput
+          <FormattedPriceInput
             label="Amount (₦)"
             value={editAmount}
             onValueChange={(values, sourceInfo) => {

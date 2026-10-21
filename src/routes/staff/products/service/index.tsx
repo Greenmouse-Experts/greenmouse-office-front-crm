@@ -17,7 +17,7 @@ import Modal, { type ModalHandle } from "@/components/DialogModal";
 import PageLoader from "@/components/layout/PageLoader";
 import SimpleInput from "@/components/inputs/SimpleInput";
 import SimpleTextArea from "@/components/inputs/SimpleTextArea";
-import PriceInput from "@/components/inputs/PriceInput";
+import FormattedPriceInput from "@/components/inputs/FormattedPriceInput";
 import {
   useServices,
   useCreateService,
@@ -353,7 +353,7 @@ function RouteComponent() {
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <PriceInput
+            <FormattedPriceInput
               label="Rate / Price (₦) *"
               required
               placeholder="0.00"
@@ -435,7 +435,7 @@ function RouteComponent() {
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <PriceInput
+            <FormattedPriceInput
               label="Rate / Price (₦) *"
               required
               value={form.price}

@@ -2,7 +2,7 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { useState } from "react";
 import { describe, expect, it } from "vitest";
-import PriceInput from "./PriceInput";
+import FormattedPriceInput from "./FormattedPriceInput";
 
 function ServiceFormFields() {
   const [name, setName] = useState("");
@@ -11,7 +11,7 @@ function ServiceFormFields() {
   return (
     <>
       <input aria-label="Service name" value={name} onChange={(event) => setName(event.target.value)} />
-      <PriceInput
+      <FormattedPriceInput
         label="Rate"
         value={price}
         onValueChange={(values, sourceInfo) => {
@@ -29,7 +29,7 @@ function LedgerAmountFields() {
 
   return (
     <>
-      <PriceInput
+      <FormattedPriceInput
         label="Amount"
         value={amount}
         onValueChange={(values, sourceInfo) => {
@@ -42,7 +42,7 @@ function LedgerAmountFields() {
   );
 }
 
-describe("PriceInput", () => {
+describe("FormattedPriceInput", () => {
   it("keeps the entered rate when a sibling field changes", () => {
     render(<ServiceFormFields />);
 

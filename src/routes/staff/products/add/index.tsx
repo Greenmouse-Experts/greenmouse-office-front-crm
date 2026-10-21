@@ -2,7 +2,7 @@ import { useState } from "react";
 import SimpleTitle from "@/components/SimpleTitle";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import SimpleInput from "@/components/inputs/SimpleInput";
-import PriceInput from "@/components/inputs/PriceInput";
+import FormattedPriceInput from "@/components/inputs/FormattedPriceInput";
 import { useForm, FormProvider } from "react-hook-form";
 import SimpleTextArea from "@/components/inputs/SimpleTextArea";
 import LocalSelect from "@/components/inputs/LocalSelect";
@@ -139,7 +139,7 @@ function RouteComponent() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <PriceInput
+              <FormattedPriceInput
                 label="Selling Price (₦)"
                 placeholder="0.00"
                 {...methods.register("price", {
@@ -152,7 +152,7 @@ function RouteComponent() {
                 })}
               />
 
-              <PriceInput
+              <FormattedPriceInput
                 label="Cost Price (₦)"
                 placeholder="0.00"
                 {...methods.register("cost", {
