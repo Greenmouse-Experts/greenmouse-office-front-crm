@@ -232,7 +232,7 @@ export const useExpensesReport = (params?: ReportDateFilterParams) => {
 };
 
 export const useInvoiceRevenueReport = (
-  params?: ReportDateFilterParams & { currency?: string }
+  params?: ReportDateFilterParams & { currency?: string },
 ) => {
   return useQuery<InvoiceRevenueReport>({
     queryKey: ["reports", "invoice-revenue", params],
@@ -255,7 +255,7 @@ export const useOutstandingInvoicesReport = (params?: {
     queryFn: async () => {
       const { data } = await apiClient.get<any>(
         "/reports/outstanding-invoices",
-        { params }
+        { params },
       );
       if (Array.isArray(data?.data)) return data;
       if (Array.isArray(data?.data?.data)) return data.data;
@@ -276,11 +276,12 @@ export const usePipelineFunnelReport = (pipelineId?: string) => {
   });
 };
 
-export const useWinRateReport = (params?: {
-  pipelineId?: string;
-  year?: number;
-}) => {
+export const useWinRateReport = (
+  params?: { pipelineId?: string; year?: number },
+  options?: { enabled?: boolean },
+) => {
   return useQuery<WinRateReport>({
+    enabled: options?.enabled ?? true,
     queryKey: ["reports", "win-rate", params],
     queryFn: async () => {
       const { data } = await apiClient.get<any>("/reports/win-rate", {
@@ -291,11 +292,12 @@ export const useWinRateReport = (params?: {
   });
 };
 
-export const useAvgDealReport = (params?: {
-  pipelineId?: string;
-  year?: number;
-}) => {
+export const useAvgDealReport = (
+  params?: { pipelineId?: string; year?: number },
+  options?: { enabled?: boolean },
+) => {
   return useQuery<AvgDealReport>({
+    enabled: options?.enabled ?? true,
     queryKey: ["reports", "avg-deal", params],
     queryFn: async () => {
       const { data } = await apiClient.get<any>("/reports/avg-deal", {
@@ -306,11 +308,12 @@ export const useAvgDealReport = (params?: {
   });
 };
 
-export const useCycleTimeReport = (params?: {
-  pipelineId?: string;
-  year?: number;
-}) => {
+export const useCycleTimeReport = (
+  params?: { pipelineId?: string; year?: number },
+  options?: { enabled?: boolean },
+) => {
   return useQuery<CycleTimeReport>({
+    enabled: options?.enabled ?? true,
     queryKey: ["reports", "cycle-time", params],
     queryFn: async () => {
       const { data } = await apiClient.get<any>("/reports/cycle-time", {
