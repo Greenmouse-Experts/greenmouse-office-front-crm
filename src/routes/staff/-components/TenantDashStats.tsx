@@ -87,7 +87,11 @@ export default function TenantDashStats() {
           // },
           {
             title: "Total Debts",
-            value: debtsQuery.isLoading ? "…" : debtsQuery.data ? formatMoney(debtsQuery.data.outstandingTotal) : "—",
+            value: debtsQuery.isLoading
+              ? "…"
+              : debtsQuery.data
+                ? formatMoney(debtsQuery.data.outstandingTotal)
+                : "—",
             linkLabel: "View Debts",
             icon: Clock,
             to: "/staff/accounts/debts",
@@ -132,7 +136,7 @@ export default function TenantDashStats() {
                       )}
                     </div>
                     <div>
-                      <p className="text-2xl font-semibold tabular-nums text-base-content">
+                      <p className="text-base font-semibold tabular-nums text-base-content">
                         {card.value}
                       </p>
                       <p className="text-xs font-semibold text-base-content/70">
