@@ -87,7 +87,7 @@ function RouteComponent() {
       >
         <Link
           to="/staff/accounts/income-expenses"
-          className="btn btn-ghost btn-sm"
+          className="btn btn-ghost btn-sm whitespace-nowrap"
         >
           <ArrowLeft className="size-4" /> Back to records
         </Link>
