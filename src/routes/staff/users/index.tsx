@@ -4,7 +4,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import ContainerRow from "@/components/ContainerRow";
 import SimpleContainer from "@/components/SimpleContainer";
 import { useSearch } from "@/stores/data";
-import { Pencil, PlusCircleIcon, User } from "lucide-react";
+import { CalendarCheck2, Pencil, PlusCircleIcon, User } from "lucide-react";
 import SimpleInput from "@/components/inputs/SimpleInput";
 import LocalSelect from "@/components/inputs/LocalSelect";
 import PhoneNumberInput, {
@@ -331,6 +331,18 @@ function RouteComponent() {
         nav({
           to: "/staff/users/details/" + (item.id || "details"),
         });
+      },
+    },
+    {
+      key: "attendance",
+      label: "View Attendance",
+      render: () => (
+        <span className="flex items-center gap-2">
+          <CalendarCheck2 className="size-4" /> View Attendance
+        </span>
+      ),
+      action: (item: StaffMember, nav) => {
+        nav({ to: "/staff/attendance", search: { staffId: item.id } });
       },
     },
     {

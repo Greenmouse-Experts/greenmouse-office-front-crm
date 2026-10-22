@@ -18,6 +18,7 @@ import {
   Layers,
   TrendingUp,
   Bell,
+  CalendarCheck2,
 } from "lucide-react";
 import AdminHeader from "./-components/AdminHeader";
 import { Link } from "@tanstack/react-router";
@@ -79,6 +80,13 @@ const nav_links = [
         path: "/staff/users/roles",
         label: "Roles",
         icon: <Tag size={ICON_SIZE} />,
+        type: "menu",
+        children: null,
+      },
+      {
+        path: "/staff/attendance",
+        label: "Attendance",
+        icon: <CalendarCheck2 size={ICON_SIZE} />,
         type: "menu",
         children: null,
       },

@@ -7,6 +7,11 @@ describe("Office CRM endpoint matching", () => {
     expect(isSupportedApiEndpoint("GET", "/contacts/abc-123?expand=notes")).toBe(true);
     expect(isSupportedApiEndpoint("PATCH", "/pipelines/one/stages/two")).toBe(true);
     expect(isSupportedApiEndpoint("GET", "/v1")).toBe(true);
+    expect(isSupportedApiEndpoint("POST", "/attendance/check-in")).toBe(true);
+    expect(isSupportedApiEndpoint("GET", "/attendance/today")).toBe(true);
+    expect(isSupportedApiEndpoint("GET", "/attendance/me?from=2026-10-01&to=2026-10-22")).toBe(true);
+    expect(isSupportedApiEndpoint("GET", "/attendance?staffId=one")).toBe(true);
+    expect(isSupportedApiEndpoint("PUT", "/attendance/2026-10-22/report")).toBe(true);
   });
 
   it("rejects removed paths and unsupported methods", () => {

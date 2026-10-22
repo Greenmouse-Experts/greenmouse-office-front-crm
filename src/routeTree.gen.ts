@@ -29,6 +29,7 @@ import { Route as StaffOrdersIndexRouteImport } from './routes/staff/orders/inde
 import { Route as StaffNotificationsIndexRouteImport } from './routes/staff/notifications/index'
 import { Route as StaffLeadsIndexRouteImport } from './routes/staff/leads/index'
 import { Route as StaffDealsIndexRouteImport } from './routes/staff/deals/index'
+import { Route as StaffAttendanceIndexRouteImport } from './routes/staff/attendance/index'
 import { Route as AuthVerifyIndexRouteImport } from './routes/auth/verify/index'
 import { Route as AuthStaffIndexRouteImport } from './routes/auth/staff.index'
 import { Route as AuthRegisterIndexRouteImport } from './routes/auth/register/index'
@@ -180,6 +181,11 @@ const StaffLeadsIndexRoute = StaffLeadsIndexRouteImport.update({
 const StaffDealsIndexRoute = StaffDealsIndexRouteImport.update({
   id: '/deals/',
   path: '/deals/',
+  getParentRoute: () => StaffRouteRoute,
+} as any)
+const StaffAttendanceIndexRoute = StaffAttendanceIndexRouteImport.update({
+  id: '/attendance/',
+  path: '/attendance/',
   getParentRoute: () => StaffRouteRoute,
 } as any)
 const AuthVerifyIndexRoute = AuthVerifyIndexRouteImport.update({
@@ -496,6 +502,7 @@ export interface FileRoutesByFullPath {
   '/auth/register/': typeof AuthRegisterIndexRoute
   '/auth/staff': typeof AuthStaffIndexRoute
   '/auth/verify/': typeof AuthVerifyIndexRoute
+  '/staff/attendance': typeof StaffAttendanceIndexRoute
   '/staff/deals': typeof StaffDealsIndexRoute
   '/staff/leads': typeof StaffLeadsIndexRoute
   '/staff/notifications': typeof StaffNotificationsIndexRoute
@@ -564,6 +571,7 @@ export interface FileRoutesByTo {
   '/auth/register': typeof AuthRegisterIndexRoute
   '/auth/staff': typeof AuthStaffIndexRoute
   '/auth/verify': typeof AuthVerifyIndexRoute
+  '/staff/attendance': typeof StaffAttendanceIndexRoute
   '/staff/deals': typeof StaffDealsIndexRoute
   '/staff/leads': typeof StaffLeadsIndexRoute
   '/staff/notifications': typeof StaffNotificationsIndexRoute
@@ -639,6 +647,7 @@ export interface FileRoutesById {
   '/auth/register/': typeof AuthRegisterIndexRoute
   '/auth/staff/': typeof AuthStaffIndexRoute
   '/auth/verify/': typeof AuthVerifyIndexRoute
+  '/staff/attendance/': typeof StaffAttendanceIndexRoute
   '/staff/deals/': typeof StaffDealsIndexRoute
   '/staff/leads/': typeof StaffLeadsIndexRoute
   '/staff/notifications/': typeof StaffNotificationsIndexRoute
@@ -715,6 +724,7 @@ export interface FileRouteTypes {
     | '/auth/register/'
     | '/auth/staff'
     | '/auth/verify/'
+    | '/staff/attendance'
     | '/staff/deals'
     | '/staff/leads'
     | '/staff/notifications'
@@ -783,6 +793,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/auth/staff'
     | '/auth/verify'
+    | '/staff/attendance'
     | '/staff/deals'
     | '/staff/leads'
     | '/staff/notifications'
@@ -857,6 +868,7 @@ export interface FileRouteTypes {
     | '/auth/register/'
     | '/auth/staff/'
     | '/auth/verify/'
+    | '/staff/attendance/'
     | '/staff/deals/'
     | '/staff/leads/'
     | '/staff/notifications/'
@@ -1065,6 +1077,13 @@ declare module '@tanstack/react-router' {
       path: '/deals'
       fullPath: '/staff/deals'
       preLoaderRoute: typeof StaffDealsIndexRouteImport
+      parentRoute: typeof StaffRouteRoute
+    }
+    '/staff/attendance/': {
+      id: '/staff/attendance/'
+      path: '/attendance'
+      fullPath: '/staff/attendance'
+      preLoaderRoute: typeof StaffAttendanceIndexRouteImport
       parentRoute: typeof StaffRouteRoute
     }
     '/auth/verify/': {
@@ -1497,6 +1516,7 @@ const StaffSettingsRouteRouteWithChildren =
 interface StaffRouteRouteChildren {
   StaffSettingsRouteRoute: typeof StaffSettingsRouteRouteWithChildren
   StaffIndexRoute: typeof StaffIndexRoute
+  StaffAttendanceIndexRoute: typeof StaffAttendanceIndexRoute
   StaffDealsIndexRoute: typeof StaffDealsIndexRoute
   StaffLeadsIndexRoute: typeof StaffLeadsIndexRoute
   StaffNotificationsIndexRoute: typeof StaffNotificationsIndexRoute
@@ -1542,6 +1562,7 @@ interface StaffRouteRouteChildren {
 const StaffRouteRouteChildren: StaffRouteRouteChildren = {
   StaffSettingsRouteRoute: StaffSettingsRouteRouteWithChildren,
   StaffIndexRoute: StaffIndexRoute,
+  StaffAttendanceIndexRoute: StaffAttendanceIndexRoute,
   StaffDealsIndexRoute: StaffDealsIndexRoute,
   StaffLeadsIndexRoute: StaffLeadsIndexRoute,
   StaffNotificationsIndexRoute: StaffNotificationsIndexRoute,

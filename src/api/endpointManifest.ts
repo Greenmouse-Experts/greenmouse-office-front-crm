@@ -32,6 +32,9 @@ export const documentedEndpoints = [
   "GET /v1/admins/permissions",
   "GET /v1/admins/profile",
   "GET /v1/admins/roles",
+  "GET /v1/attendance",
+  "GET /v1/attendance/me",
+  "GET /v1/attendance/today",
   "GET /v1/auth/me",
   "GET /v1/categories",
   "GET /v1/categories/:id",
@@ -176,6 +179,7 @@ export const documentedEndpoints = [
   "POST /v1/auth/logout",
   "POST /v1/auth/refresh",
   "POST /v1/auth/staff/login",
+  "POST /v1/attendance/check-in",
   "POST /v1/categories",
   "POST /v1/companies",
   "POST /v1/companies/import",
@@ -219,5 +223,6 @@ export const documentedEndpoints = [
   "POST /v1/tasks",
   "POST /v1/tickets",
   "POST /v1/tickets/:id/escalate",
-  "POST /v1/tickets/:id/messages"
+  "POST /v1/tickets/:id/messages",
+  "PUT /v1/attendance/:date/report"
 ] as const;
