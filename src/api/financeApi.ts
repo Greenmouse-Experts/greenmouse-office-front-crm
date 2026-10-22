@@ -82,7 +82,7 @@ export interface IncomeQueryParams {
 export type CreateIncomeInput = Pick<
   IncomeRecord,
   "amount" | "categoryId" | "source" | "description" | "status"
->;
+> & { date: string };
 
 export const useIncomeRecords = (params?: IncomeQueryParams) => {
   return useQuery<IncomeRecord[]>({

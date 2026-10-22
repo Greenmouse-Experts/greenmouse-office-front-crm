@@ -33,7 +33,7 @@ export default function ExpenseTable() {
   const expenseList = query.data || [];
 
   const handleOpenEdit = (item: ExpenseRecord) => {
-    setEditingItem({ ...item });
+    setEditingItem({ ...item, date: (item.date || item.createdAt || "").slice(0, 10) });
     setEditAmount(String(item.amount ?? ""));
     editModalRef.current?.open();
   };
@@ -43,10 +43,11 @@ export default function ExpenseTable() {
     if (
       !editingItem.id ||
       !editingItem.categoryId ||
+      !editingItem.date ||
       !Number.isFinite(Number(editAmount)) ||
       Number(editAmount) <= 0
     ) {
-      toast.error("Amount is required.");
+      toast.error("Enter a positive amount, date, and category.");
       return;
     }
 
@@ -55,7 +56,7 @@ export default function ExpenseTable() {
         id: editingItem.id,
         amount: Number(editAmount),
         categoryId: editingItem.categoryId,
-        date: editingItem.date,
+        date: editingItem.date.slice(0, 10),
         paidTo: editingItem.paidTo,
         description: editingItem.description,
         status: editingItem.status,

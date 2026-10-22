@@ -24,6 +24,11 @@ export const Route = createFileRoute("/staff/accounts/income-expenses/")({
   component: RouteComponent,
 });
 
+const todayForInput = () => {
+  const date = new Date();
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+};
+
 function RouteComponent() {
   const tabs: Tab[] = [{ name: "Income" }, { name: "Expenses" }];
   const tab = useTabs(tabs, { name: "Income" });
@@ -44,6 +49,7 @@ function RouteComponent() {
   const [incomeForm, setIncomeForm] = useState({
     amount: "",
     categoryId: "",
+    date: todayForInput(),
     source: "",
     description: "",
     status: "Pending",
@@ -52,7 +58,7 @@ function RouteComponent() {
   const [expenseForm, setExpenseForm] = useState({
     amount: "",
     categoryId: "",
-    date: new Date().toLocaleDateString("en-CA"),
+    date: todayForInput(),
     paidTo: "",
     description: "",
     status: "Pending",
@@ -62,6 +68,7 @@ function RouteComponent() {
     setIncomeForm({
       amount: "",
       categoryId: "",
+      date: todayForInput(),
       source: "",
       description: "",
       status: "Pending",
@@ -73,7 +80,7 @@ function RouteComponent() {
     setExpenseForm({
       amount: "",
       categoryId: "",
-      date: new Date().toLocaleDateString("en-CA"),
+      date: todayForInput(),
       paidTo: "",
       description: "",
       status: "Pending",
@@ -86,12 +93,13 @@ function RouteComponent() {
     if (
       !Number.isFinite(Number(incomeForm.amount)) ||
       Number(incomeForm.amount) <= 0 ||
+      !incomeForm.date ||
       !incomeForm.source.trim() ||
       !incomeForm.categoryId ||
       !incomeCategories.some((c) => c.id === incomeForm.categoryId)
     ) {
       toast.error(
-        "Enter a positive amount, source, and active income category.",
+        "Enter a positive amount, date, source, and active income category.",
       );
       return;
     }
@@ -99,6 +107,7 @@ function RouteComponent() {
       await createIncome.mutateAsync({
         amount: Number(incomeForm.amount),
         categoryId: incomeForm.categoryId,
+        date: incomeForm.date,
         source: incomeForm.source.trim(),
         description: incomeForm.description,
         status: incomeForm.status,
@@ -234,6 +243,15 @@ function RouteComponent() {
                 Create an income category first
               </Link>
             )}
+          <SimpleInput
+            label="Date"
+            type="date"
+            value={incomeForm.date}
+            onChange={(e) =>
+              setIncomeForm({ ...incomeForm, date: e.target.value })
+            }
+            required
+          />
           <SimpleInput
             label="Payer / Source"
             type="text"
