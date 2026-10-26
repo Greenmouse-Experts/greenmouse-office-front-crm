@@ -12,6 +12,10 @@ describe("Office CRM endpoint matching", () => {
     expect(isSupportedApiEndpoint("GET", "/attendance/me?from=2026-10-01&to=2026-10-22")).toBe(true);
     expect(isSupportedApiEndpoint("GET", "/attendance?staffId=one")).toBe(true);
     expect(isSupportedApiEndpoint("PUT", "/attendance/2026-10-22/report")).toBe(true);
+    expect(isSupportedApiEndpoint("PATCH", "/staffs/profile/password")).toBe(true);
+    expect(isSupportedApiEndpoint("PATCH", "/owner/password")).toBe(true);
+    expect(isSupportedApiEndpoint("POST", "/owner/forgot-password")).toBe(true);
+    expect(isSupportedApiEndpoint("POST", "/owner/reset-password")).toBe(true);
   });
 
   it("rejects removed paths and unsupported methods", () => {
@@ -19,6 +23,7 @@ describe("Office CRM endpoint matching", () => {
     expect(isSupportedApiEndpoint("GET", "/deals/kanban/list")).toBe(false);
     expect(isSupportedApiEndpoint("POST", "/tenant/subscription/upgrade")).toBe(false);
     expect(isSupportedApiEndpoint("DELETE", "/invoices/one/status")).toBe(false);
+    expect(isSupportedApiEndpoint("POST", "/staffs/forgot-password")).toBe(false);
   });
 
   it("blocks an obsolete request before the transport runs", async () => {

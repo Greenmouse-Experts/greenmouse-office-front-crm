@@ -121,7 +121,7 @@ function RouteComponent() {
             </div>
             <Link
               to="/auth/forgot-password"
-              search={{ email: form.getValues("email") }}
+              search={{ account: "admin", email: form.watch("email") }}
               className="link link-primary text-sm font-semibold"
             >
               Forgot Password?

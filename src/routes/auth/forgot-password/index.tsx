@@ -1,108 +1,70 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { FormProvider, useForm } from "react-hook-form";
+import { Mail } from "lucide-react";
 import { toast } from "sonner";
 import SimpleInput from "@/components/inputs/SimpleInput";
-import apiClient from "@/client/api";
+import { useRequestOwnerPasswordReset } from "@/api/passwordApi";
+
+type Account = "owner" | "staff" | "admin";
 
 export const Route = createFileRoute("/auth/forgot-password/")({
   component: RouteComponent,
-  validateSearch: (search: Record<string, unknown>): { email?: string } => {
-    return {
-      email: typeof search.email === "string" ? search.email : undefined,
-    };
-  },
+  validateSearch: (search: Record<string, unknown>): { email?: string; account: Account } => ({
+    email: typeof search.email === "string" ? search.email : undefined,
+    account: search.account === "staff" || search.account === "admin" ? search.account : "owner",
+  }),
 });
 
-interface ForgotPasswordProps {
-  email: string;
-}
-
 function RouteComponent() {
-  const { email } = Route.useSearch();
-  const nav = useNavigate();
-  const form = useForm<ForgotPasswordProps>({
-    defaultValues: {
-      email: email || "",
-    },
-  });
+  const { email, account } = Route.useSearch();
+  const navigate = useNavigate();
+  const requestReset = useRequestOwnerPasswordReset();
+  const form = useForm<{ email: string }>({ defaultValues: { email: email || "" } });
+  const loginPath = account === "staff" ? "/auth/staff" : account === "admin" ? "/auth/admin" : "/auth/login";
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: (data: ForgotPasswordProps) =>
-      apiClient
-        .post("/tenant/auth/forgot-password", data)
-        .then((res) => res.data),
-    onSuccess: (res) => {
-      toast.success(res.message || "Reset OTP sent to your email");
-      nav({
-        to: "/auth/forgot-password/new-password",
-        search: { email: form.getValues("email") },
-      });
-    },
-    onError: (err: any) => {
-      const message =
-        err?.response?.data?.message ??
-        err?.message ??
-        "Failed to send reset OTP";
-      toast.error(message);
-    },
-  });
-
-  const onSubmit = (data: ForgotPasswordProps) => mutate(data);
+  const submit = async ({ email: address }: { email: string }) => {
+    try {
+      await requestReset.mutateAsync(address.trim());
+      toast.success("If this is your Owner email, a reset code has been sent.");
+      navigate({ to: "/auth/forgot-password/new-password", search: { email: address.trim() } });
+    } catch (error) {
+      const response = error as { response?: { data?: { message?: string | string[] } }; message?: string };
+      const message = response.response?.data?.message;
+      toast.error((Array.isArray(message) ? message.join(". ") : message) || response.message || "Could not send a reset code.");
+    }
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-300 isolate">
-      <div
-        className={`fixed inset-0 z-[-2] h-screen w-screen rotate-180 transform bg-white dark:bg-base-300 bg-[radial-gradient(oklch(from_var(--color-base-100)_l_c_h_/_50%),oklch(from_var(--color-primary)_l_c_h_/_50%))] opacity-50`}
-      ></div>
-      <div className="fixed inset-0 opacity-20 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:56px_96px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
-
-      <div className="w-full flex flex-col mx-auto space-y-4 px-4 z-20">
-        <div className="mt-12 text-center">
-          <h2 className="text-3xl font-semibold leading-normal">CRMgreenmouse</h2>
-          <p className="font-semibold text-primary mx-auto w-fit text-sm">
-            Reset Password
-          </p>
-          <p className="text-xs text-base-content/60 max-w-xs mx-auto mt-1">
-            Enter your business email address and we'll send you an OTP to reset
-            your password.
-          </p>
+    <main className="flex min-h-screen items-center justify-center bg-base-200 px-4 py-10">
+      <div className="w-full max-w-md rounded-xl bg-base-100 p-6 shadow-sm sm:p-8">
+        <div className="mb-6 flex items-start gap-3">
+          <div className="rounded-lg bg-primary/10 p-2.5 text-primary"><Mail className="size-5" aria-hidden="true" /></div>
+          <div>
+            <h1 className="text-xl font-semibold">Forgot password</h1>
+            <p className="mt-1 text-sm text-base-content/70">
+              {account === "owner" ? "Enter your Owner email to receive a reset code." :
+                account === "staff" ? "Ask your workspace Owner to help restore access to your staff account." :
+                  "Contact a platform administrator to restore access to your admin account."}
+            </p>
+          </div>
         </div>
 
-        <form
-          className="card max-w-sm w-full mx-auto bg-base-100 border border-base-content/10 shadow-lg p-6 space-y-4"
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
-          <SimpleInput
-            label="Business Email"
-            type="email"
-            required
-            placeholder="destiny@greenmouse.com"
-            {...form.register("email", { required: true })}
-          />
-
-          <button
-            type="submit"
-            disabled={isPending}
-            className="btn btn-primary w-full text-white font-semibold"
-          >
-            {isPending ? (
-              <span className="loading loading-spinner loading-sm" />
-            ) : (
-              "Send Reset OTP"
-            )}
-          </button>
-
-          <div className="text-center pt-2">
-            <Link
-              to="/auth/login"
-              className="text-xs text-primary font-semibold hover:underline"
-            >
-              Back to Sign In
-            </Link>
-          </div>
-        </form>
+        {account === "owner" && (
+          <FormProvider {...form}>
+            <form onSubmit={form.handleSubmit(submit)} className="space-y-4">
+              <SimpleInput label="Owner email" type="email" autoComplete="email" placeholder="owner@example.com"
+                {...form.register("email", {
+                  required: "Email is required",
+                  pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Enter a valid email address" },
+                })} />
+              <button type="submit" className="btn btn-primary w-full" disabled={requestReset.isPending}>
+                {requestReset.isPending ? "Sending..." : "Send reset code"}
+              </button>
+            </form>
+          </FormProvider>
+        )}
+        <Link to={loginPath} className="link link-primary mt-5 inline-block text-sm">Back to sign in</Link>
       </div>
-    </div>
+    </main>
   );
 }

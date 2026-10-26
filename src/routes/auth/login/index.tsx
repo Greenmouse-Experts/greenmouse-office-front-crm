@@ -112,6 +112,7 @@ function RouteComponent() {
             </label>
             <Link
               to="/auth/forgot-password"
+              search={{ account: "owner", email: form.watch("email") }}
               className="text-primary hover:underline"
             >
               Forgot password?
