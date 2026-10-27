@@ -11,6 +11,7 @@ import {
   type AuthUser,
 } from "@/store/authStore";
 import axios from "axios";
+import type { StaffProfile } from "@/api/tenantApi";
 
 export const Route = createFileRoute("/auth/login/")({
   component: RouteComponent,
@@ -46,9 +47,25 @@ function RouteComponent() {
       }
       return data;
     },
-    onSuccess: (res) => {
+    onSuccess: async (res) => {
       set_user_value(res);
       set_profile_value(res.user);
+      try {
+        const { data } = await axios.get<StaffProfile | { data: StaffProfile }>(
+          new_url + "staffs/profile",
+          { headers: { Authorization: `Bearer ${res.accessToken}` } },
+        );
+        const profile = "data" in data ? data.data : data;
+        const user = {
+          ...res.user,
+          ...profile,
+          phoneNumber: profile.phoneNumber ?? res.user.phoneNumber,
+        };
+        set_profile_value(user);
+        set_user_value({ ...res, user });
+      } catch {
+        // The login session is valid even when profile details cannot be loaded.
+      }
       toast.success("Login successful");
       if (res.user.isOnboarded === false) {
         nav({ to: "/auth/register/on-boarding" });

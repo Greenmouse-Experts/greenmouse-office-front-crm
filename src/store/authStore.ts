@@ -16,6 +16,7 @@ interface UserData {
 }
 
 export interface ProfileData extends UserData {
+  role?: { name: string };
   sub?: string;
   iat?: number;
   exp?: number;

@@ -7,34 +7,34 @@ import logoutApi from "@/client/logout";
 export default function TenantUserProfile() {
   const [profile] = useProfile();
   const { logout } = useLogout(logoutApi);
+  const name = [profile?.firstName, profile?.lastName].filter(Boolean).join(" ") || "Your account";
+  const role = profile?.role?.name || profile?.userType || "Staff";
 
   return (
     <div className="flex items-center border-l pl-4 ml-2 border-current/30">
       <div className="mr-2 md:flex flex-col text-sm text-right hidden font-semibold">
         <span className="truncate max-w-[150px]">
-          {profile?.companyName ||
-            [profile?.firstName, profile?.lastName].filter(Boolean).join(" ") ||
-            "Tenant User"}
+          {name}
         </span>
         <span className="text-base-content/70 text-xs capitalize">
-          {profile?.userType || "Tenant"}
+          {role}
         </span>
       </div>
       <div className="dropdown dropdown-end">
         <div className="flex gap-2 items-center">
-          <button className="btn btn-circle size-8 ring ring-primary/20 p-0 overflow-hidden">
-            <img
-              src={profile?.profilePic ?? "https://github.com/shadcn.png"}
-              className="w-full h-full object-contain"
-              alt="User avatar"
-            />
+          <button className="btn btn-circle size-8 ring ring-primary/20 p-0 overflow-hidden" aria-label="Account menu">
+            {profile?.profilePic ? (
+              <img src={profile.profilePic} className="size-full object-cover" alt={name} />
+            ) : (
+              <UserCircle className="size-6" aria-hidden="true" />
+            )}
           </button>
         </div>
         <ul className="dropdown-content rounded-box bg-base-100 shadow-xl border border-base-200 min-w-[200px] w-auto menu m-1 p-2 gap-1 z-50">
           <li className="px-4 py-2 border-b border-base-200 mb-1">
             <div className="flex flex-col gap-0.5 overflow-hidden">
               <span className="text-sm font-semibold truncate">
-                {profile?.companyName}
+                {name}
               </span>
               <span className="text-xs opacity-60 truncate">
                 {profile?.email}
