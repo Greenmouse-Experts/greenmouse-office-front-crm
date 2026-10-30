@@ -148,15 +148,6 @@ function RouteComponent() {
             )}
           </button>
 
-          <p className="text-center text-xs text-base-content/60 pt-2">
-            Don't have an account?{" "}
-            <Link
-              to="/auth/register"
-              className="text-primary font-semibold hover:underline"
-            >
-              Register your business
-            </Link>
-          </p>
           {import.meta.env.DEV && (
             <>
               <button

@@ -46,8 +46,8 @@ html {
   --color-success-content: oklch(100% 0 0);
   --color-warning: oklch(85% 0.199 91.936);
   --color-warning-content: oklch(0% 0 0);
-  --color-error: oklch(70% 0.191 22.216);
-  --color-error-content: oklch(0% 0 0);
+  --color-error: #d11336;
+  --color-error-content: white;
   --radius-selector: 0.25rem;
   --radius-field: 0.25rem;
   --radius-box: 0.25rem;
