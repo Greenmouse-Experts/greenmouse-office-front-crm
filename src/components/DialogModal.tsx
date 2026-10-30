@@ -12,7 +12,8 @@ import { X } from "lucide-react";
 interface ModalProps extends PropsWithChildren {
   actions?: any;
   actionName?: string;
-  title?: string;
+  title?: string | React.ReactNode;
+  onClose?: () => void;
 }
 
 export interface ModalHandle {
@@ -21,7 +22,7 @@ export interface ModalHandle {
 }
 
 const Modal = forwardRef<ModalHandle, ModalProps>(
-  ({ children, actions, actionName: _actionName, title }, ref) => {
+  ({ children, actions, actionName: _actionName, title, onClose }, ref) => {
     const modalRef = useRef<HTMLDialogElement>(null);
     // Track open state so children unmount on close and remount fresh on every
     // open — prevents stale local state / cached data lingering across reopens.
@@ -41,16 +42,19 @@ const Modal = forwardRef<ModalHandle, ModalProps>(
     useEffect(() => {
       const dialog = modalRef.current;
       if (!dialog) return;
-      const handleClose = () => setIsOpen(false);
+      const handleClose = () => {
+        setIsOpen(false);
+        onClose?.();
+      };
       dialog.addEventListener("close", handleClose);
       return () => dialog.removeEventListener("close", handleClose);
-    }, []);
+    }, [onClose]);
 
     return (
       <dialog ref={modalRef} className="modal modal-middle sm:modal-middle">
         <Toaster theme="dark" richColors />
         <div className="modal-box bg-base-100 text-base-content border border-base-300  flex flex-col max-h-[90vh] rounded-2xl shadow-xl relative p-0 overflow-hidden">
-          <div className="flex border-b border-base-200 py-4 items-center px-6 bg-base-100">
+          <div className="flex border-b border-base-content/20 py-4 items-center px-6 bg-base-100">
             {title && (
               <h3 className="font-semibold text-lg text-base-content">
                 {title}

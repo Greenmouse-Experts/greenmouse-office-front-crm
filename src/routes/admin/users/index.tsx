@@ -6,6 +6,9 @@ import CustomTable from "@/components/tables/CustomTable";
 import UserSummary from "./-components/UsersSummary";
 import type { Actions } from "@/components/tables/pop-up";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
+import ConfirmModal, {
+  type ConfirmModalHandle,
+} from "@/components/ConfirmModal";
 import PageHeader from "@/components/Headers/PageHeader";
 import PageLoader from "@/components/layout/PageLoader";
 import {
@@ -27,6 +30,7 @@ function RouteComponent() {
   const createStaff = useCreateStaff();
   const deleteStaff = useDeleteStaff();
   const addModalRef = useRef<ModalHandle>(null);
+  const confirmRef = useRef<ConfirmModalHandle>(null);
 
   const [form, setForm] = useState({
     firstName: "",
@@ -51,8 +55,16 @@ function RouteComponent() {
 
   const handleCreateStaff = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.firstName || !form.lastName || !form.email || !form.password || !form.roleId) {
-      toast.error("First name, last name, email, password, and role are required.");
+    if (
+      !form.firstName ||
+      !form.lastName ||
+      !form.email ||
+      !form.password ||
+      !form.roleId
+    ) {
+      toast.error(
+        "First name, last name, email, password, and role are required.",
+      );
       return;
     }
 
@@ -65,21 +77,24 @@ function RouteComponent() {
         phoneNumber: form.phoneNumber || undefined,
         roleId: form.roleId,
       });
-      toast.success(`Administrator "${form.firstName} ${form.lastName}" added.`);
+      toast.success(
+        `Administrator "${form.firstName} ${form.lastName}" added.`,
+      );
       addModalRef.current?.close();
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to add administrator.");
+      toast.error(
+        err.response?.data?.message || "Failed to add administrator.",
+      );
     }
   };
 
   const handleDeleteStaff = async (staff: StaffMember) => {
-    if (
-      !window.confirm(
-        `Delete administrator "${staff.firstName} ${staff.lastName}"?`,
-      )
-    ) {
-      return;
-    }
+    const confirmed = await confirmRef.current?.confirm({
+      title: "Delete administrator",
+      message: `Delete administrator "${staff.firstName} ${staff.lastName}"? This cannot be undone.`,
+      confirmLabel: "Delete",
+    });
+    if (!confirmed) return;
 
     try {
       await deleteStaff.mutateAsync(staff.id);
@@ -121,7 +136,9 @@ function RouteComponent() {
       label: "Role",
       render: (_value: any, item: StaffMember) => (
         <span className="badge badge-md badge-ghost">
-          {item.role?.name || rolesQuery.data?.find((role) => role.id === item.roleId)?.name || "—"}
+          {item.role?.name ||
+            rolesQuery.data?.find((role) => role.id === item.roleId)?.name ||
+            "—"}
         </span>
       ),
     },
@@ -254,8 +271,20 @@ function RouteComponent() {
             </div>
 
             <div className="sm:col-span-2">
-              <label className="label"><span className="label-text font-semibold">Temporary password *</span></label>
-              <input type="password" required minLength={8} autoComplete="new-password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className="input input-sm input-bordered w-full" />
+              <label className="label">
+                <span className="label-text font-semibold">
+                  Temporary password *
+                </span>
+              </label>
+              <input
+                type="password"
+                required
+                minLength={8}
+                autoComplete="new-password"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                className="input input-sm input-bordered w-full"
+              />
             </div>
 
             <div className="sm:col-span-2">
@@ -275,7 +304,9 @@ function RouteComponent() {
 
             <div className="sm:col-span-2">
               <label className="label">
-                <span className="label-text font-semibold">Assigned Role *</span>
+                <span className="label-text font-semibold">
+                  Assigned Role *
+                </span>
               </label>
               <select
                 value={form.roleId}
@@ -311,6 +342,7 @@ function RouteComponent() {
           </div>
         </form>
       </Modal>
+      <ConfirmModal ref={confirmRef} />
     </div>
   );
 }

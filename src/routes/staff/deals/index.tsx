@@ -2,6 +2,9 @@ import { useState, useRef, useMemo } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import PageHeader from "@/components/Headers/PageHeader";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
+import ConfirmModal, {
+  type ConfirmModalHandle,
+} from "@/components/ConfirmModal";
 import SimpleInput from "@/components/inputs/SimpleInput";
 import FormattedPriceInput from "@/components/inputs/FormattedPriceInput";
 import LocalSelect from "@/components/inputs/LocalSelect";
@@ -46,7 +49,9 @@ const summarizeValues = (deals: Deal[]) => {
     const currency = deal.currency || "NGN";
     totals.set(currency, (totals.get(currency) || 0) + deal.value);
   });
-  return [...totals].map(([currency, value]) => formatCurrency(value, currency));
+  return [...totals].map(([currency, value]) =>
+    formatCurrency(value, currency),
+  );
 };
 
 function DealsPageComponent() {
@@ -82,6 +87,7 @@ function DealsPageComponent() {
   const markLostMutation = useMarkDealLost();
   // Modal Refs
   const dealModalRef = useRef<ModalHandle>(null);
+  const confirmRef = useRef<ConfirmModalHandle>(null);
   const [dropStageId, setDropStageId] = useState<string | null>(null);
 
   // Selected item for edit
@@ -97,7 +103,6 @@ function DealsPageComponent() {
     expectedCloseDate: "",
     notes: "",
   });
-
 
   // Metric Computations
   const metrics = useMemo(() => {
@@ -202,7 +207,13 @@ function DealsPageComponent() {
   };
 
   const handleDeleteDeal = async (deal: Deal) => {
-    if (!window.confirm(`Delete deal "${deal.name}"?`)) return;
+    const confirmed = await confirmRef.current?.confirm({
+      title: "Delete deal",
+      message: `Delete deal "${deal.name}"? This cannot be undone.`,
+      confirmLabel: "Delete",
+    });
+    if (!confirmed) return;
+
     try {
       await deleteDealMutation.mutateAsync(deal.id);
       toast.success("Deal deleted.");
@@ -264,8 +275,12 @@ function DealsPageComponent() {
             </span>
           </div>
           <div>
-            <span className="text-base-content/60 text-xs">Pipeline Value: </span>
-            <span className="font-bold text-primary">{metrics.values.join(" · ") || "—"}</span>
+            <span className="text-base-content/60 text-xs">
+              Pipeline Value:{" "}
+            </span>
+            <span className="font-bold text-primary">
+              {metrics.values.join(" · ") || "—"}
+            </span>
           </div>
         </div>
       </div>
@@ -279,7 +294,12 @@ function DealsPageComponent() {
             Create your first sales pipeline to begin tracking deals and
             visualizing stages.
           </p>
-          <Link to="/staff/pipelines" className="btn btn-primary btn-sm mx-auto text-white">Create a pipeline</Link>
+          <Link
+            to="/staff/pipelines"
+            className="btn btn-primary btn-sm mx-auto text-white"
+          >
+            Create a pipeline
+          </Link>
         </div>
       ) : (
         <PageLoader
@@ -310,14 +330,22 @@ function DealsPageComponent() {
                       }
                     }}
                     onDragLeave={(event) => {
-                      if (!event.currentTarget.contains(event.relatedTarget as Node)) setDropStageId(null);
+                      if (
+                        !event.currentTarget.contains(
+                          event.relatedTarget as Node,
+                        )
+                      )
+                        setDropStageId(null);
                     }}
                     onDrop={(event) => {
                       event.preventDefault();
                       setDropStageId(null);
                       const dealId = event.dataTransfer.getData("text/deal-id");
-                      const source = kanbanColumns.flatMap((column) => column.deals || []).find((deal) => deal.id === dealId);
-                      if (source && source.stageId !== stage.id) void handleMoveStage(dealId, stage.id);
+                      const source = kanbanColumns
+                        .flatMap((column) => column.deals || [])
+                        .find((deal) => deal.id === dealId);
+                      if (source && source.stageId !== stage.id)
+                        void handleMoveStage(dealId, stage.id);
                     }}
                   >
                     {/* Stage Header */}
@@ -349,7 +377,10 @@ function DealsPageComponent() {
                             key={deal.id}
                             draggable={!moveDealStageMutation.isPending}
                             onDragStart={(event) => {
-                              event.dataTransfer.setData("text/deal-id", deal.id);
+                              event.dataTransfer.setData(
+                                "text/deal-id",
+                                deal.id,
+                              );
                               event.dataTransfer.effectAllowed = "move";
                             }}
                             onDragEnd={() => setDropStageId(null)}
@@ -479,12 +510,18 @@ function DealsPageComponent() {
       )}
 
       {/* CREATE / EDIT DEAL MODAL */}
-      <Modal ref={dealModalRef}>
-        <div className="w-full max-w-md p-1">
-          <form onSubmit={handleSaveDeal} className="space-y-4">
+      <Modal
+        ref={dealModalRef}
+        title={
+          <>
             <h3 className="font-bold text-lg flex items-center gap-2">
               {editingDeal ? "Edit Deal" : "Create New Deal"}
             </h3>
+          </>
+        }
+      >
+        <div className="w-full max-w-md p-1">
+          <form onSubmit={handleSaveDeal} className="space-y-4">
             <SimpleInput
               label="Deal Title *"
               placeholder="e.g. Acme Corp Enterprise License"
@@ -498,7 +535,11 @@ function DealsPageComponent() {
             <div className="grid grid-cols-2 gap-4">
               <FormattedPriceInput
                 label="Deal Value *"
-                currency={{ NGN: "₦", USD: "$", EUR: "€", GBP: "£" }[dealForm.currency] || dealForm.currency}
+                currency={
+                  { NGN: "₦", USD: "$", EUR: "€", GBP: "£" }[
+                    dealForm.currency
+                  ] || dealForm.currency
+                }
                 value={dealForm.value}
                 onChange={(e) =>
                   setDealForm({ ...dealForm, value: Number(e.target.value) })
@@ -576,6 +617,7 @@ function DealsPageComponent() {
         </div>
       </Modal>
 
+      <ConfirmModal ref={confirmRef} />
     </div>
   );
 }

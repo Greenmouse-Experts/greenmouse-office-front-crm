@@ -6,6 +6,9 @@ import PageHeader from "@/components/Headers/PageHeader";
 import PageLoader from "@/components/layout/PageLoader";
 import QueryCompLayout from "@/components/layout/QueryCompLayout";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
+import ConfirmModal, {
+  type ConfirmModalHandle,
+} from "@/components/ConfirmModal";
 import SimpleInput from "@/components/inputs/SimpleInput";
 import SimpleTextArea from "@/components/inputs/SimpleTextArea";
 import {
@@ -63,6 +66,7 @@ function PipelinesPage() {
 
   const pipelineModal = useRef<ModalHandle>(null);
   const stageModal = useRef<ModalHandle>(null);
+  const confirmRef = useRef<ConfirmModalHandle>(null);
   const [editingPipeline, setEditingPipeline] = useState<Pipeline | null>(null);
   const pipelineForm = useForm<PipelineFormValues>({
     defaultValues: emptyPipeline,
@@ -108,7 +112,13 @@ function PipelinesPage() {
   };
 
   const removePipeline = async (pipeline: Pipeline) => {
-    if (!window.confirm(`Delete pipeline "${pipeline.name}"?`)) return;
+    const confirmed = await confirmRef.current?.confirm({
+      title: "Delete pipeline",
+      message: `Delete pipeline "${pipeline.name}"? This cannot be undone.`,
+      confirmLabel: "Delete",
+    });
+    if (!confirmed) return;
+
     try {
       await deletePipeline.mutateAsync(pipeline.id);
       setSelectedId("");
@@ -154,13 +164,15 @@ function PipelinesPage() {
   };
 
   const removeStage = async (stage: PipelineStage) => {
-    if (
-      !activeId ||
-      !window.confirm(
-        `Delete stage "${stage.name}"? Deals in this stage may need to be moved first.`,
-      )
-    )
-      return;
+    if (!activeId) return;
+
+    const confirmed = await confirmRef.current?.confirm({
+      title: "Delete stage",
+      message: `Delete stage "${stage.name}"? Deals in this stage may need to be moved first.`,
+      confirmLabel: "Delete",
+    });
+    if (!confirmed) return;
+
     try {
       await deleteStage.mutateAsync({
         pipelineId: activeId,
@@ -500,6 +512,7 @@ function PipelinesPage() {
           </form>
         </FormProvider>
       </Modal>
+      <ConfirmModal ref={confirmRef} />
     </div>
   );
 }

@@ -7,6 +7,9 @@ import CustomTable from "@/components/tables/CustomTable";
 import PageHeader from "@/components/Headers/PageHeader";
 import PageLoader from "@/components/layout/PageLoader";
 import type { ModalHandle } from "@/components/DialogModal";
+import ConfirmModal, {
+  type ConfirmModalHandle,
+} from "@/components/ConfirmModal";
 import RecordPaymentModal from "./-components/RecordPaymentModal";
 import type { Actions } from "@/components/tables/pop-up";
 import {
@@ -34,6 +37,7 @@ function RouteComponent() {
   const query = useInvoices();
   const sendInvoice = useSendInvoice();
   const paymentModalRef = useRef<ModalHandle>(null);
+  const confirmRef = useRef<ConfirmModalHandle>(null);
   const [paymentInvoice, setPaymentInvoice] = useState<Invoice | null>(null);
   const deleteInvoice = useDeleteInvoice();
   const searchProps = useSearch();
@@ -76,13 +80,13 @@ function RouteComponent() {
   };
 
   const handleDelete = async (inv: Invoice) => {
-    if (
-      !window.confirm(
-        `Are you sure you want to delete invoice ${inv.invoiceNumber || inv.id}?`,
-      )
-    ) {
-      return;
-    }
+    const confirmed = await confirmRef.current?.confirm({
+      title: "Delete invoice",
+      message: `Are you sure you want to delete invoice ${inv.invoiceNumber || inv.id}? This cannot be undone.`,
+      confirmLabel: "Delete",
+    });
+    if (!confirmed) return;
+
     try {
       await deleteInvoice.mutateAsync(inv.id);
       toast.success("Invoice deleted.");
@@ -268,6 +272,7 @@ function RouteComponent() {
         </PageLoader>
       </SimpleContainer>
       <RecordPaymentModal invoice={paymentInvoice} modalRef={paymentModalRef} />
+      <ConfirmModal ref={confirmRef} />
     </div>
   );
 }

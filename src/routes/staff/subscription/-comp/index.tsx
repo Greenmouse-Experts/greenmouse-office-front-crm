@@ -1,10 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import PaystackPop from "@paystack/inline-js";
 import { getPaystackAccessCode } from "../-checkout";
 import { priceForCycle } from "../-pricing";
 import PageHeader from "@/components/Headers/PageHeader";
 import PageLoader from "@/components/layout/PageLoader";
 import SimpleContainer from "@/components/SimpleContainer";
+import ConfirmModal, {
+  type ConfirmModalHandle,
+} from "@/components/ConfirmModal";
 import CustomTable from "@/components/tables/CustomTable";
 import {
   useTenantSubscriptionCurrent,
@@ -29,7 +32,6 @@ import {
   Layers,
 } from "lucide-react";
 import QueryCompLayout from "@/components/layout/QueryCompLayout";
-
 
 const PENDING_PAYMENT_KEY = "tenant-subscription-pending-reference";
 
@@ -61,6 +63,7 @@ export default function RouteComponent() {
   const upgradeMutation = useTenantSubscriptionUpgrade();
   const downgradeMutation = useTenantSubscriptionDowngrade();
   const cancelMutation = useTenantSubscriptionCancel();
+  const confirmRef = useRef<ConfirmModalHandle>(null);
 
   const currentSub = currentQuery.data;
   const billingCycle =
@@ -177,11 +180,14 @@ export default function RouteComponent() {
   };
 
   const handleDowngrade = async (plan: any) => {
-    if (
-      !window.confirm(`Are you sure you want to downgrade to "${plan.name}"?`)
-    ) {
-      return;
-    }
+    const confirmed = await confirmRef.current?.confirm({
+      title: "Change plan",
+      message: `Are you sure you want to downgrade to "${plan.name}"?`,
+      confirmLabel: "Downgrade",
+      destructive: false,
+    });
+    if (!confirmed) return;
+
     try {
       await downgradeMutation.mutateAsync({ planId: plan.id });
       toast.success(`Downgraded to ${plan.name} plan successfully.`);
@@ -193,9 +199,14 @@ export default function RouteComponent() {
   };
 
   const handleCancel = async () => {
-    if (!window.confirm("Are you sure you want to cancel your subscription?")) {
-      return;
-    }
+    const confirmed = await confirmRef.current?.confirm({
+      title: "Cancel subscription",
+      message: "Are you sure you want to cancel your subscription?",
+      confirmLabel: "Cancel subscription",
+      cancelLabel: "Keep subscription",
+    });
+    if (!confirmed) return;
+
     try {
       await cancelMutation.mutateAsync();
       toast.success("Subscription cancelled.");
@@ -681,6 +692,7 @@ export default function RouteComponent() {
           </div>
         </PageLoader>
       </SimpleContainer>
+      <ConfirmModal ref={confirmRef} />
     </div>
   );
 }

@@ -7,6 +7,9 @@ import { PlusCircleIcon, Shield, Search, X } from "lucide-react";
 import CustomTable from "@/components/tables/CustomTable";
 import type { Actions } from "@/components/tables/pop-up";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
+import ConfirmModal, {
+  type ConfirmModalHandle,
+} from "@/components/ConfirmModal";
 import PageHeader from "@/components/Headers/PageHeader";
 import PageLoader from "@/components/layout/PageLoader";
 import {
@@ -33,6 +36,7 @@ function RouteComponent() {
 
   const searchProps = useSearch();
   const roleModalRef = useRef<ModalHandle>(null);
+  const confirmRef = useRef<ConfirmModalHandle>(null);
 
   const [editingRole, setEditingRole] = useState<Role | null>(null);
   const [roleName, setRoleName] = useState("");
@@ -59,11 +63,13 @@ function RouteComponent() {
   };
 
   const handleDelete = async (role: Role) => {
-    if (
-      !window.confirm(`Are you sure you want to delete role "${role.name}"?`)
-    ) {
-      return;
-    }
+    const confirmed = await confirmRef.current?.confirm({
+      title: "Delete role",
+      message: `Are you sure you want to delete role "${role.name}"?`,
+      confirmLabel: "Delete",
+    });
+    if (!confirmed) return;
+
     try {
       await deleteRole.mutateAsync(role.id);
       toast.success(`Role "${role.name}" deleted.`);
@@ -541,6 +547,7 @@ function RouteComponent() {
           </div>
         </form>
       </Modal>
+      <ConfirmModal ref={confirmRef} />
     </div>
   );
 }

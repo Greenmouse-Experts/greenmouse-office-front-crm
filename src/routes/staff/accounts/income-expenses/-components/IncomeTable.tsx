@@ -2,6 +2,9 @@ import { useState, useRef } from "react";
 import CustomTable from "@/components/tables/CustomTable";
 import { type Actions } from "@/components/tables/pop-up";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
+import ConfirmModal, {
+  type ConfirmModalHandle,
+} from "@/components/ConfirmModal";
 import SimpleInput from "@/components/inputs/SimpleInput";
 import FormattedPriceInput from "@/components/inputs/FormattedPriceInput";
 import SimpleTextArea from "@/components/inputs/SimpleTextArea";
@@ -27,13 +30,17 @@ export default function IncomeTable() {
     [];
 
   const editModalRef = useRef<ModalHandle>(null);
+  const confirmRef = useRef<ConfirmModalHandle>(null);
   const [editingItem, setEditingItem] = useState<Partial<IncomeRecord>>({});
   const [editAmount, setEditAmount] = useState("");
 
   const incomeList = query.data || [];
 
   const handleOpenEdit = (item: IncomeRecord) => {
-    setEditingItem({ ...item, date: (item.date || item.createdAt || "").slice(0, 10) });
+    setEditingItem({
+      ...item,
+      date: (item.date || item.createdAt || "").slice(0, 10),
+    });
     setEditAmount(String(item.amount ?? ""));
     editModalRef.current?.open();
   };
@@ -71,13 +78,13 @@ export default function IncomeTable() {
   };
 
   const handleDelete = async (item: IncomeRecord) => {
-    if (
-      !window.confirm(
-        `Are you sure you want to delete this income entry for ₦${item.amount}?`,
-      )
-    ) {
-      return;
-    }
+    const confirmed = await confirmRef.current?.confirm({
+      title: "Delete income entry",
+      message: `Are you sure you want to delete this income entry for ₦${item.amount}? This cannot be undone.`,
+      confirmLabel: "Delete",
+    });
+    if (!confirmed) return;
+
     try {
       await deleteIncome.mutateAsync(item.id);
       toast.success("Income entry deleted.");
@@ -292,6 +299,7 @@ export default function IncomeTable() {
           </div>
         </form>
       </Modal>
+      <ConfirmModal ref={confirmRef} />
     </div>
   );
 }

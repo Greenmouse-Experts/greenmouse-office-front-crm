@@ -11,6 +11,9 @@ import PageHeader from "@/components/Headers/PageHeader";
 import ContainerRow from "@/components/ContainerRow";
 import { useSearch } from "@/stores/data";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
+import ConfirmModal, {
+  type ConfirmModalHandle,
+} from "@/components/ConfirmModal";
 import PageLoader from "@/components/layout/PageLoader";
 import { useContacts } from "@/api/crmApi";
 import { useProducts } from "@/api/catalogApi";
@@ -71,6 +74,7 @@ function RouteComponent() {
   const deleteOrder = useDeleteOrder();
   const searchProps = useSearch();
   const detailsModalRef = useRef<ModalHandle>(null);
+  const confirmRef = useRef<ConfirmModalHandle>(null);
   const [selectedOrderId, setSelectedOrderId] = useState<string>();
   const detailsQuery = useOrder(selectedOrderId);
 
@@ -105,8 +109,13 @@ function RouteComponent() {
   };
 
   const handleDelete = async (order: Order) => {
-    if (!window.confirm(`Delete order ${order.orderNumber || order.id}?`))
-      return;
+    const confirmed = await confirmRef.current?.confirm({
+      title: "Delete order",
+      message: `Delete order ${order.orderNumber || order.id}? This cannot be undone.`,
+      confirmLabel: "Delete",
+    });
+    if (!confirmed) return;
+
     try {
       await deleteOrder.mutateAsync(order.id);
       toast.success("Order deleted.");
@@ -216,7 +225,9 @@ function RouteComponent() {
             description:
               "Create an order to start tracking purchases and fulfillment.",
             actionText: "Create Order",
-            onAction: () => { void navigate({ to: "/staff/orders/add" }); },
+            onAction: () => {
+              void navigate({ to: "/staff/orders/add" });
+            },
           }}
         >
           {() =>
@@ -366,12 +377,31 @@ function RouteComponent() {
             {selectedOrder.notes && (
               <div className="rounded-lg bg-base-200/50 p-3 text-sm text-base-content/70">
                 <h4 className="mb-2 font-semibold text-base-content">Notes</h4>
-                <ReactMarkdown components={{
-                  p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
-                  ul: ({ children }) => <ul className="list-disc pl-5">{children}</ul>,
-                  ol: ({ children }) => <ol className="list-decimal pl-5">{children}</ol>,
-                  a: ({ children, href }) => <a href={href} target="_blank" rel="noopener noreferrer" className="link link-primary">{children}</a>,
-                }}>{selectedOrder.notes}</ReactMarkdown>
+                <ReactMarkdown
+                  components={{
+                    p: ({ children }) => (
+                      <p className="mb-2 last:mb-0">{children}</p>
+                    ),
+                    ul: ({ children }) => (
+                      <ul className="list-disc pl-5">{children}</ul>
+                    ),
+                    ol: ({ children }) => (
+                      <ol className="list-decimal pl-5">{children}</ol>
+                    ),
+                    a: ({ children, href }) => (
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="link link-primary"
+                      >
+                        {children}
+                      </a>
+                    ),
+                  }}
+                >
+                  {selectedOrder.notes}
+                </ReactMarkdown>
               </div>
             )}
             <div className="flex items-center justify-between border-t border-base-200 pt-4">
@@ -401,6 +431,7 @@ function RouteComponent() {
           </div>
         ) : null}
       </Modal>
+      <ConfirmModal ref={confirmRef} />
     </div>
   );
 }

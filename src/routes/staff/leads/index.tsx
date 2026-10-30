@@ -6,6 +6,9 @@ import ContainerRow from "@/components/ContainerRow";
 import CustomTable from "@/components/tables/CustomTable";
 import type { Actions } from "@/components/tables/pop-up";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
+import ConfirmModal, {
+  type ConfirmModalHandle,
+} from "@/components/ConfirmModal";
 import SimpleInput from "@/components/inputs/SimpleInput";
 import FormattedPriceInput from "@/components/inputs/FormattedPriceInput";
 import LocalSelect from "@/components/inputs/LocalSelect";
@@ -67,6 +70,7 @@ function LeadsPageComponent() {
   const createModalRef = useRef<ModalHandle>(null);
   const editModalRef = useRef<ModalHandle>(null);
   const convertModalRef = useRef<ModalHandle>(null);
+  const confirmRef = useRef<ConfirmModalHandle>(null);
 
   // Active items for modals
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
@@ -235,9 +239,13 @@ function LeadsPageComponent() {
 
   const handleDelete = async (lead: Lead) => {
     const name = `${lead.firstName || ""} ${lead.lastName || ""}`.trim();
-    if (!window.confirm(`Are you sure you want to delete lead "${name}"?`)) {
-      return;
-    }
+    const confirmed = await confirmRef.current?.confirm({
+      title: "Delete lead",
+      message: `Are you sure you want to delete lead "${name}"? This cannot be undone.`,
+      confirmLabel: "Delete",
+    });
+    if (!confirmed) return;
+
     try {
       await deleteLeadMutation.mutateAsync(lead.id);
       toast.success("Lead deleted successfully.");
@@ -663,12 +671,18 @@ function LeadsPageComponent() {
       </Modal>
 
       {/* EDIT LEAD MODAL */}
-      <Modal ref={editModalRef}>
-        <div className="w-full max-w-xl p-1">
-          <form onSubmit={handleEditSubmit} className="space-y-4">
+      <Modal
+        ref={editModalRef}
+        title={
+          <>
             <h3 className="font-bold text-lg flex items-center gap-2">
               <Edit className="size-5 text-primary" /> Edit Lead
             </h3>
+          </>
+        }
+      >
+        <div className="w-full max-w-xl p-1">
+          <form onSubmit={handleEditSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <SimpleInput
                 label="First Name *"
@@ -900,6 +914,7 @@ function LeadsPageComponent() {
           </form>
         </div>
       </Modal>
+      <ConfirmModal ref={confirmRef} />
     </div>
   );
 }

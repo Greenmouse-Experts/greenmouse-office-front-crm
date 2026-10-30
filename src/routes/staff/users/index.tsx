@@ -18,6 +18,9 @@ import UserSummary from "./-components/UsersSummary";
 import DropDownBtn from "@/components/buttons/DropdownBtn";
 import type { Actions } from "@/components/tables/pop-up";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
+import ConfirmModal, {
+  type ConfirmModalHandle,
+} from "@/components/ConfirmModal";
 import PageHeader from "@/components/Headers/PageHeader";
 import PageLoader from "@/components/layout/PageLoader";
 import {
@@ -86,7 +89,10 @@ function EditStaffForm({
       toast.success("Staff member updated.");
       onClose();
     } catch (error) {
-      const response = error as { response?: { data?: { message?: string | string[] } }; message?: string };
+      const response = error as {
+        response?: { data?: { message?: string | string[] } };
+        message?: string;
+      };
       const message = response.response?.data?.message;
       toast.error(
         (Array.isArray(message) ? message.join(". ") : message) ||
@@ -163,7 +169,9 @@ function EditStaffForm({
               No role assigned
             </option>
             {(staff.roleId || staff.role?.id) &&
-              !roles.some((role) => role.id === (staff.roleId || staff.role?.id)) && (
+              !roles.some(
+                (role) => role.id === (staff.roleId || staff.role?.id),
+              ) && (
                 <option value={staff.roleId || staff.role?.id}>
                   {staff.role?.name || "Current role"}
                 </option>
@@ -183,11 +191,22 @@ function EditStaffForm({
           </LocalSelect>
         </div>
         <div className="flex justify-end gap-2 pt-2">
-          <button type="button" className="btn btn-ghost" onClick={onClose} disabled={updateStaff.isPending || uploadImage.isPending}>
+          <button
+            type="button"
+            className="btn btn-ghost"
+            onClick={onClose}
+            disabled={updateStaff.isPending || uploadImage.isPending}
+          >
             Cancel
           </button>
-          <button type="submit" className="btn btn-primary" disabled={updateStaff.isPending || uploadImage.isPending}>
-            {updateStaff.isPending || uploadImage.isPending ? "Saving..." : "Save changes"}
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={updateStaff.isPending || uploadImage.isPending}
+          >
+            {updateStaff.isPending || uploadImage.isPending
+              ? "Saving..."
+              : "Save changes"}
           </button>
         </div>
       </form>
@@ -204,6 +223,7 @@ function RouteComponent() {
   const props = useSearch();
   const addModalRef = useRef<ModalHandle>(null);
   const editModalRef = useRef<ModalHandle>(null);
+  const confirmRef = useRef<ConfirmModalHandle>(null);
   const [editingStaff, setEditingStaff] = useState<StaffMember | null>(null);
 
   const [form, setForm] = useState({
@@ -248,13 +268,12 @@ function RouteComponent() {
   };
 
   const handleDeleteStaff = async (staff: StaffMember) => {
-    if (
-      !window.confirm(
-        `Are you sure you want to remove staff member "${staff.firstName} ${staff.lastName}"?`,
-      )
-    ) {
-      return;
-    }
+    const confirmed = await confirmRef.current?.confirm({
+      title: "Remove staff member",
+      message: `Are you sure you want to remove staff member "${staff.firstName} ${staff.lastName}"?`,
+      confirmLabel: "Remove",
+    });
+    if (!confirmed) return;
 
     try {
       await deleteStaff.mutateAsync(staff.id);
@@ -545,6 +564,7 @@ function RouteComponent() {
           />
         )}
       </Modal>
+      <ConfirmModal ref={confirmRef} />
     </div>
   );
 }

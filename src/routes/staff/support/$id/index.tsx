@@ -28,6 +28,9 @@ import { uploadTicketAttachments } from "@/api/supportAttachments";
 import PageHeader from "@/components/Headers/PageHeader";
 import PageLoader from "@/components/layout/PageLoader";
 import Modal, { type ModalHandle } from "@/components/DialogModal";
+import ConfirmModal, {
+  type ConfirmModalHandle,
+} from "@/components/ConfirmModal";
 import SimpleInput from "@/components/inputs/SimpleInput";
 import SimpleTextArea from "@/components/inputs/SimpleTextArea";
 import LocalSelect from "@/components/inputs/LocalSelect";
@@ -73,6 +76,7 @@ function RouteComponent() {
   const deleteTicket = useDeleteTicket();
   const escalateTicket = useEscalateTicket();
   const editModalRef = useRef<ModalHandle>(null);
+  const confirmRef = useRef<ConfirmModalHandle>(null);
   const [edit, setEdit] = useState({
     subject: "",
     contactId: "",
@@ -188,13 +192,15 @@ function RouteComponent() {
   };
 
   const removeTicket = async () => {
-    if (
-      !ticket ||
-      !window.confirm(
-        `Delete ticket “${ticket.subject}”? This cannot be undone.`,
-      )
-    )
-      return;
+    if (!ticket) return;
+
+    const confirmed = await confirmRef.current?.confirm({
+      title: "Delete ticket",
+      message: `Delete ticket “${ticket.subject}”? This cannot be undone.`,
+      confirmLabel: "Delete",
+    });
+    if (!confirmed) return;
+
     try {
       await deleteTicket.mutateAsync(ticket.id);
       toast.success("Ticket deleted.");
@@ -559,6 +565,7 @@ function RouteComponent() {
           </div>
         </form>
       </Modal>
+      <ConfirmModal ref={confirmRef} />
     </section>
   );
 }
